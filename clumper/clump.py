@@ -12,10 +12,20 @@ class Clumper:
         return Clumper(data)
 
     def head(self, n):
+        if not isinstance(n, int):
+            raise ValueError(f"`n` must be a positive integer, got {n}")
+        if n < 0:
+            raise ValueError(f"`n` must be a positive integer, got {n}")
+        n = min(n, len(self))
         return Clumper([self.blob[i] for i in range(n)])
 
     def tail(self, n):
-        return Clumper([self.blob[-i] for i in range(1, n + 1)])
+        if not isinstance(n, int):
+            raise ValueError(f"`n` must be a positive integer, got {n}")
+        if n < 0:
+            raise ValueError(f"`n` must be positive, got {n}")
+        n = min(n, len(self))
+        return Clumper([self.blob[-i] for i in range(len(self) - n, len(self))])
 
     def select(self, *keys):
         return Clumper([{k: d[k] for k in keys} for d in self.blob])
