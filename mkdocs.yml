@@ -1,0 +1,28 @@
+site_name: clumper
+extra_css: [style.css]
+repo_url: https://github.com/koaning/clumper
+site_url: https://koaning.github.io/clumper/
+site_description: A python package to deal with clumps of data.
+site_author: Vincent D. Warmerdam
+
+nav:
+  - Home: index.md
+  - FAQ: faq.md
+plugins:
+  - mkdocstrings
+  - search
+copyright: Copyright &copy; 2020 Maintained by <a href="https://twitter.com/fishnets88">Vincent</a>.
+theme:
+  name: material
+  custom_dir: theme/
+  favicon: images/fig.png
+  logo:
+    icon: album
+  feature:
+    tabs: true
+  palette:
+    primary: white
+    accent: purple
+markdown_extensions:
+  - toc:
+      permalink: true
