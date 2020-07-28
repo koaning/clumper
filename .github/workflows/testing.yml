@@ -21,7 +21,7 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Test with pytest
-      run: |
-        make install-test
-        make check
+    - name: Install Testing Dependencies
+      run: make install-test
+    - name: Automated Checking Mechanism
+      run: make check

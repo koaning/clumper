@@ -2,15 +2,15 @@
 
 # **Clumper**
 
-**A small python library that can clump lists of data together.**
+**A small library that can clump sequences of data together.**
 
 Part of a video series on [calmcode.io](https://calmcode.io).
 
 ## Base Example
 
-Clumper allows you to quickly parse through a list of json-like data.
+Clumper allows you to quickly parse through a list of data.
 
-Here's an example of such a dataset.
+Here's an example of a list of dictionaries.
 
 ```python
 pokemon = [
