@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
+     <loc>https://koaning.github.io/clumper/</loc>
+     <lastmod>2020-07-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://koaning.github.io/clumper/faq/</loc>
+     <lastmod>2020-07-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://koaning.github.io/clumper/guides/getting-started/</loc>
+     <lastmod>2020-07-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://koaning.github.io/clumper/api/clumper/</loc>
+     <lastmod>2020-07-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+</urlset>
