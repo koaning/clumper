@@ -10,6 +10,7 @@ nav:
   - FAQ: faq.md
   - Guides:
       - Getting Started: guides/getting-started.md
+      - Understanding Verbs: guides/verbs.md
   - API:
       - Clumper: api/clumper.md
 plugins:

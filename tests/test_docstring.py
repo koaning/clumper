@@ -7,9 +7,8 @@ def handle_docstring(doc):
     end = doc.find("```\n")
     if start != -1:
         if end != -1:
-            code_part = (
-                doc[(start + 11) : end].replace("  ", "").replace(" from", "from")
-            )
+            code_part = doc[(start + 10) : end].replace("        ", "")
+            print(code_part)
             exec(code_part)
 
 

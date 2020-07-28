@@ -1,3 +1,8 @@
+from functools import reduce
+
+from clumper.aggregation import agg
+
+
 class Clumper:
     """
     This object adds methods to a list of dictionaries that make
@@ -19,6 +24,9 @@ class Clumper:
 
     def __len__(self):
         return len(self.blob)
+
+    def __iter__(self):
+        return self.blob.__iter__()
 
     def keep(self, *funcs):
         """
@@ -98,7 +106,7 @@ class Clumper:
 
     def select(self, *keys):
         """
-        Selects a subset of the key-value pairs in each dictionary in the collection.
+        Selects a subset of the keys in each item in the collection.
 
         Arguments:
             keys: the keys to keep
@@ -119,6 +127,32 @@ class Clumper:
         ```
         """
         return Clumper([{k: d[k] for k in keys} for d in self.blob])
+
+    def drop(self, *keys):
+        """
+        Removes a subset of keys from each item in the collection.
+
+        Arguments:
+            keys: the keys to remove
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_dicts = [
+            {'a': 1, 'b': 2},
+            {'a': 2, 'b': 3, 'c':4},
+            {'a': 1, 'b': 6}]
+
+        (Clumper(list_dicts)
+          .drop('a', 'c')
+          .collect())
+        ```
+        """
+        return Clumper(
+            [{k: v for k, v in d.items() if k not in keys} for d in self.blob]
+        )
 
     def mutate(self, **kwargs):
         """
@@ -180,8 +214,134 @@ class Clumper:
         """
         return Clumper(sorted(self.blob, key=key, reverse=reverse))
 
+    def map(self, func):
+        """
+        Directly map one item to another one using a function.
+        If you're dealing with dictionaries, consider using
+        `mutate` instead.
+
+        Arguments:
+            func: the function that will map each item
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_dicts = [{'a': 1}, {'a': 2}]
+
+        (Clumper(list_dicts)
+          .map(lambda d: {'a': d['a'], 'b': 1})
+          .collect())
+        ```
+        """
+        return Clumper([func(d) for d in self.blob])
+
+    def reduce(self, **kwargs):
+        """
+        Reduce the collection using reducing functions.
+
+        Arguments:
+            kwargs: key-function pairs
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_dicts = [1, 2, 3, 4, 5]
+
+        (Clumper(list_dicts)
+          .reduce(sum_a = lambda x,y: x + y,
+                  min_a = lambda x,y: min(x, y),
+                  max_a = lambda x,y: max(x, y))
+          .collect())
+        ```
+        """
+        return Clumper(
+            [{k: reduce(func, [b for b in self.blob]) for k, func in kwargs.items()}]
+        )
+
+    def pipe(self, func, *args, **kwargs):
+        """
+        Applies a function to the `Clumper` object in a chain-able manner.
+
+        Arguments:
+            func: function to apply
+            args: arguments that will be passed to the function
+            kwargs: keyword-arguments that will be passed to the function
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_dicts = [{'a': i} for i in range(100)]
+
+        def remove_outliers(clump, min_a=20, max_a=80):
+            return (clump
+                      .keep(lambda d: d['a'] >= min_a,
+                            lambda d: d['a'] <= max_a))
+
+        (Clumper(list_dicts)
+          .pipe(remove_outliers, min_a=10, max_a=90)
+          .collect())
+        ```
+        """
+        return func(self, *args, **kwargs)
+
     def collect(self):
         """
         Returns a list instead of a `Clumper` object.
         """
         return self.blob
+
+    def copy(self):
+        """
+        Makes a copy of the collection.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_dicts = [{'a': i} for i in range(100)]
+
+        c1 = Clumper(list_dicts)
+        c2 = c1.copy()
+        assert id(c1) != id(c2)
+        ```
+        """
+        return Clumper([d for d in self.blob])
+
+    def agg(self, **kwargs):
+        """
+        Does an aggregation on a collection of dictionaries.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_dicts = [
+            {'a': 1, 'b': 2},
+            {'a': 2, 'b': 3},
+            {'a': 3}
+        ]
+
+        (Clumper(list_dicts)
+          .agg(mean_a=('a', 'mean'),
+               min_b=('b', 'min'),
+               max_b=('b', 'max'))
+          .collect())
+        ```
+        """
+        bad_names = [
+            fname for k, (col, fname) in kwargs.items() if fname not in agg.keys()
+        ]
+        if len(bad_names) > 0:
+            raise ValueError(
+                f"Allowed aggregation functions are: {agg.keys()}. These don't mix: {bad_names}"
+            )
+        result = {k: agg[f](col, self.copy()) for k, (col, f) in kwargs.items()}
+        return Clumper([result])

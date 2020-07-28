@@ -83,4 +83,4 @@ explained by the lambda function that we pass in.
 The idea is that most analyses that you'd be interested in doing can be
 constructed using just these verbs. You can see a detailed view of how to use all the verbs in the [api description](/api/clumper/).
 
-<small>In case you're interested, this was inspired by the [dplyr library in R](https://dplyr.tidyverse.org/). </small>
+<small>We did not come up with this way of thinking about data analysis. In fact, this library is *heavily* inspired by the [dplyr library in R](https://dplyr.tidyverse.org/). </small>
