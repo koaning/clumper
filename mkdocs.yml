@@ -1,8 +1,8 @@
-site_name: clumper
+site_name: Clumper Docs
 extra_css: [style.css]
 repo_url: https://github.com/koaning/clumper
 site_url: https://koaning.github.io/clumper/
-site_description: A python package to deal with clumps of data.
+site_description: A small python library that can clump lists of data together.
 site_author: Vincent D. Warmerdam
 
 nav:
@@ -25,9 +25,8 @@ theme:
   font:
     text: Ubuntu
     code: Ubuntu Mono
-  favicon: images/fig.png
-  logo:
-    icon: album
+  favicon: logo.png
+  logo: logo.png
   feature:
     tabs: true
   palette:
