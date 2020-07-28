@@ -1,17 +1,18 @@
-# Welcome to MkDocs
+<img src="logo.png" width=200 height=200 align="right">
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+# **Clumper**
 
-## Commands
+**A small python library that can clump lists of data together.**
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+Part of a video series on [calmcode.io](https://calmcode.io).
 
-## Project layout
+## Contributing
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+To get started locally, you can clone the repo and quickly
+get started using the `Makefile`.
+
+```
+git clone git@github.com:koaning/clumper.git
+cd clumper
+make install-dev
+```

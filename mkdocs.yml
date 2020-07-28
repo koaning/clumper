@@ -8,6 +8,8 @@ site_author: Vincent D. Warmerdam
 nav:
   - Home: index.md
   - FAQ: faq.md
+  - API:
+      - Clumper: api/clumper.md
 plugins:
   - mkdocstrings
   - search
@@ -15,14 +17,19 @@ copyright: Copyright &copy; 2020 Maintained by <a href="https://twitter.com/fish
 theme:
   name: material
   custom_dir: theme/
+  icon:
+    logo: material/library
+  font:
+    text: Ubuntu
+    code: Ubuntu Mono
   favicon: images/fig.png
   logo:
     icon: album
   feature:
     tabs: true
   palette:
-    primary: white
-    accent: purple
+    primary: indigo
+    accent: blue
 markdown_extensions:
   - toc:
       permalink: true
