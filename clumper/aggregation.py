@@ -1,14 +1,18 @@
+def _sum(colname, blob):
+    return sum([d[colname] for d in blob if colname in d.keys()])
+
+
 def mean(colname, blob):
     s = sum([d[colname] for d in blob if colname in d.keys()])
     return s / len(blob)
 
 
 def count(colname, blob):
-    return sum([1 for d in blob if colname in d.keys()])
+    return len([1 for d in blob if colname in d.keys()])
 
 
 def n_unique(colname, blob):
-    return sum({d[colname] for d in blob if colname in d.keys()})
+    return len({d[colname] for d in blob if colname in d.keys()})
 
 
 def minimum(colname, blob):
@@ -29,5 +33,6 @@ agg = {
     "n_unique": n_unique,
     "max": maximum,
     "min": minimum,
+    "sum": _sum,
     "unique": unique,
 }

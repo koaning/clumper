@@ -81,12 +81,12 @@ class Clumper:
           .collect())
         ```
         """
-        subsets = [self]
-        if self.groups:
-            subsets = self.subsets()
+        if len(self.groups) == 0:
+            return self._agg(**kwargs)
+        subsets = self.subsets()
         calculated = [s._agg(**kwargs).collect()[0] for s in subsets]
         return Clumper(
-            [{**a, **g} for a, g in zip(calculated, self._group_combos())],
+            [{**g, **a} for a, g in zip(calculated, self._group_combos())],
             groups=self.groups,
         )
 
@@ -98,7 +98,11 @@ class Clumper:
             raise ValueError(
                 f"Allowed aggregation functions are: {agg.keys()}. These don't mix: {bad_names}"
             )
-        result = {k: agg[f](col, self.copy()) for k, (col, f) in kwargs.items()}
+        result = {}
+        for k, (col, f) in kwargs.items():
+            func = agg[f]
+            result[k] = func(col, self.copy())
+            print(result, func)
         return Clumper([result])
 
     def subsets(self):
