@@ -1,4 +1,5 @@
 from functools import reduce
+import itertools as it
 
 from clumper.aggregation import agg
 
@@ -19,14 +20,114 @@ class Clumper:
     ```
     """
 
-    def __init__(self, blob):
+    def __init__(self, blob, groups=tuple()):
         self.blob = blob.copy()
+        self.groups = groups
 
     def __len__(self):
         return len(self.blob)
 
     def __iter__(self):
         return self.blob.__iter__()
+
+    def group_by(self, *cols):
+        """
+        Sets a group on this clumper object or overrides a previous setting.
+        """
+        self.groups = cols
+        return self
+
+    def ungroup(self):
+        """
+        Removes all grouping.
+        """
+        self.groups = tuple()
+        return self
+
+    def agg(self, **kwargs):
+        """
+        Does an aggregation on a collection of dictionaries.
+
+        Warning:
+            This method is aware of groups. Expect different results if a group is active.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_dicts = [
+            {'a': 1, 'b': 2},
+            {'a': 2, 'b': 3},
+            {'a': 3}
+        ]
+
+        (Clumper(list_dicts)
+          .agg(mean_a=('a', 'mean'),
+               min_b=('b', 'min'),
+               max_b=('b', 'max'))
+          .collect())
+
+        another_list_dicts = [
+            {'a': 1, 'c': 'a'},
+            {'a': 2, 'c': 'b'},
+            {'a': 3, 'c': 'a'}
+        ]
+
+        (Clumper(another_list_dicts)
+          .group_by('c')
+          .agg(mean_a=('a', 'mean'),
+               uniq_a=('a', 'unique'))
+          .collect())
+        ```
+        """
+        subsets = [self]
+        if self.groups:
+            subsets = self.subsets()
+        calculated = [s._agg(**kwargs).collect()[0] for s in subsets]
+        return Clumper(
+            [{**a, **g} for a, g in zip(calculated, self._group_combos())],
+            groups=self.groups,
+        )
+
+    def _agg(self, **kwargs):
+        bad_names = [
+            fname for k, (col, fname) in kwargs.items() if fname not in agg.keys()
+        ]
+        if len(bad_names) > 0:
+            raise ValueError(
+                f"Allowed aggregation functions are: {agg.keys()}. These don't mix: {bad_names}"
+            )
+        result = {k: agg[f](col, self.copy()) for k, (col, f) in kwargs.items()}
+        return Clumper([result])
+
+    def subsets(self):
+        result = []
+        for gc in self._group_combos():
+            subset = self.keep(*[lambda d: d[k] == v for k, v in gc.items()])
+            result.append(subset)
+        return result
+
+    def concat(self, *other):
+        """
+        Concatenate two or more `Clumper` objects together.
+        """
+        return Clumper(self.blob + other.blob)
+
+    def _group_combos(self):
+        """
+        Returns a dictionary of group-value/clumper pairs.
+        """
+        combinations = [
+            comb for comb in it.product(*[self.unique(c) for c in self.groups])
+        ]
+        return [{k: v for k, v in zip(self.groups, comb)} for comb in combinations]
+
+    def unique(self, col):
+        """
+        Returns a set of unique values that a column has.
+        """
+        return {d[col] for d in self.blob}
 
     def keep(self, *funcs):
         """
@@ -313,35 +414,3 @@ class Clumper:
         ```
         """
         return Clumper([d for d in self.blob])
-
-    def agg(self, **kwargs):
-        """
-        Does an aggregation on a collection of dictionaries.
-
-        Usage:
-
-        ```python
-        from clumper import Clumper
-
-        list_dicts = [
-            {'a': 1, 'b': 2},
-            {'a': 2, 'b': 3},
-            {'a': 3}
-        ]
-
-        (Clumper(list_dicts)
-          .agg(mean_a=('a', 'mean'),
-               min_b=('b', 'min'),
-               max_b=('b', 'max'))
-          .collect())
-        ```
-        """
-        bad_names = [
-            fname for k, (col, fname) in kwargs.items() if fname not in agg.keys()
-        ]
-        if len(bad_names) > 0:
-            raise ValueError(
-                f"Allowed aggregation functions are: {agg.keys()}. These don't mix: {bad_names}"
-            )
-        result = {k: agg[f](col, self.copy()) for k, (col, f) in kwargs.items()}
-        return Clumper([result])

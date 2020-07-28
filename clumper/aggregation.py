@@ -19,10 +19,15 @@ def maximum(colname, blob):
     return max({d[colname] for d in blob if colname in d.keys()})
 
 
+def unique(colname, blob):
+    return list({d[colname] for d in blob if colname in d.keys()})
+
+
 agg = {
     "mean": mean,
     "count": count,
     "n_unique": n_unique,
     "max": maximum,
     "min": minimum,
+    "unique": unique,
 }
