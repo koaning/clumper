@@ -13,7 +13,7 @@
         <meta name="description" content="A small python library that can clump lists of data together.">
       
       
-        <link rel="canonical" href="https://koaning.github.io/clumper/guides/getting-started/">
+        <link rel="canonical" href="https://koaning.github.io/clumper/guides/verbs/">
       
       
         <meta name="author" content="Vincent D. Warmerdam">
@@ -42,7 +42,7 @@
     
     
       
-        <title>Getting Started - Clumper Docs</title>
+        <title>Understanding Verbs - Clumper Docs</title>
       
     
     
@@ -93,7 +93,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#getting-started" tabindex="0" class="md-skip">
+      <a href="#advanced-dict-vs-anything" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -119,7 +119,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Getting Started
+                Understanding Verbs
               
             </span>
           
@@ -210,7 +210,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="./" class="md-tabs__link md-tabs__link--active">
+        <a href="../getting-started/" class="md-tabs__link md-tabs__link--active">
           Guides
         </a>
       
@@ -323,6 +323,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="../getting-started/" title="Getting Started" class="md-nav__link">
+      Getting Started
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -330,38 +342,54 @@
     
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
-      
-    
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Getting Started
+        Understanding Verbs
       </label>
     
-    <a href="./" title="Getting Started" class="md-nav__link md-nav__link--active">
-      Getting Started
+    <a href="./" title="Understanding Verbs" class="md-nav__link md-nav__link--active">
+      Understanding Verbs
     </a>
     
       
 <nav class="md-nav md-nav--secondary">
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    Example
+  <a href="#advanced-dict-vs-anything" class="md-nav__link">
+    Advanced: Dict vs. Anything
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integer-example" class="md-nav__link">
+    Integer Example
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#design" class="md-nav__link">
-    Design
+        
+          <li class="md-nav__item">
+  <a href="#character-example" class="md-nav__link">
+    Character Example
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verbs-that-need-dictionaries" class="md-nav__link">
+    Verbs that need Dictionaries
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -373,18 +401,6 @@
   
 </nav>
     
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../verbs/" title="Understanding Verbs" class="md-nav__link">
-      Understanding Verbs
-    </a>
   </li>
 
         
@@ -443,23 +459,41 @@
 <nav class="md-nav md-nav--secondary">
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#example" class="md-nav__link">
-    Example
+  <a href="#advanced-dict-vs-anything" class="md-nav__link">
+    Advanced: Dict vs. Anything
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integer-example" class="md-nav__link">
+    Integer Example
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#design" class="md-nav__link">
-    Design
+        
+          <li class="md-nav__item">
+  <a href="#character-example" class="md-nav__link">
+    Character Example
   </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verbs-that-need-dictionaries" class="md-nav__link">
+    Verbs that need Dictionaries
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -479,80 +513,58 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/koaning/clumper/edit/master/docs/guides/getting-started.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/koaning/clumper/edit/master/docs/guides/verbs.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
-<p>This library offers tools to deal with nested json data structure. To demonstrate how it might work we'll download a dataset locally. It's a list of dictionaries that contains information about pokemon.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">urllib.request</span>
-
-<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://calmcode.io/datasets/pokemon.json&#39;</span>
-<span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">pokemon</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+                  <h1>Understanding Verbs</h1>
+                
+                <p>This document is to help give you an overview of what kind of verbs are in this library. They're in essense just methods but they imply a general pattern.</p>
+<h2 id="advanced-dict-vs-anything">Advanced: Dict vs. Anything<a class="headerlink" href="#advanced-dict-vs-anything" title="Permanent link">&para;</a></h2>
+<p>Although this library has lists of dictionaries in mind,
+we actually don't force this on you. We just assume a sequence
+as input and from here it's your responsibility to come up
+with reasonable lambda functions for the verbs. Most verbs are flexible enough that they don't assume the lambda functions to act on dictionaries.</p>
+<p>For example. If you look at this code:</p>
+<div class="highlight"><pre><span></span><code>.sort(lambda d: d)
 </code></pre></div>
 
-<p>Here's the first two examples from this list;</p>
-<div class="highlight"><pre><span></span><code>[{&#39;name&#39;: &#39;Bulbasaur&#39;,
-  &#39;type&#39;: [&#39;Grass&#39;, &#39;Poison&#39;],
-  &#39;total&#39;: 318,
-  &#39;hp&#39;: 45,
-  &#39;attack&#39;: 49},
- {&#39;name&#39;: &#39;Ivysaur&#39;,
-  &#39;type&#39;: [&#39;Grass&#39;, &#39;Poison&#39;],
-  &#39;total&#39;: 405,
-  &#39;hp&#39;: 60,
-  &#39;attack&#39;: 62}]
+<p>Then you can infer that we're sorting based on whatever
+the value in our collection is. It would work on a list
+of integers, floats or characters. If you'd instead have:</p>
+<div class="highlight"><pre><span></span><code>.sort(lambda d: d[0])
 </code></pre></div>
 
-<p>There's about 800 dictionaries in our list which is
-big enough to want to not go through manually but also
-small enough that we don't need to worry too much
-about performance.</p>
-<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
-<p>Let's run a basic example.</p>
+<p>Then it wouldn't work anymore if <code>d</code> is a integer, float
+or string but it would work if <code>d</code> is a list, tuple or a
+dictionary with a key of <code>0</code> available.</p>
+<h3 id="integer-example">Integer Example<a class="headerlink" href="#integer-example" title="Permanent link">&para;</a></h3>
+<p>Here we take the top 50 numbers from a list and then sort.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
-<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="n">pokemon</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">keep</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">mutate</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-          <span class="n">ratio</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;attack&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;hp&#39;</span><span class="p">])</span>
-  <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;ratio&#39;</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;ratio&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+  <span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </code></pre></div>
 
-<p>This is the result of this query.</p>
-<div class="highlight"><pre><span></span><code>[{&#39;name&#39;: &#39;Diglett&#39;, &#39;type&#39;: &#39;Ground&#39;, &#39;ratio&#39;: 5.5},
- {&#39;name&#39;: &#39;DeoxysAttack Forme&#39;, &#39;type&#39;: &#39;Psychic&#39;, &#39;ratio&#39;: 3.6},
- {&#39;name&#39;: &#39;Krabby&#39;, &#39;type&#39;: &#39;Water&#39;, &#39;ratio&#39;: 3.5},
- {&#39;name&#39;: &#39;DeoxysNormal Forme&#39;, &#39;type&#39;: &#39;Psychic&#39;, &#39;ratio&#39;: 3.0},
- {&#39;name&#39;: &#39;BanetteMega Banette&#39;, &#39;type&#39;: &#39;Ghost&#39;, &#39;ratio&#39;: 2.578125}]
+<h3 id="character-example">Character Example<a class="headerlink" href="#character-example" title="Permanent link">&para;</a></h3>
+<p>Here we start out with a sequence of letters
+and we turn it into a collection of dictionaries.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="s1">&#39;abcedfghijklmnopqrstuvwxyz&#39;</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;char&#39;</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> <span class="s1">&#39;ord&#39;</span><span class="p">:</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)}))</span>
 </code></pre></div>
 
-<p>Here's what the code did.</p>
-<ol>
-<li>It imports <code>Clumper</code>.</li>
-<li>It turns the list of pokemon dictionaries into a <code>Clumper</code> collection.</li>
-<li>It removes all the pokemon that have more than 1 type.</li>
-<li>The dictionaries that are left will have their <code>type</code> now as a string instead of a list of strings.</li>
-<li>These dictionaries will also get a property called <code>ratio</code> which is the ratio between <code>hp</code> and <code>attack</code>.</li>
-<li>All the keys besides <code>name</code>, <code>type</code> and <code>ratio</code> are removed.</li>
-<li>The collection is sorted by <code>ratio</code>, from high to low.</li>
-<li>We grab the top 5 after sorting.</li>
-<li>The results are returned as a list of dictionaries.</li>
-</ol>
-<h2 id="design">Design<a class="headerlink" href="#design" title="Permanent link">&para;</a></h2>
-<p>The idea behind the library is that the API is like the English language.
-We could say that the dataset is like a <strong>noun</strong> and that each method is like a <strong>verb</strong>.</p>
-<p>Each verb will tell the API <em>what</em> will needs to happen to the data and the
-input to the verb will tell you how <em>how</em> this will happen. For example,
-the <code>.keep()</code> method will filter out data and how it will filter data is
-explained by the lambda function that we pass in.</p>
-<p>The idea is that most analyses that you'd be interested in doing can be
-constructed using just these verbs. You can see a detailed view of how to use all the verbs in the <a href="/api/clumper/">api description</a>.</p>
-<p><small>We did not come up with this way of thinking about data analysis. In fact, this library is <em>heavily</em> inspired by the <a href="https://dplyr.tidyverse.org/">dplyr library in R</a>. </small></p>
+<h3 id="verbs-that-need-dictionaries">Verbs that need Dictionaries<a class="headerlink" href="#verbs-that-need-dictionaries" title="Permanent link">&para;</a></h3>
+<p>There's a short list verbs that have some restrictions</p>
+<ul>
+<li><strong>.select()</strong> needs to select keys so the sequences must contain dictionaries</li>
+<li><strong>.drop()</strong> needs to remove keys so the sequences must contain dictionaries</li>
+<li><strong>.agg()</strong> needs a collection of dictionaries to construct aggregations. If you
+really need this feature for non-dictionary sequences consider <strong>.reduce()</strong>.</li>
+<li><strong>.mutate()</strong> is really flexible in terms of input that it
+accepts but it will always produce a dictionary as output. If you really need a non-dictionary output, consider <strong>.map()</strong></li>
+</ul>
                 
                   
                 
@@ -574,7 +586,7 @@ constructed using just these verbs. You can see a detailed view of how to use al
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../../faq/" title="FAQ" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../getting-started/" title="Getting Started" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -583,19 +595,19 @@ constructed using just these verbs. You can see a detailed view of how to use al
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                FAQ
+                Getting Started
               </span>
             </div>
           </a>
         
         
-          <a href="../verbs/" title="Understanding Verbs" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../../api/clumper/" title="Clumper" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Understanding Verbs
+                Clumper
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

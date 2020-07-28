@@ -329,6 +329,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../guides/verbs/" title="Understanding Verbs" class="md-nav__link">
+      Understanding Verbs
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -388,8 +400,29 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.agg" class="md-nav__link">
+    agg()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#clumper.clump.Clumper.collect" class="md-nav__link">
     collect()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.copy" class="md-nav__link">
+    copy()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.drop" class="md-nav__link">
+    drop()
   </a>
   
 </li>
@@ -409,8 +442,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.map" class="md-nav__link">
+    map()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#clumper.clump.Clumper.mutate" class="md-nav__link">
     mutate()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.pipe" class="md-nav__link">
+    pipe()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.reduce" class="md-nav__link">
+    reduce()
   </a>
   
 </li>
@@ -473,8 +527,29 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.agg" class="md-nav__link">
+    agg()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#clumper.clump.Clumper.collect" class="md-nav__link">
     collect()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.copy" class="md-nav__link">
+    copy()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.drop" class="md-nav__link">
+    drop()
   </a>
   
 </li>
@@ -494,8 +569,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.map" class="md-nav__link">
+    map()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#clumper.clump.Clumper.mutate" class="md-nav__link">
     mutate()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.pipe" class="md-nav__link">
+    pipe()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clumper.clump.Clumper.reduce" class="md-nav__link">
+    reduce()
   </a>
   
 </li>
@@ -551,12 +647,95 @@ it nicer to explore.</p>
 <span class="n">c</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">)</span>
 </code></pre></div>
 
+<h2 id="clumper.clump.Clumper.agg"><code class="highlight"><span class="n">agg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.agg" title="Permanent link">&para;</a></h2>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">agg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Does an aggregation on a collection of dictionaries.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        ```python</span>
+<span class="sd">        from clumper import Clumper</span>
+
+<span class="sd">        list_dicts = [</span>
+<span class="sd">            {&#39;a&#39;: 1, &#39;b&#39;: 2},</span>
+<span class="sd">            {&#39;a&#39;: 2, &#39;b&#39;: 3},</span>
+<span class="sd">            {&#39;a&#39;: 3}</span>
+<span class="sd">        ]</span>
+
+<span class="sd">        (Clumper(list_dicts)</span>
+<span class="sd">          .agg(mean_a=(&#39;a&#39;, &#39;mean&#39;),</span>
+<span class="sd">               min_b=(&#39;b&#39;, &#39;min&#39;),</span>
+<span class="sd">               max_b=(&#39;b&#39;, &#39;max&#39;))</span>
+<span class="sd">          .collect())</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bad_names</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">fname</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">fname</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">agg</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bad_names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Allowed aggregation functions are: </span><span class="si">{</span><span class="n">agg</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s2">. These don&#39;t mix: </span><span class="si">{</span><span class="n">bad_names</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">agg</span><span class="p">[</span><span class="n">f</span><span class="p">](</span><span class="n">col</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="n">Clumper</span><span class="p">([</span><span class="n">result</span><span class="p">])</span>
+</code></pre></div>
+</td></tr></table>
+
+</details>
+<p>Does an aggregation on a collection of dictionaries.</p>
+<p>Usage:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">mean_a</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">),</span>
+       <span class="n">min_b</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">),</span>
+       <span class="n">max_b</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">))</span>
+  <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+</code></pre></div>
+
 <h2 id="clumper.clump.Clumper.collect"><code class="highlight"><span class="n">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.collect" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>183
-184
-185
-186
-187</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>293
+294
+295
+296
+297</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a list instead of a `Clumper` object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -566,16 +745,144 @@ it nicer to explore.</p>
 
 </details>
 <p>Returns a list instead of a <code>Clumper</code> object.</p>
+<h2 id="clumper.clump.Clumper.copy"><code class="highlight"><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.copy" title="Permanent link">&para;</a></h2>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Makes a copy of the collection.</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        ```python</span>
+<span class="sd">        from clumper import Clumper</span>
+
+<span class="sd">        list_dicts = [{&#39;a&#39;: i} for i in range(100)]</span>
+
+<span class="sd">        c1 = Clumper(list_dicts)</span>
+<span class="sd">        c2 = c1.copy()</span>
+<span class="sd">        assert id(c1) != id(c2)</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Clumper</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="p">])</span>
+</code></pre></div>
+</td></tr></table>
+
+</details>
+<p>Makes a copy of the collection.</p>
+<p>Usage:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+
+<span class="n">c1</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">)</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">c1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">assert</span> <span class="nb">id</span><span class="p">(</span><span class="n">c1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">id</span><span class="p">(</span><span class="n">c2</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="clumper.clump.Clumper.drop"><code class="highlight"><span class="n">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.drop" title="Permanent link">&para;</a></h2>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a subset of keys from each item in the collection.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            keys: the keys to remove</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        ```python</span>
+<span class="sd">        from clumper import Clumper</span>
+
+<span class="sd">        list_dicts = [</span>
+<span class="sd">            {&#39;a&#39;: 1, &#39;b&#39;: 2},</span>
+<span class="sd">            {&#39;a&#39;: 2, &#39;b&#39;: 3, &#39;c&#39;:4},</span>
+<span class="sd">            {&#39;a&#39;: 1, &#39;b&#39;: 6}]</span>
+
+<span class="sd">        (Clumper(list_dicts)</span>
+<span class="sd">          .drop(&#39;a&#39;, &#39;c&#39;)</span>
+<span class="sd">          .collect())</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Clumper</span><span class="p">(</span>
+            <span class="p">[{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="p">]</span>
+        <span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+
+</details>
+<p>Removes a subset of keys from each item in the collection.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*keys</code></td>
+<td></td>
+<td>the keys to remove</td>
+<td><code>()</code></td>
+</tr>
+</tbody>
+</table>
+<p>Usage:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span><span class="mi">4</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">}]</span>
+
+<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+</code></pre></div>
+
 <h2 id="clumper.clump.Clumper.head"><code class="highlight"><span class="n">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.head" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>47
-48
-49
-50
-51
-52
-53
-54
-55
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>55
 56
 57
 58
@@ -591,7 +898,15 @@ it nicer to explore.</p>
 68
 69
 70
-71</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+71
+72
+73
+74
+75
+76
+77
+78
+79</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects the top `n` items from the collection.</span>
 
@@ -651,15 +966,7 @@ it nicer to explore.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.keep"><code class="highlight"><span class="n">keep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.keep" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>23
-24
-25
-26
-27
-28
-29
-30
-31
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>31
 32
 33
 34
@@ -673,7 +980,15 @@ it nicer to explore.</p>
 42
 43
 44
-45</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">keep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">):</span>
+45
+46
+47
+48
+49
+50
+51
+52
+53</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">keep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Allows you to select which items to keep and which items to remove.</span>
 
@@ -730,37 +1045,117 @@ it nicer to explore.</p>
   <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
 </code></pre></div>
 
+<h2 id="clumper.clump.Clumper.map"><code class="highlight"><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.map" title="Permanent link">&para;</a></h2>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Directly map one item to another one using a function.</span>
+<span class="sd">        If you&#39;re dealing with dictionaries, consider using</span>
+<span class="sd">        `mutate` instead.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            func: the function that will map each item</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        ```python</span>
+<span class="sd">        from clumper import Clumper</span>
+
+<span class="sd">        list_dicts = [{&#39;a&#39;: 1}, {&#39;a&#39;: 2}]</span>
+
+<span class="sd">        (Clumper(list_dicts)</span>
+<span class="sd">          .map(lambda d: {&#39;a&#39;: d[&#39;a&#39;], &#39;b&#39;: 1})</span>
+<span class="sd">          .collect())</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Clumper</span><span class="p">([</span><span class="n">func</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="p">])</span>
+</code></pre></div>
+</td></tr></table>
+
+</details>
+<p>Directly map one item to another one using a function.
+If you're dealing with dictionaries, consider using
+<code>mutate</code> instead.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>func</code></td>
+<td></td>
+<td>the function that will map each item</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+<p>Usage:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}]</span>
+
+<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">],</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+  <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+</code></pre></div>
+
 <h2 id="clumper.clump.Clumper.mutate"><code class="highlight"><span class="n">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.mutate" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds or overrides key-value pairs in the collection of dictionaries.</span>
 
@@ -828,16 +1223,197 @@ it nicer to explore.</p>
   <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
 </code></pre></div>
 
+<h2 id="clumper.clump.Clumper.pipe"><code class="highlight"><span class="n">pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.pipe" title="Permanent link">&para;</a></h2>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Applies a function to the `Clumper` object in a chain-able manner.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            func: function to apply</span>
+<span class="sd">            args: arguments that will be passed to the function</span>
+<span class="sd">            kwargs: keyword-arguments that will be passed to the function</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        ```python</span>
+<span class="sd">        from clumper import Clumper</span>
+
+<span class="sd">        list_dicts = [{&#39;a&#39;: i} for i in range(100)]</span>
+
+<span class="sd">        def remove_outliers(clump, min_a=20, max_a=80):</span>
+<span class="sd">            return (clump</span>
+<span class="sd">                      .keep(lambda d: d[&#39;a&#39;] &gt;= min_a,</span>
+<span class="sd">                            lambda d: d[&#39;a&#39;] &lt;= max_a))</span>
+
+<span class="sd">        (Clumper(list_dicts)</span>
+<span class="sd">          .pipe(remove_outliers, min_a=10, max_a=90)</span>
+<span class="sd">          .collect())</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+
+</details>
+<p>Applies a function to the <code>Clumper</code> object in a chain-able manner.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>func</code></td>
+<td></td>
+<td>function to apply</td>
+<td><em>required</em></td>
+</tr>
+<tr>
+<td><code>*args</code></td>
+<td></td>
+<td>arguments that will be passed to the function</td>
+<td><code>()</code></td>
+</tr>
+<tr>
+<td><code>**kwargs</code></td>
+<td></td>
+<td>keyword-arguments that will be passed to the function</td>
+<td><code>{}</code></td>
+</tr>
+</tbody>
+</table>
+<p>Usage:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">i</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+
+<span class="k">def</span> <span class="nf">remove_outliers</span><span class="p">(</span><span class="n">clump</span><span class="p">,</span> <span class="n">min_a</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">max_a</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">clump</span>
+              <span class="o">.</span><span class="n">keep</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_a</span><span class="p">,</span>
+                    <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">max_a</span><span class="p">))</span>
+
+<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">remove_outliers</span><span class="p">,</span> <span class="n">min_a</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_a</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+</code></pre></div>
+
+<h2 id="clumper.clump.Clumper.reduce"><code class="highlight"><span class="n">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.reduce" title="Permanent link">&para;</a></h2>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reduce the collection using reducing functions.</span>
+
+<span class="sd">        Arguments:</span>
+<span class="sd">            kwargs: key-function pairs</span>
+
+<span class="sd">        Usage:</span>
+
+<span class="sd">        ```python</span>
+<span class="sd">        from clumper import Clumper</span>
+
+<span class="sd">        list_dicts = [1, 2, 3, 4, 5]</span>
+
+<span class="sd">        (Clumper(list_dicts)</span>
+<span class="sd">          .reduce(sum_a = lambda x,y: x + y,</span>
+<span class="sd">                  min_a = lambda x,y: min(x, y),</span>
+<span class="sd">                  max_a = lambda x,y: max(x, y))</span>
+<span class="sd">          .collect())</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Clumper</span><span class="p">(</span>
+            <span class="p">[{</span><span class="n">k</span><span class="p">:</span> <span class="n">reduce</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()}]</span>
+        <span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+
+</details>
+<p>Reduce the collection using reducing functions.</p>
+<p><strong>Parameters</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>**kwargs</code></td>
+<td></td>
+<td>key-function pairs</td>
+<td><code>{}</code></td>
+</tr>
+</tbody>
+</table>
+<p>Usage:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">sum_a</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span>
+          <span class="n">min_a</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+          <span class="n">max_a</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+  <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+</code></pre></div>
+
 <h2 id="clumper.clump.Clumper.select"><code class="highlight"><span class="n">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.select" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 99
-100
-101
-102
-103
-104
-105
-106
-107
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>107
 108
 109
 110
@@ -851,9 +1427,17 @@ it nicer to explore.</p>
 118
 119
 120
-121</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
+121
+122
+123
+124
+125
+126
+127
+128
+129</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Selects a subset of the key-value pairs in each dictionary in the collection.</span>
+<span class="sd">        Selects a subset of the keys in each item in the collection.</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            keys: the keys to keep</span>
@@ -878,7 +1462,7 @@ it nicer to explore.</p>
 </td></tr></table>
 
 </details>
-<p>Selects a subset of the key-value pairs in each dictionary in the collection.</p>
+<p>Selects a subset of the keys in each item in the collection.</p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -912,34 +1496,34 @@ it nicer to explore.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.sort"><code class="highlight"><span class="n">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.sort" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Allows you to sort the collection of dictionaries.</span>
 
@@ -1015,31 +1599,31 @@ it nicer to explore.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.tail"><code class="highlight"><span class="n">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.tail" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects the top `n` items from the collection.</span>
 
@@ -1118,7 +1702,7 @@ it nicer to explore.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../../guides/getting-started/" title="Getting Started" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../../guides/verbs/" title="Understanding Verbs" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -1127,7 +1711,7 @@ it nicer to explore.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Getting Started
+                Understanding Verbs
               </span>
             </div>
           </a>
