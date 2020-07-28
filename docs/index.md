@@ -1,4 +1,4 @@
-<img src="logo.png" width=200 height=200 align="right">
+<img src="logo.png" width=185 height=185 align="right">
 
 # **Clumper**
 

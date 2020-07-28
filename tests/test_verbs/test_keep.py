@@ -1,4 +1,5 @@
 import pytest
+from clumper import Clumper
 
 
 def test_can_collect_all(base_clumper):
@@ -27,3 +28,13 @@ def test_can_collect_none(base_clumper, start, end):
     """
     c = base_clumper.keep(lambda d: (start <= d["i"]) & (d["i"] < end))
     assert len(c) == end - start
+
+
+def test_keep_does_not_mutate():
+    """
+    The original data must not be changed. This happened originally.
+    """
+    data = [{"a": 1}, {"a": 2}]
+    c = Clumper(data).keep(lambda d: d["a"] == 1)
+    assert len(data) == 2
+    assert len(c) == 1

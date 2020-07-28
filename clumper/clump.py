@@ -15,7 +15,7 @@ class Clumper:
     """
 
     def __init__(self, blob):
-        self.blob = blob
+        self.blob = blob.copy()
 
     def __len__(self):
         return len(self.blob)
@@ -39,7 +39,7 @@ class Clumper:
           .collect())
         ```
         """
-        data = self.blob
+        data = self.blob.copy()
         for func in funcs:
             data = [d for d in data if func(d)]
         return Clumper(data)
@@ -143,10 +143,12 @@ class Clumper:
           .collect())
         ```
         """
-        data = self.blob
-        for key, func in kwargs.items():
-            for i in range(len(data)):
-                data[i][key] = func(data[i])
+        data = []
+        for d in self.blob.copy():
+            new = {k: v for k, v in d.items()}
+            for key, func in kwargs.items():
+                new[key] = func(new)
+            data.append(new)
         return Clumper(data)
 
     def sort(self, key, reverse=False):
