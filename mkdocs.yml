@@ -8,10 +8,13 @@ site_author: Vincent D. Warmerdam
 nav:
   - Home: index.md
   - FAQ: faq.md
+  - Guides:
+      - Getting Started: guides/getting-started.md
   - API:
       - Clumper: api/clumper.md
 plugins:
   - mkdocstrings
+  - mkdocs-jupyter
   - search
 copyright: Copyright &copy; 2020 Maintained by <a href="https://twitter.com/fishnets88">Vincent</a>.
 theme:
@@ -33,3 +36,8 @@ theme:
 markdown_extensions:
   - toc:
       permalink: true
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - codehilite
