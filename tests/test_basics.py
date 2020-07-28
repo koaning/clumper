@@ -17,3 +17,12 @@ def test_mutability_insurance():
     data = [{"a": 1}, {"b": 2}]
     blob = Clumper(data).blob
     assert id(data) != id(blob)
+
+
+def test_iteration():
+    """
+    Just make sure that we can iterate.
+    """
+    data = [1, 2, 3, 4, 5]
+    blob = [i for i in Clumper(data)]
+    assert data == blob
