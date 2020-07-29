@@ -12,6 +12,7 @@ nav:
   - Guides:
       - Getting Started: guides/getting-started.md
       - Understanding Verbs: guides/verbs.md
+      - Summary Methods: guides/summary-methods.md
       - Advanced Details: guides/advanced.md
   - API:
       - Clumper: api/clumper.md

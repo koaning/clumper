@@ -22,12 +22,32 @@ list_of_dicts = [
     {'a': 3, 'b': 6}
 ]
 
-(Clumper()
+(Clumper(list_of_dicts)
   .mutate(c = lambda d: d['a'] + d['b'])
   .sort(lambda d: d['c']))
 ```
 
 Schematically, this is what the code does.
+
+### Mutate
+
+First we use the **mutate** verb. This allows us to add values to pairs in
+our collection.
+
+![](../api/first-mutate.png)
+
+The output of this step is another `Clumper` collection.
+
+### Sort
+
+Next we pick up the mutated collection and we apply a sort to it.
+
+![](../api/first-mutate.png)
+
+Again, the output of this another `Clumper`. This means that we can
+keep adding steps as we further our analysis.
+
+### Method Chaining
 
 This style of programming is really powerful and it keeps you productive
 once you've gotten a hang of the lambda functions. The lambda functions
@@ -98,18 +118,5 @@ When defining a summary to apply you'll need to pass three things:
 3. the summary you'd like to calculate on that key (second item in the tuple)
 
 The following aggregation functions are available: `mean`, `count`, `unique`,
-`n_unique`, `sum`, `min` and `max`.
-
-## Summary Methods
-
-The `Clumper` object also offers useful methods that aren't verbs. In
-particular there's a lovely set that can calculate summaries on keys.
-
-### `.mean()`
-
-### `.count()`
-### `.unique()`
-### `.n_unique()`
-### `.sum()`
-### `.min()`
-### `.max()`
+`n_unique`, `sum`, `min` and `max`. For more information on how they work you
+can read more info [here]().

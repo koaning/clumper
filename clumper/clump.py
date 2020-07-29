@@ -467,6 +467,8 @@ class Clumper:
         """
         Give the sum of the values that belong to a key.
 
+        ![](sum.png)
+
         Usage:
 
         ```python
@@ -489,6 +491,8 @@ class Clumper:
     def mean(self, col):
         """
         Give the mean of the values that belong to a key.
+
+        ![](mean.png)
 
         Usage:
 
@@ -514,6 +518,8 @@ class Clumper:
         """
         Counts how often a key appears in the collection.
 
+        ![](count.png)
+
         Usage:
 
         ```python
@@ -536,6 +542,8 @@ class Clumper:
     def n_unique(self, col):
         """
         Returns number of unique values that a key has.
+
+        ![](n_unique.png)
 
         Usage:
 
@@ -560,6 +568,8 @@ class Clumper:
         """
         Returns minimum value that a key has.
 
+        ![](min.png)
+
         Usage:
 
         ```python
@@ -583,6 +593,8 @@ class Clumper:
         """
         Returns maximum value that a key has.
 
+        ![](max.png)
+
         Usage:
 
         ```python
@@ -605,6 +617,8 @@ class Clumper:
     def unique(self, col):
         """
         Returns a set of unique values that a key has.
+
+        ![](unique.png)
 
         Usage:
 
