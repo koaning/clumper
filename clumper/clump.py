@@ -1,7 +1,7 @@
 from functools import reduce
 import itertools as it
 
-from clumper.aggregation import agg
+from clumper.decorators import return_value_if_empty
 
 
 class Clumper:
@@ -81,29 +81,7 @@ class Clumper:
           .collect())
         ```
         """
-        if len(self.groups) == 0:
-            return self._agg(**kwargs)
-        subsets = self.subsets()
-        calculated = [s._agg(**kwargs).collect()[0] for s in subsets]
-        return Clumper(
-            [{**g, **a} for a, g in zip(calculated, self._group_combos())],
-            groups=self.groups,
-        )
-
-    def _agg(self, **kwargs):
-        bad_names = [
-            fname for k, (col, fname) in kwargs.items() if fname not in agg.keys()
-        ]
-        if len(bad_names) > 0:
-            raise ValueError(
-                f"Allowed aggregation functions are: {agg.keys()}. These don't mix: {bad_names}"
-            )
-        result = {}
-        for k, (col, f) in kwargs.items():
-            func = agg[f]
-            result[k] = func(col, self.copy())
-            print(result, func)
-        return Clumper([result])
+        pass
 
     def subsets(self):
         result = []
@@ -126,12 +104,6 @@ class Clumper:
             comb for comb in it.product(*[self.unique(c) for c in self.groups])
         ]
         return [{k: v for k, v in zip(self.groups, comb)} for comb in combinations]
-
-    def unique(self, col):
-        """
-        Returns a set of unique values that a column has.
-        """
-        return {d[col] for d in self.blob}
 
     def keep(self, *funcs):
         """
@@ -418,3 +390,53 @@ class Clumper:
         ```
         """
         return Clumper([d for d in self.blob])
+
+    @return_value_if_empty(value=None)
+    def sum(self, col):
+        """
+        Give the sum of the values that belong to a key.
+        """
+        return sum([d[col] for d in self if col in d.keys()])
+
+    @return_value_if_empty(value=None)
+    def mean(self, col):
+        """
+        Give the mean of the values that belong to a key.
+        """
+        s = sum([d[col] for d in self if col in d.keys()])
+        return s / len(self)
+
+    @return_value_if_empty(value=None)
+    def count(self, col):
+        """
+        Counts how often a key appears in the collection.
+        """
+        return len([1 for d in self if col in d.keys()])
+
+    @return_value_if_empty(value=0)
+    def n_unique(self, col):
+        """
+        Returns number of unique values that a key has.
+        """
+        return len({d[col] for d in self if col in d.keys()})
+
+    @return_value_if_empty(value=None)
+    def min(self, col):
+        """
+        Returns minimum value that a key has.
+        """
+        return min([d[col] for d in self if col in d.keys()])
+
+    @return_value_if_empty(value=None)
+    def max(self, col):
+        """
+        Returns maximum value that a key has.
+        """
+        return max({d[col] for d in self if col in d.keys()})
+
+    @return_value_if_empty(value=[])
+    def unique(self, col):
+        """
+        Returns a set of unique values that a key has.
+        """
+        return list({d[col] for d in self if col in d.keys()})

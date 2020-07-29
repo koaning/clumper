@@ -3,61 +3,52 @@ import pytest
 from clumper import Clumper
 
 
-@pytest.mark.parametrize("n", [1, 5, 10])
-def test_n_unique1(n):
-    c = Clumper([{"i": i} for i in range(1, n + 1)])
-    assert c.agg(s=("i", "n_unique")).collect()[0]["s"] == n
+def make_clumper(size, constant=False):
+    return Clumper([{"i": 1 if constant else i} for i in range(size)])
 
 
-@pytest.mark.parametrize("n", [1, 5, 10])
-def test_n_unique2(n):
-    c = Clumper([{"i": 1} for i in range(1, n + 1)])
-    assert c.agg(s=("i", "n_unique")).collect()[0]["s"] == 1
+@pytest.fixture(params=[1, 5, 10])
+def n(request):
+    return request.param
 
 
-@pytest.mark.parametrize("n", [0, 1, 5, 10])
+def test_case_zero():
+    empty_c = Clumper([])
+    assert empty_c.mean("i") is None
+    assert empty_c.max("i") is None
+    assert empty_c.min("i") is None
+    assert empty_c.sum("i") is None
+    assert empty_c.unique("i") == []
+    assert empty_c.n_unique("i") == 0
+
+
+def test_n_unique(n):
+    assert make_clumper(n, constant=True).n_unique("i") == 1
+    assert make_clumper(n, constant=False).n_unique("i") == n
+
+
 def test_count(n):
-    c = Clumper([{"i": i} for i in range(1, n + 1)])
-    assert c.agg(s=("i", "count")).collect()[0]["s"] == n
+    assert make_clumper(n, constant=False).count("i") == n
+    assert make_clumper(n, constant=True).count("i") == n
 
 
-@pytest.mark.parametrize("n", [1, 5, 10])
-def test_sum1(n):
-    c = Clumper([{"i": i} for i in range(1, n + 1)])
-    assert c.agg(s=("i", "sum")).collect()[0]["s"] == n * (n + 1) / 2
+def test_sum(n):
+    assert make_clumper(n, constant=True).sum("i") == n
+    assert make_clumper(n, constant=False).sum("i") == n * (n - 1) / 2
 
 
-@pytest.mark.parametrize("n", [1, 5, 10])
-def test_sum2(n):
-    c = Clumper([{"i": 1} for i in range(1, n + 1)])
-    assert c.agg(s=("i", "sum")).collect()[0]["s"] == n
+def test_mean(n):
+    assert make_clumper(n, constant=True).mean("i") == 1
+    assert make_clumper(n, constant=False).mean("i") == (n - 1) / 2
 
 
-@pytest.mark.parametrize("n", [1, 5, 10])
-def test_mean1(n):
-    c = Clumper([{"i": i} for i in range(1, n + 1)])
-    assert c.agg(s=("i", "mean")).collect()[0]["s"] == n * (n + 1) / 2 / n
-
-
-@pytest.mark.parametrize("n", [1, 5, 10])
-def test_mean2(n):
-    c = Clumper([{"i": 1} for i in range(1, n + 1)])
-    assert c.agg(s=("i", "mean")).collect()[0]["s"] == 1
-
-
-@pytest.mark.parametrize("n", [1, 5, 10])
 def test_unique(n):
-    c = Clumper([{"i": i} for i in range(1, n + 1)])
-    assert len(c.agg(s=("i", "unique")).collect()[0]["s"]) == n
+    assert len(make_clumper(n, constant=False).unique("i")) == n
 
 
-@pytest.mark.parametrize("n", [1, 5, 10])
 def test_minimum(n):
-    c = Clumper([{"i": i} for i in range(1, n + 1)])
-    assert c.agg(s=("i", "min")).collect()[0]["s"] == 1
+    assert make_clumper(n, constant=False).min("i") == 0
 
 
-@pytest.mark.parametrize("n", [1, 5, 10])
 def test_maximum(n):
-    c = Clumper([{"i": i} for i in range(1, n + 1)])
-    assert c.agg(s=("i", "max")).collect()[0]["s"] == n
+    assert make_clumper(n, constant=False).max("i") == n - 1
