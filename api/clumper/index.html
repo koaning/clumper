@@ -877,7 +877,7 @@ it nicer to explore.</p>
 <span class="sd">        groups active then the dataset will first split up, then apply the summaries after</span>
 <span class="sd">        which everything is combined again into a single collection.</span>
 
-<span class="sd">        ![](/split-apply-combine.png)</span>
+<span class="sd">        ![](split-apply-combine.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.</span>
@@ -931,7 +931,7 @@ it nicer to explore.</p>
 then this method will create a single dictionary containing a summary. If there are
 groups active then the dataset will first split up, then apply the summaries after
 which everything is combined again into a single collection.</p>
-<p><img alt="" src="/split-apply-combine.png" /></p>
+<p><img alt="" src="split-apply-combine.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -990,7 +990,7 @@ which everything is combined again into a single collection.</p>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a list instead of a `Clumper` object.</span>
 
-<span class="sd">        ![](/collect.png)</span>
+<span class="sd">        ![](collect.png)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span>
 </code></pre></div>
@@ -998,7 +998,7 @@ which everything is combined again into a single collection.</p>
 
 </details>
 <p>Returns a list instead of a <code>Clumper</code> object.</p>
-<p><img alt="" src="/collect.png" /></p>
+<p><img alt="" src="collect.png" /></p>
 <h2 id="clumper.clump.Clumper.concat"><code class="highlight"><span class="n">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.concat" title="Permanent link">&para;</a></h2>
 <details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>125
 126
@@ -1010,7 +1010,7 @@ which everything is combined again into a single collection.</p>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Concatenate two or more `Clumper` objects together.</span>
 
-<span class="sd">        ![](/concat.png)</span>
+<span class="sd">        ![](concat.png)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Clumper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blob</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">blob</span><span class="p">)</span>
 </code></pre></div>
@@ -1018,7 +1018,7 @@ which everything is combined again into a single collection.</p>
 
 </details>
 <p>Concatenate two or more <code>Clumper</code> objects together.</p>
-<p><img alt="" src="/concat.png" /></p>
+<p><img alt="" src="concat.png" /></p>
 <h2 id="clumper.clump.Clumper.copy"><code class="highlight"><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.copy" title="Permanent link">&para;</a></h2>
 <details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>438
 439
@@ -1042,7 +1042,7 @@ which everything is combined again into a single collection.</p>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Makes a copy of the collection.</span>
 
-<span class="sd">        ![](/copy.png)</span>
+<span class="sd">        ![](copy.png)</span>
 
 <span class="sd">        Usage:</span>
 
@@ -1062,7 +1062,7 @@ which everything is combined again into a single collection.</p>
 
 </details>
 <p>Makes a copy of the collection.</p>
-<p><img alt="" src="/copy.png" /></p>
+<p><img alt="" src="copy.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
@@ -1139,7 +1139,7 @@ current collection (most notably, <code>groups</code>).</p>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes a subset of keys from each item in the collection.</span>
 
-<span class="sd">        ![](/drop.png)</span>
+<span class="sd">        ![](drop.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            keys: the keys to remove</span>
@@ -1167,7 +1167,7 @@ current collection (most notably, <code>groups</code>).</p>
 
 </details>
 <p>Removes a subset of keys from each item in the collection.</p>
-<p><img alt="" src="/drop.png" /></p>
+<p><img alt="" src="drop.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1216,7 +1216,7 @@ current collection (most notably, <code>groups</code>).</p>
 <span class="sd">        A group will affect how some verbs behave. You can undo this behavior</span>
 <span class="sd">        with `.ungroup()`.</span>
 
-<span class="sd">        ![](/groupby.png)</span>
+<span class="sd">        ![](groupby.png)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">cols</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -1227,7 +1227,7 @@ current collection (most notably, <code>groups</code>).</p>
 <p>Sets a group on this clumper object or overrides a previous setting.
 A group will affect how some verbs behave. You can undo this behavior
 with <code>.ungroup()</code>.</p>
-<p><img alt="" src="/groupby.png" /></p>
+<p><img alt="" src="groupby.png" /></p>
 <h2 id="clumper.clump.Clumper.group_combos"><code class="highlight"><span class="n">group_combos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.group_combos" title="Permanent link">&para;</a></h2>
 <details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>133
 134
@@ -1280,7 +1280,7 @@ with <code>.ungroup()</code>.</p>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects the top `n` items from the collection.</span>
 
-<span class="sd">        ![](/head.png)</span>
+<span class="sd">        ![](head.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            n: the number of items to grab</span>
@@ -1308,7 +1308,7 @@ with <code>.ungroup()</code>.</p>
 
 </details>
 <p>Selects the top <code>n</code> items from the collection.</p>
-<p><img alt="" src="/head.png" /></p>
+<p><img alt="" src="head.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1367,7 +1367,7 @@ with <code>.ungroup()</code>.</p>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Allows you to select which items to keep and which items to remove.</span>
 
-<span class="sd">        ![](/keep.png)</span>
+<span class="sd">        ![](keep.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            funcs: functions that indicate which items to keep</span>
@@ -1393,7 +1393,7 @@ with <code>.ungroup()</code>.</p>
 
 </details>
 <p>Allows you to select which items to keep and which items to remove.</p>
-<p><img alt="" src="/keep.png" /></p>
+<p><img alt="" src="keep.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1453,7 +1453,7 @@ with <code>.ungroup()</code>.</p>
 <span class="sd">        If you&#39;re dealing with dictionaries, consider using</span>
 <span class="sd">        `mutate` instead.</span>
 
-<span class="sd">        ![](/map.png</span>
+<span class="sd">        ![](map.png</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            func: the function that will map each item</span>
@@ -1478,7 +1478,7 @@ with <code>.ungroup()</code>.</p>
 <p>Directly map one item to another one using a function.
 If you're dealing with dictionaries, consider using
 <code>mutate</code> instead.</p>
-<p>![](/map.png</p>
+<p>![](map.png</p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1602,7 +1602,7 @@ If you're dealing with dictionaries, consider using
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds or overrides key-value pairs in the collection of dictionaries.</span>
 
-<span class="sd">        ![](/mutate.png)</span>
+<span class="sd">        ![](mutate.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            kwargs: keyword arguments of keyname/function-pairs</span>
@@ -1638,7 +1638,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Adds or overrides key-value pairs in the collection of dictionaries.</p>
-<p><img alt="" src="/mutate.png" /></p>
+<p><img alt="" src="mutate.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1828,7 +1828,7 @@ If you're dealing with dictionaries, consider using
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reduce the collection using reducing functions.</span>
 
-<span class="sd">        ![](/reduce.png)</span>
+<span class="sd">        ![](reduce.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            kwargs: key-function pairs</span>
@@ -1855,7 +1855,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Reduce the collection using reducing functions.</p>
-<p><img alt="" src="/reduce.png" /></p>
+<p><img alt="" src="reduce.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1916,7 +1916,7 @@ If you're dealing with dictionaries, consider using
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects a subset of the keys in each item in the collection.</span>
 
-<span class="sd">        ![](/select.png)</span>
+<span class="sd">        ![](select.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            keys: the keys to keep</span>
@@ -1942,7 +1942,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Selects a subset of the keys in each item in the collection.</p>
-<p><img alt="" src="/select.png" /></p>
+<p><img alt="" src="select.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -2014,7 +2014,7 @@ If you're dealing with dictionaries, consider using
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Allows you to sort the collection of dictionaries.</span>
 
-<span class="sd">        ![](/sort.png)</span>
+<span class="sd">        ![](sort.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            key: the number of items to grab</span>
@@ -2048,7 +2048,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Allows you to sort the collection of dictionaries.</p>
-<p><img alt="" src="/sort.png" /></p>
+<p><img alt="" src="sort.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -2143,7 +2143,7 @@ If you're dealing with dictionaries, consider using
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects the bottom `n` items from the collection.</span>
 
-<span class="sd">        ![](/tail.png)</span>
+<span class="sd">        ![](tail.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            n: the number of items to grab</span>
@@ -2171,7 +2171,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Selects the bottom <code>n</code> items from the collection.</p>
-<p><img alt="" src="/tail.png" /></p>
+<p><img alt="" src="tail.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -2214,7 +2214,7 @@ If you're dealing with dictionaries, consider using
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes all grouping from the collection.</span>
 
-<span class="sd">        ![](/ungroup.png)</span>
+<span class="sd">        ![](ungroup.png)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
@@ -2224,7 +2224,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Removes all grouping from the collection.</p>
-<p><img alt="" src="/ungroup.png" /></p>
+<p><img alt="" src="ungroup.png" /></p>
 <h2 id="clumper.clump.Clumper.unique"><code class="highlight"><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.unique" title="Permanent link">&para;</a></h2>
 <details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>501
 502
