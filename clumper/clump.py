@@ -1,7 +1,7 @@
 from functools import reduce
 import itertools as it
 
-from clumper.aggregation import agg
+from clumper.decorators import return_value_if_empty, grouped
 
 
 class Clumper:
@@ -30,6 +30,13 @@ class Clumper:
     def __iter__(self):
         return self.blob.__iter__()
 
+    def create_new(self, blob):
+        """
+        Creates a new collection of data while preserving settings of the
+        current collection (most notably, `groups`).
+        """
+        return Clumper(blob, groups=self.groups)
+
     def group_by(self, *cols):
         """
         Sets a group on this clumper object or overrides a previous setting.
@@ -44,6 +51,7 @@ class Clumper:
         self.groups = tuple()
         return self
 
+    @grouped
     def agg(self, **kwargs):
         """
         Does an aggregation on a collection of dictionaries.
@@ -81,30 +89,24 @@ class Clumper:
           .collect())
         ```
         """
-        subsets = [self]
-        if self.groups:
-            subsets = self.subsets()
-        calculated = [s._agg(**kwargs).collect()[0] for s in subsets]
-        return Clumper(
-            [{**a, **g} for a, g in zip(calculated, self._group_combos())],
-            groups=self.groups,
-        )
-
-    def _agg(self, **kwargs):
-        bad_names = [
-            fname for k, (col, fname) in kwargs.items() if fname not in agg.keys()
-        ]
-        if len(bad_names) > 0:
-            raise ValueError(
-                f"Allowed aggregation functions are: {agg.keys()}. These don't mix: {bad_names}"
-            )
-        result = {k: agg[f](col, self.copy()) for k, (col, f) in kwargs.items()}
-        return Clumper([result])
+        funcs = {
+            "mean": self.mean,
+            "count": self.count,
+            "unique": self.unique,
+            "n_unique": self.n_unique,
+            "sum": self.sum,
+            "min": self.min,
+            "max": self.max,
+        }
+        res = {name: funcs[func_str](col) for name, (col, func_str) in kwargs.items()}
+        return Clumper([res])
 
     def subsets(self):
         result = []
-        for gc in self._group_combos():
-            subset = self.keep(*[lambda d: d[k] == v for k, v in gc.items()])
+        for gc in self.group_combos():
+            subset = self.copy()
+            for key, value in gc.items():
+                subset = subset.keep(lambda d: d[key] == value)
             result.append(subset)
         return result
 
@@ -114,7 +116,7 @@ class Clumper:
         """
         return Clumper(self.blob + other.blob)
 
-    def _group_combos(self):
+    def group_combos(self):
         """
         Returns a dictionary of group-value/clumper pairs.
         """
@@ -122,12 +124,6 @@ class Clumper:
             comb for comb in it.product(*[self.unique(c) for c in self.groups])
         ]
         return [{k: v for k, v in zip(self.groups, comb)} for comb in combinations]
-
-    def unique(self, col):
-        """
-        Returns a set of unique values that a column has.
-        """
-        return {d[col] for d in self.blob}
 
     def keep(self, *funcs):
         """
@@ -255,12 +251,16 @@ class Clumper:
             [{k: v for k, v in d.items() if k not in keys} for d in self.blob]
         )
 
+    @grouped
     def mutate(self, **kwargs):
         """
         Adds or overrides key-value pairs in the collection of dictionaries.
 
         Arguments:
             kwargs: keyword arguments of keyname/function-pairs
+
+        Warning:
+            This method is aware of groups. There may be different results if a group is active.
 
         Usage:
 
@@ -286,6 +286,7 @@ class Clumper:
             data.append(new)
         return Clumper(data)
 
+    @grouped
     def sort(self, key, reverse=False):
         """
         Allows you to sort the collection of dictionaries.
@@ -293,6 +294,9 @@ class Clumper:
         Arguments:
             key: the number of items to grab
             reverse: the number of items to grab
+
+        Warning:
+            This method is aware of groups. Expect different results if a group is active.
 
         Usage:
 
@@ -414,3 +418,53 @@ class Clumper:
         ```
         """
         return Clumper([d for d in self.blob])
+
+    @return_value_if_empty(value=None)
+    def sum(self, col):
+        """
+        Give the sum of the values that belong to a key.
+        """
+        return sum([d[col] for d in self if col in d.keys()])
+
+    @return_value_if_empty(value=None)
+    def mean(self, col):
+        """
+        Give the mean of the values that belong to a key.
+        """
+        s = sum([d[col] for d in self if col in d.keys()])
+        return s / len(self)
+
+    @return_value_if_empty(value=None)
+    def count(self, col):
+        """
+        Counts how often a key appears in the collection.
+        """
+        return len([1 for d in self if col in d.keys()])
+
+    @return_value_if_empty(value=0)
+    def n_unique(self, col):
+        """
+        Returns number of unique values that a key has.
+        """
+        return len({d[col] for d in self if col in d.keys()})
+
+    @return_value_if_empty(value=None)
+    def min(self, col):
+        """
+        Returns minimum value that a key has.
+        """
+        return min([d[col] for d in self if col in d.keys()])
+
+    @return_value_if_empty(value=None)
+    def max(self, col):
+        """
+        Returns maximum value that a key has.
+        """
+        return max({d[col] for d in self if col in d.keys()})
+
+    @return_value_if_empty(value=[])
+    def unique(self, col):
+        """
+        Returns a set of unique values that a key has.
+        """
+        return list({d[col] for d in self if col in d.keys()})
