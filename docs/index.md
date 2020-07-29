@@ -12,7 +12,7 @@ Clumper allows you to quickly parse through a list of data.
 
 Here's an example of a list of dictionaries.
 
-```python
+```
 pokemon = [
     {'name': 'Bulbasaur', 'type': ['Grass', 'Poison'], 'hp': 45, 'attack': 49}
     {'name': 'Charmander', 'type': ['Fire'], 'hp': 39, 'attack': 52},
@@ -106,8 +106,9 @@ For details on why, check out [this resource](https://calmcode.io/virtualenv/int
 
 ## Contributing
 
-Make sure you check out the [issue list](https://github.com/koaning/clumper/issues) beforehand in order
-to prevent double work before you make a pull request. To get started locally, you can clone
+Make sure you check out the [issue list](https://github.com/koaning/clumper/issues)
+beforehand. New features should be discussed first and we also want to prevent
+that two people are working on the same thing. To get started locally, you can clone
 the repo and quickly get started using the `Makefile`.
 
 ```

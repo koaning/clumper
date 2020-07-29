@@ -43,7 +43,7 @@ class Clumper:
         A group will affect how some verbs behave. You can undo this behavior
         with `.ungroup()`.
 
-        ![](/groupby.png)
+        ![](groupby.png)
         """
         self.groups = cols
         return self
@@ -52,8 +52,7 @@ class Clumper:
         """
         Removes all grouping from the collection.
 
-        ![](/ungroup.png)
-
+        ![](ungroup.png)
         """
         self.groups = tuple()
         return self
@@ -66,7 +65,15 @@ class Clumper:
         groups active then the dataset will first split up, then apply the summaries after
         which everything is combined again into a single collection.
 
-        ![](/split-apply-combine.png)
+        When defining a summary to apply you'll need to pass three things:
+
+        1. the name of the new key
+        2. the key you'd like to summarise (first item in the tuple)
+        3. the summary you'd like to calculate on that key (second item in the tuple)
+
+        The following aggregation functions are available: `mean`, `count`, `unique`, `n_unique`, `sum`, `min`, `max`.
+
+        ![](split-apply-combine.png)
 
         Arguments:
             kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.
@@ -126,7 +133,7 @@ class Clumper:
         """
         Concatenate two or more `Clumper` objects together.
 
-        ![](/concat.png)
+        ![](concat.png)
         """
         return Clumper(self.blob + other.blob)
 
@@ -143,7 +150,7 @@ class Clumper:
         """
         Allows you to select which items to keep and which items to remove.
 
-        ![](/keep.png)
+        ![](keep.png)
 
         Arguments:
             funcs: functions that indicate which items to keep
@@ -169,7 +176,7 @@ class Clumper:
         """
         Selects the top `n` items from the collection.
 
-        ![](/head.png)
+        ![](head.png)
 
         Arguments:
             n: the number of items to grab
@@ -197,7 +204,7 @@ class Clumper:
         """
         Selects the bottom `n` items from the collection.
 
-        ![](/tail.png)
+        ![](tail.png)
 
         Arguments:
             n: the number of items to grab
@@ -225,7 +232,7 @@ class Clumper:
         """
         Selects a subset of the keys in each item in the collection.
 
-        ![](/select.png)
+        ![](select.png)
 
         Arguments:
             keys: the keys to keep
@@ -251,7 +258,7 @@ class Clumper:
         """
         Removes a subset of keys from each item in the collection.
 
-        ![](/drop.png)
+        ![](drop.png)
 
         Arguments:
             keys: the keys to remove
@@ -280,7 +287,7 @@ class Clumper:
         """
         Adds or overrides key-value pairs in the collection of dictionaries.
 
-        ![](/mutate.png)
+        ![](mutate.png)
 
         Arguments:
             kwargs: keyword arguments of keyname/function-pairs
@@ -317,7 +324,7 @@ class Clumper:
         """
         Allows you to sort the collection of dictionaries.
 
-        ![](/sort.png)
+        ![](sort.png)
 
         Arguments:
             key: the number of items to grab
@@ -353,7 +360,7 @@ class Clumper:
         If you're dealing with dictionaries, consider using
         `mutate` instead.
 
-        ![](/map.png
+        ![](map.png
 
         Arguments:
             func: the function that will map each item
@@ -376,7 +383,7 @@ class Clumper:
         """
         Reduce the collection using reducing functions.
 
-        ![](/reduce.png)
+        ![](reduce.png)
 
         Arguments:
             kwargs: key-function pairs
@@ -431,7 +438,7 @@ class Clumper:
         """
         Returns a list instead of a `Clumper` object.
 
-        ![](/collect.png)
+        ![](collect.png)
         """
         return self.blob
 
@@ -439,7 +446,7 @@ class Clumper:
         """
         Makes a copy of the collection.
 
-        ![](/copy.png)
+        ![](copy.png)
 
         Usage:
 
@@ -459,6 +466,22 @@ class Clumper:
     def sum(self, col):
         """
         Give the sum of the values that belong to a key.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_of_dicts = [
+            {'a': 7},
+            {'a': 2, 'b': 7},
+            {'a': 3, 'b': 6},
+            {'a': 2, 'b': 7}
+        ]
+
+        Clumper(list_of_dicts).sum("a")
+        Clumper(list_of_dicts).sum("b")
+        ```
         """
         return sum([d[col] for d in self if col in d.keys()])
 
@@ -466,6 +489,22 @@ class Clumper:
     def mean(self, col):
         """
         Give the mean of the values that belong to a key.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_of_dicts = [
+            {'a': 7},
+            {'a': 2, 'b': 7},
+            {'a': 3, 'b': 6},
+            {'a': 2, 'b': 7}
+        ]
+
+        Clumper(list_of_dicts).mean("a")
+        Clumper(list_of_dicts).mean("b")
+        ```
         """
         s = sum([d[col] for d in self if col in d.keys()])
         return s / len(self)
@@ -474,6 +513,22 @@ class Clumper:
     def count(self, col):
         """
         Counts how often a key appears in the collection.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_of_dicts = [
+            {'a': 7},
+            {'a': 2, 'b': 7},
+            {'a': 3, 'b': 6},
+            {'a': 2, 'b': 7}
+        ]
+
+        Clumper(list_of_dicts).count("a")
+        Clumper(list_of_dicts).count("b")
+        ```
         """
         return len([1 for d in self if col in d.keys()])
 
@@ -481,6 +536,22 @@ class Clumper:
     def n_unique(self, col):
         """
         Returns number of unique values that a key has.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_of_dicts = [
+            {'a': 7},
+            {'a': 2, 'b': 7},
+            {'a': 3, 'b': 6},
+            {'a': 2, 'b': 7}
+        ]
+
+        Clumper(list_of_dicts).n_unique("a")
+        Clumper(list_of_dicts).n_unique("b")
+        ```
         """
         return len({d[col] for d in self if col in d.keys()})
 
@@ -488,6 +559,22 @@ class Clumper:
     def min(self, col):
         """
         Returns minimum value that a key has.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_of_dicts = [
+            {'a': 7},
+            {'a': 2, 'b': 7},
+            {'a': 3, 'b': 6},
+            {'a': 2, 'b': 7}
+        ]
+
+        Clumper(list_of_dicts).min("a")
+        Clumper(list_of_dicts).min("b")
+        ```
         """
         return min([d[col] for d in self if col in d.keys()])
 
@@ -495,6 +582,22 @@ class Clumper:
     def max(self, col):
         """
         Returns maximum value that a key has.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_of_dicts = [
+            {'a': 7},
+            {'a': 2, 'b': 7},
+            {'a': 3, 'b': 6},
+            {'a': 2, 'b': 7}
+        ]
+
+        Clumper(list_of_dicts).max("a")
+        Clumper(list_of_dicts).max("b")
+        ```
         """
         return max({d[col] for d in self if col in d.keys()})
 
@@ -502,5 +605,21 @@ class Clumper:
     def unique(self, col):
         """
         Returns a set of unique values that a key has.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        list_of_dicts = [
+            {'a': 7},
+            {'a': 2, 'b': 7},
+            {'a': 3, 'b': 6},
+            {'a': 2, 'b': 7}
+        ]
+
+        Clumper(list_of_dicts).unique("a")
+        Clumper(list_of_dicts).unique("b")
+        ```
         """
         return list({d[col] for d in self if col in d.keys()})

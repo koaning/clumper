@@ -1,62 +1,115 @@
-This document is to help give you an overview of what kind of verbs are in this library. They're in essense just methods but they imply a general pattern.
+This document is to help give you an overview of what kind of verbs are in this library.
 
-## Advanced: Dict vs. Anything
+## What are Verbs?
 
-Although this library has lists of dictionaries in mind,
-we actually don't force this on you. We just assume a sequence
-as input and from here it's your responsibility to come up
-with reasonable lambda functions for the verbs. Most verbs are flexible enough that they don't assume the lambda functions to act on dictionaries.
+In this library verbs are special kinds of methods. They really are
+just methods in essense but they imply a general pattern. In `Clumper`,
+a verb is a method that;
 
-For example. If you look at this code:
+1. Always returns a `Clumper` back, so it's chain-able.
+2. Has a name that tells you *what* is happening to the data while
+the parameters tell you *how* it is changing the data.
 
-```
-.sort(lambda d: d)
-```
-
-Then you can infer that we're sorting based on whatever
-the value in our collection is. It would work on a list
-of integers, floats or characters. If you'd instead have:
-
-```
-.sort(lambda d: d[0])
-```
-
-Then it wouldn't work anymore if `d` is a integer, float
-or string but it would work if `d` is a list, tuple or a
-dictionary with a key of `0` available.
-
-
-### Integer Example
-
-Here we take the top 50 numbers from a list and then sort.
+This combination of properties allows you to write code in the same
+way you'd explain the steps to a human. Take this code for example.
 
 ```python
 from clumper import Clumper
 
-(Clumper(range(100))
-  .head(50)
-  .sort(lambda d: d, reverse=True))
+list_of_dicts = [
+    {'a': 7, 'b': 2},
+    {'a': 2, 'b': 4},
+    {'a': 3, 'b': 6}
+]
+
+(Clumper()
+  .mutate(c = lambda d: d['a'] + d['b'])
+  .sort(lambda d: d['c']))
 ```
 
-### Character Example
+Schematically, this is what the code does.
 
-Here we start out with a sequence of letters
-and we turn it into a collection of dictionaries.
+This style of programming is really powerful and it keeps you productive
+once you've gotten a hang of the lambda functions. The lambda functions
+that you pass in can be general python. This also means that you're free
+to use nested dictionaries, sets or whatever you like doing in python.
 
-```python
-from clumper import Clumper
+## Common Verbs
 
-(Clumper('abcedfghijklmnopqrstuvwxyz')
-  .map(lambda c: {'char': c, 'ord': ord(c)}))
-```
+Here's a list of the verbs that you'll most likely use the most.
 
-### Verbs that need Dictionaries
+### Keep
 
-There's a short list verbs that have some restrictions
+The **keep** verb allows you to grab a subset from the original collection.
 
-- **.select()** needs to select keys so the sequences must contain dictionaries
-- **.drop()** needs to remove keys so the sequences must contain dictionaries
-- **.agg()** needs a collection of dictionaries to construct aggregations. If you
-really need this feature for non-dictionary sequences consider **.reduce()**.
-- **.mutate()** is really flexible in terms of input that it
-accepts but it will always produce a dictionary as output. If you really need a non-dictionary output, consider **.map()**
+![](../api/keep.png)
+
+### Mutate
+
+The **mutate** verb allows you to add/overwrite data to each item in the collection.
+
+![](../api/mutate.png)
+
+### Sort
+
+The **sort** verb allows you to sort the collection based on values of items.
+
+![](../api/sort.png)
+
+### Select
+
+The **select** verb allows you to select a subset of keys for each item.
+
+![](../api/select.png)
+
+### Drop
+
+The **select** verb allows you to remove a subset of keys for each item.
+
+![](../api/drop.png)
+
+### Group By
+
+The **group_by** verb allows you to set a group on a collection based on
+the values of the keys that you pass. The groups represent subsets and
+certain verbs will change their behavior if there are groups present.
+
+The main use-case for this verb is in combination with **.agg()**.
+
+![](../api/groupby.png)
+
+### Ungroup
+
+The **ungroup** verb will remove any groups currently present.
+
+![](../api/ungroup.png)
+
+### Agg
+
+The **agg** verb is short for aggregate. They allow you to summarise the data,
+keeping in mind any groups that are on it.
+
+![](../api/split-apply-combine.png)
+
+When defining a summary to apply you'll need to pass three things:
+
+1. the name of the new key
+2. the key you'd like to summarise (first item in the tuple)
+3. the summary you'd like to calculate on that key (second item in the tuple)
+
+The following aggregation functions are available: `mean`, `count`, `unique`,
+`n_unique`, `sum`, `min` and `max`.
+
+## Summary Methods
+
+The `Clumper` object also offers useful methods that aren't verbs. In
+particular there's a lovely set that can calculate summaries on keys.
+
+### `.mean()`
+
+### `.count()`
+### `.unique()`
+### `.n_unique()`
+### `.sum()`
+### `.min()`
+### `.max()`

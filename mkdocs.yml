@@ -4,13 +4,15 @@ repo_url: https://github.com/koaning/clumper
 site_url: https://koaning.github.io/clumper/
 site_description: A small python library that can clump lists of data together.
 site_author: Vincent D. Warmerdam
-
+use_directory_urls: false
 nav:
-  - Home: index.md
-  - FAQ: faq.md
+  - Home:
+    - Index: index.md
+    - FAQ: faq.md
   - Guides:
       - Getting Started: guides/getting-started.md
       - Understanding Verbs: guides/verbs.md
+      - Advanced Details: guides/advanced.md
   - API:
       - Clumper: api/clumper.md
 plugins:
