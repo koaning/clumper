@@ -40,13 +40,20 @@ class Clumper:
     def group_by(self, *cols):
         """
         Sets a group on this clumper object or overrides a previous setting.
+        A group will affect how some verbs behave. You can undo this behavior
+        with `.ungroup()`.
+
+        ![](/groupby.png)
         """
         self.groups = cols
         return self
 
     def ungroup(self):
         """
-        Removes all grouping.
+        Removes all grouping from the collection.
+
+        ![](/ungroup.png)
+
         """
         self.groups = tuple()
         return self
@@ -54,10 +61,15 @@ class Clumper:
     @grouped
     def agg(self, **kwargs):
         """
-        Does an aggregation on a collection of dictionaries.
+        Does an aggregation on a collection of dictionaries. If there are no groups active
+        then this method will create a single dictionary containing a summary. If there are
+        groups active then the dataset will first split up, then apply the summaries after
+        which everything is combined again into a single collection.
 
-        Warning:
-            This method is aware of groups. Expect different results if a group is active.
+        ![](/split-apply-combine.png)
+
+        Arguments:
+            kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.
 
         Usage:
 
@@ -99,7 +111,7 @@ class Clumper:
             "max": self.max,
         }
         res = {name: funcs[func_str](col) for name, (col, func_str) in kwargs.items()}
-        return Clumper([res])
+        return Clumper([res], groups=self.groups)
 
     def subsets(self):
         result = []
@@ -113,6 +125,8 @@ class Clumper:
     def concat(self, *other):
         """
         Concatenate two or more `Clumper` objects together.
+
+        ![](/concat.png)
         """
         return Clumper(self.blob + other.blob)
 
@@ -128,6 +142,8 @@ class Clumper:
     def keep(self, *funcs):
         """
         Allows you to select which items to keep and which items to remove.
+
+        ![](/keep.png)
 
         Arguments:
             funcs: functions that indicate which items to keep
@@ -147,11 +163,13 @@ class Clumper:
         data = self.blob.copy()
         for func in funcs:
             data = [d for d in data if func(d)]
-        return Clumper(data)
+        return self.create_new(data)
 
     def head(self, n=5):
         """
         Selects the top `n` items from the collection.
+
+        ![](/head.png)
 
         Arguments:
             n: the number of items to grab
@@ -173,11 +191,13 @@ class Clumper:
         if n < 0:
             raise ValueError(f"`n` must be a positive integer, got {n}")
         n = min(n, len(self))
-        return Clumper([self.blob[i] for i in range(n)])
+        return self.create_new([self.blob[i] for i in range(n)])
 
     def tail(self, n=5):
         """
-        Selects the top `n` items from the collection.
+        Selects the bottom `n` items from the collection.
+
+        ![](/tail.png)
 
         Arguments:
             n: the number of items to grab
@@ -199,11 +219,13 @@ class Clumper:
         if n < 0:
             raise ValueError(f"`n` must be positive, got {n}")
         n = min(n, len(self))
-        return Clumper([self.blob[-i] for i in range(len(self) - n, len(self))])
+        return self.create_new([self.blob[-i] for i in range(len(self) - n, len(self))])
 
     def select(self, *keys):
         """
         Selects a subset of the keys in each item in the collection.
+
+        ![](/select.png)
 
         Arguments:
             keys: the keys to keep
@@ -223,11 +245,13 @@ class Clumper:
           .collect())
         ```
         """
-        return Clumper([{k: d[k] for k in keys} for d in self.blob])
+        return self.create_new([{k: d[k] for k in keys} for d in self.blob])
 
     def drop(self, *keys):
         """
         Removes a subset of keys from each item in the collection.
+
+        ![](/drop.png)
 
         Arguments:
             keys: the keys to remove
@@ -247,7 +271,7 @@ class Clumper:
           .collect())
         ```
         """
-        return Clumper(
+        return self.create_new(
             [{k: v for k, v in d.items() if k not in keys} for d in self.blob]
         )
 
@@ -255,6 +279,8 @@ class Clumper:
     def mutate(self, **kwargs):
         """
         Adds or overrides key-value pairs in the collection of dictionaries.
+
+        ![](/mutate.png)
 
         Arguments:
             kwargs: keyword arguments of keyname/function-pairs
@@ -284,12 +310,14 @@ class Clumper:
             for key, func in kwargs.items():
                 new[key] = func(new)
             data.append(new)
-        return Clumper(data)
+        return self.create_new(data)
 
     @grouped
     def sort(self, key, reverse=False):
         """
         Allows you to sort the collection of dictionaries.
+
+        ![](/sort.png)
 
         Arguments:
             key: the number of items to grab
@@ -317,13 +345,15 @@ class Clumper:
           .collect())
         ```
         """
-        return Clumper(sorted(self.blob, key=key, reverse=reverse))
+        return self.create_new(sorted(self.blob, key=key, reverse=reverse))
 
     def map(self, func):
         """
         Directly map one item to another one using a function.
         If you're dealing with dictionaries, consider using
         `mutate` instead.
+
+        ![](/map.png
 
         Arguments:
             func: the function that will map each item
@@ -340,11 +370,13 @@ class Clumper:
           .collect())
         ```
         """
-        return Clumper([func(d) for d in self.blob])
+        return self.create_new([func(d) for d in self.blob])
 
     def reduce(self, **kwargs):
         """
         Reduce the collection using reducing functions.
+
+        ![](/reduce.png)
 
         Arguments:
             kwargs: key-function pairs
@@ -354,16 +386,16 @@ class Clumper:
         ```python
         from clumper import Clumper
 
-        list_dicts = [1, 2, 3, 4, 5]
+        list_ints = [1, 2, 3, 4, 5]
 
-        (Clumper(list_dicts)
+        (Clumper(list_ints)
           .reduce(sum_a = lambda x,y: x + y,
                   min_a = lambda x,y: min(x, y),
                   max_a = lambda x,y: max(x, y))
           .collect())
         ```
         """
-        return Clumper(
+        return self.create_new(
             [{k: reduce(func, [b for b in self.blob]) for k, func in kwargs.items()}]
         )
 
@@ -398,12 +430,16 @@ class Clumper:
     def collect(self):
         """
         Returns a list instead of a `Clumper` object.
+
+        ![](/collect.png)
         """
         return self.blob
 
     def copy(self):
         """
         Makes a copy of the collection.
+
+        ![](/copy.png)
 
         Usage:
 
@@ -417,7 +453,7 @@ class Clumper:
         assert id(c1) != id(c2)
         ```
         """
-        return Clumper([d for d in self.blob])
+        return self.create_new([d for d in self.blob])
 
     @return_value_if_empty(value=None)
     def sum(self, col):
