@@ -29,6 +29,8 @@ def grouped(method):
         if len(clumper.groups) == 0:
             return method(clumper, *args, **kwargs)
         results = [method(s, *args, **kwargs) for s in clumper.subsets()]
-        return reduce(lambda a, b: a + b, results)
+        blob = reduce(lambda a, b: a + b, [c.collect() for c in results])
+        blob_with_keys = [{**s, **b} for s, b in zip(clumper.group_combos(), blob)]
+        return clumper.create_new(blob_with_keys)
 
     return wrapped

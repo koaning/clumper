@@ -30,6 +30,13 @@ class Clumper:
     def __iter__(self):
         return self.blob.__iter__()
 
+    def create_new(self, blob):
+        """
+        Creates a new collection of data while preserving settings of the
+        current collection (most notably, `groups`).
+        """
+        return Clumper(blob, groups=self.groups)
+
     def group_by(self, *cols):
         """
         Sets a group on this clumper object or overrides a previous setting.
@@ -91,14 +98,15 @@ class Clumper:
             "min": self.min,
             "max": self.max,
         }
-        print({name: (col, func_str) for name, (col, func_str) in kwargs.items()})
         res = {name: funcs[func_str](col) for name, (col, func_str) in kwargs.items()}
         return Clumper([res])
 
     def subsets(self):
         result = []
-        for gc in self._group_combos():
-            subset = self.keep(*[lambda d: d[k] == v for k, v in gc.items()])
+        for gc in self.group_combos():
+            subset = self.copy()
+            for key, value in gc.items():
+                subset = subset.keep(lambda d: d[key] == value)
             result.append(subset)
         return result
 
@@ -108,7 +116,7 @@ class Clumper:
         """
         return Clumper(self.blob + other.blob)
 
-    def _group_combos(self):
+    def group_combos(self):
         """
         Returns a dictionary of group-value/clumper pairs.
         """
