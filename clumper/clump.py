@@ -1,7 +1,7 @@
 from functools import reduce
 import itertools as it
 
-from clumper.decorators import return_value_if_empty
+from clumper.decorators import return_value_if_empty, grouped
 
 
 class Clumper:
@@ -44,6 +44,7 @@ class Clumper:
         self.groups = tuple()
         return self
 
+    @grouped
     def agg(self, **kwargs):
         """
         Does an aggregation on a collection of dictionaries.
@@ -81,7 +82,18 @@ class Clumper:
           .collect())
         ```
         """
-        pass
+        funcs = {
+            "mean": self.mean,
+            "count": self.count,
+            "unique": self.unique,
+            "n_unique": self.n_unique,
+            "sum": self.sum,
+            "min": self.min,
+            "max": self.max,
+        }
+        print({name: (col, func_str) for name, (col, func_str) in kwargs.items()})
+        res = {name: funcs[func_str](col) for name, (col, func_str) in kwargs.items()}
+        return Clumper([res])
 
     def subsets(self):
         result = []

@@ -1,4 +1,4 @@
-from functools import wraps
+from functools import wraps, reduce
 
 
 def return_value_if_empty(value=None):
@@ -17,3 +17,18 @@ def return_value_if_empty(value=None):
         return wrapped
 
     return decorator_return
+
+
+def grouped(method):
+    """
+    Handles the behavior when a group is present on a clumper object.
+    """
+
+    @wraps(method)
+    def wrapped(clumper, *args, **kwargs):
+        if len(clumper.groups) == 0:
+            return method(clumper, *args, **kwargs)
+        results = [method(s, *args, **kwargs) for s in clumper.subsets()]
+        return reduce(lambda a, b: a + b, results)
+
+    return wrapped
