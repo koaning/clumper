@@ -251,12 +251,16 @@ class Clumper:
             [{k: v for k, v in d.items() if k not in keys} for d in self.blob]
         )
 
+    @grouped
     def mutate(self, **kwargs):
         """
         Adds or overrides key-value pairs in the collection of dictionaries.
 
         Arguments:
             kwargs: keyword arguments of keyname/function-pairs
+
+        Warning:
+            This method is aware of groups. There may be different results if a group is active.
 
         Usage:
 
@@ -282,6 +286,7 @@ class Clumper:
             data.append(new)
         return Clumper(data)
 
+    @grouped
     def sort(self, key, reverse=False):
         """
         Allows you to sort the collection of dictionaries.
@@ -289,6 +294,9 @@ class Clumper:
         Arguments:
             key: the number of items to grab
             reverse: the number of items to grab
+
+        Warning:
+            This method is aware of groups. Expect different results if a group is active.
 
         Usage:
 
