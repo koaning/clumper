@@ -86,7 +86,8 @@ This is what we get back:
 
 We've got a lovely [documentation page](https://koaning.github.io/clumper/) that explains how the library works.
 
-[![](theme/split-apply-combine.png)](https://koaning.github.io/clumper/)
+[![](docs/img/groupby.png)](https://koaning.github.io/clumper/)
+
 ## Features
 
 - This library has no dependencies besides a modern version of python.
