@@ -8,13 +8,12 @@ use_directory_urls: false
 nav:
   - Home:
     - Index: index.md
-    - FAQ: faq.md
   - Guides:
       - Getting Started: guides/getting-started.md
       - Understanding Verbs: guides/verbs.md
       - Understanding Groups: guides/understanding-groups.md
-      - Summary Methods: guides/summary-methods.md
-      - Advanced Details: guides/advanced.md
+      - Useful Methods: guides/summary-methods.md
+      - FAQ: guides/faq.md
   - API:
       - Clumper: api/clumper.md
       - mappers: api/mappers.md

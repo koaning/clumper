@@ -51,9 +51,14 @@ class row_number:
 
 class rolling:
     """
-    This stateful function can be used to calculate row numbers.
+    This stateful function can be used to create a moving window
+    over a key.
 
     ![](../img/rolling.png)
+
+    Arguments:
+        key: the key to apply the smoothing to
+        window: the size of the window to create
 
     Usage:
 
@@ -95,9 +100,12 @@ class rolling:
 
 class expanding:
     """
-    This stateful function can be used to calculate row numbers.
+    This stateful function can be used to expand a key into a large list containing all the seen values.
 
     ![](../img/expanding.png)
+
+    Arguments:
+        key: the key to apply the smoothing to
 
     Usage:
 
@@ -135,15 +143,19 @@ class expanding:
 
 class smoothing:
     """
-    This stateful function can be used to calculate row numbers.
+    This stateful function can be used to calculate row numbers. Uses exponential smoothing.
 
     ![](../img/smoothing.png)
+
+    Arguments:
+        key: the key to apply the smoothing to
+        weight: exponential smoothing parameter, if 1.0 then we don't listen to the past anymore
 
     Usage:
 
     ```python
     from clumper import Clumper
-    from clumper.mappers import expanding
+    from clumper.mappers import smoothing
 
     list_dicts = [
         {'a': 1, 'b': 2},
@@ -162,6 +174,10 @@ class smoothing:
     def __init__(self, key=None, weight=0.5):
         self.key = key
         self.state = None
+        if (weight < 0) | (weight > 1):
+            raise ValueError(
+                f"The `weight` param for `smoothing` needs to be in [0, 1]. Got: {weight}."
+            )
         self.weight = weight
 
     def apply_key(self, new):
@@ -180,26 +196,80 @@ class smoothing:
 
 class impute:
     """
-    If a key is missing from a dictionary, here's how to replace it.
+    This stateful function can be used to calculate row numbers. Uses exponential smoothing.
+
+    Arguments:
+        key: the key to apply the smoothing to
+        strategy: the strategy to apply
+        fallback: if the strategy fails, what value to use
+
+    Usage:
+
+    ```python
+    from clumper import Clumper
+    from clumper.mappers import impute
+
+    list_dicts = [
+        {'a': 1, 'b': 2},
+        {'a': 2, 'b': 3},
+        {'a': 3},
+        {'a': 4, 'b': 6},
+        {'a': 5},
+    ]
+
+    (Clumper(list_dicts)
+      .mutate(b=impute('b', strategy='prev'),
+              c=lambda d: d['a'] + d['b'])
+      .collect())
+
+    (Clumper(list_dicts)
+      .mutate(b=impute('b', strategy='value', fallback=0))
+      .collect())
+    ```
     """
 
-    def __init__(self, key=None, strategy="prev", value=None):
-        self.state = None
-        if not key:
-            raise ValueError("The `impute` call must receive a `key`.")
+    def __init__(self, key, strategy="prev", fallback=None):
         self.key = key
-
-        allowed_strategy = ["value", "prev"]
-        if strategy not in allowed_strategy:
-            raise ValueError(
-                f"The `impute` call requires a `strategy` in {allowed_strategy}, got: `{strategy}`."
-            )
         self.strategy = strategy
-        self.value = value
+        allowed_strategies = ["prev", "value"]
+        if strategy not in allowed_strategies:
+            raise ValueError(
+                f"`impute` only allows {allowed_strategies} as strategies, got: '{strategy}'.'"
+            )
+        self.fallback = fallback
+        self.state = None
+
+    def grab_key(self, new):
+        if isinstance(self.key, str):
+            return new[self.key]
+        if isinstance(self.key, Callable):
+            return self.key(new)
+        raise ValueError(
+            f"The `imputer` saw {new} and could not apply key: {self.key}."
+        )
+
+    def is_missing(self, new):
+        try:
+            _ = self.grab_key(new)
+            return False
+        except KeyError:
+            return True
+
+    def handle_missing(self):
+        if self.strategy == "prev":
+            return self.fallback if not self.state else self.state
+        if self.strategy == "value":
+            return self.fallback
+
+    def update(self, new):
+        if self.strategy == "prev":
+            self.state = self.grab_key(new)
 
     def __call__(self, new):
-        new = self.apply_key(new)
-        if not self.state:
-            self.state = new
-        self.state = self.state * (1 - self.weight) + new * self.weight
-        return self.state
+        if self.is_missing(new):
+            return self.handle_missing()
+        self.update(new)
+        return self.grab_key(new)
+
+
+__all__ = ("row_number", "rolling", "expanding", "impute")
