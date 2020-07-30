@@ -504,6 +504,18 @@
 
 
   <li class="md-nav__item">
+    <a href="understanding-groups.html" title="Understanding Groups" class="md-nav__link">
+      Understanding Groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="summary-methods.html" title="Summary Methods" class="md-nav__link">
       Summary Methods
     </a>
@@ -554,6 +566,18 @@
   <li class="md-nav__item">
     <a href="../api/clumper.html" title="Clumper" class="md-nav__link">
       Clumper
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../api/mappers.html" title="mappers" class="md-nav__link">
+      mappers
     </a>
   </li>
 
@@ -734,11 +758,11 @@ way you'd explain the steps to a human. Take this code for example.</p>
 <h3 id="mutate">Mutate<a class="headerlink" href="#mutate" title="Permanent link">&para;</a></h3>
 <p>First we use the <strong>mutate</strong> verb. This allows us to add values to pairs in
 our collection.</p>
-<p><img alt="" src="../api/first-mutate.png" /></p>
+<p><img alt="" src="../img/first-mutate.png" /></p>
 <p>The output of this step is another <code>Clumper</code> collection.</p>
 <h3 id="sort">Sort<a class="headerlink" href="#sort" title="Permanent link">&para;</a></h3>
 <p>Next we pick up the mutated collection and we apply a sort to it.</p>
-<p><img alt="" src="../api/then-sort.png" /></p>
+<p><img alt="" src="../img/then-sort.png" /></p>
 <p>Again, the output of this another <code>Clumper</code>. This means that we can
 keep adding steps as we further our analysis.</p>
 <h3 id="method-chaining">Method Chaining<a class="headerlink" href="#method-chaining" title="Permanent link">&para;</a></h3>
@@ -750,32 +774,32 @@ to use nested dictionaries, sets or whatever you like doing in python.</p>
 <p>Here's a list of the verbs that you'll most likely use the most.</p>
 <h3 id="keep">Keep<a class="headerlink" href="#keep" title="Permanent link">&para;</a></h3>
 <p>The <strong>keep</strong> verb allows you to grab a subset from the original collection.</p>
-<p><img alt="" src="../api/keep.png" /></p>
+<p><img alt="" src="../img/keep.png" /></p>
 <h3 id="mutate_1">Mutate<a class="headerlink" href="#mutate_1" title="Permanent link">&para;</a></h3>
 <p>The <strong>mutate</strong> verb allows you to add/overwrite data to each item in the collection.</p>
-<p><img alt="" src="../api/mutate.png" /></p>
+<p><img alt="" src="../img/mutate.png" /></p>
 <h3 id="sort_1">Sort<a class="headerlink" href="#sort_1" title="Permanent link">&para;</a></h3>
 <p>The <strong>sort</strong> verb allows you to sort the collection based on values of items.</p>
-<p><img alt="" src="../api/sort.png" /></p>
+<p><img alt="" src="../img/sort.png" /></p>
 <h3 id="select">Select<a class="headerlink" href="#select" title="Permanent link">&para;</a></h3>
 <p>The <strong>select</strong> verb allows you to select a subset of keys for each item.</p>
-<p><img alt="" src="../api/select.png" /></p>
+<p><img alt="" src="../img/select.png" /></p>
 <h3 id="drop">Drop<a class="headerlink" href="#drop" title="Permanent link">&para;</a></h3>
 <p>The <strong>select</strong> verb allows you to remove a subset of keys for each item.</p>
-<p><img alt="" src="../api/drop.png" /></p>
+<p><img alt="" src="../img/drop.png" /></p>
 <h3 id="group-by">Group By<a class="headerlink" href="#group-by" title="Permanent link">&para;</a></h3>
 <p>The <strong>group_by</strong> verb allows you to set a group on a collection based on
 the values of the keys that you pass. The groups represent subsets and
 certain verbs will change their behavior if there are groups present.</p>
 <p>The main use-case for this verb is in combination with <strong>.agg()</strong>.</p>
-<p><img alt="" src="../api/groupby.png" /></p>
+<p><img alt="" src="../img/groupby.png" /></p>
 <h3 id="ungroup">Ungroup<a class="headerlink" href="#ungroup" title="Permanent link">&para;</a></h3>
 <p>The <strong>ungroup</strong> verb will remove any groups currently present.</p>
-<p><img alt="" src="../api/ungroup.png" /></p>
+<p><img alt="" src="../img/ungroup.png" /></p>
 <h3 id="agg">Agg<a class="headerlink" href="#agg" title="Permanent link">&para;</a></h3>
 <p>The <strong>agg</strong> verb is short for aggregate. They allow you to summarise the data,
 keeping in mind any groups that are on it.</p>
-<p><img alt="" src="../api/split-apply-combine.png" /></p>
+<p><img alt="" src="../img/split-apply-combine.png" /></p>
 <p>When defining a summary to apply you'll need to pass three things:</p>
 <ol>
 <li>the name of the new key</li>
@@ -821,13 +845,13 @@ can read more info <a href="">here</a>.</p>
           </a>
         
         
-          <a href="summary-methods.html" title="Summary Methods" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="understanding-groups.html" title="Understanding Groups" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Summary Methods
+                Understanding Groups
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

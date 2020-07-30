@@ -93,7 +93,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#mean" tabindex="0" class="md-skip">
+      <a href="#common-examples" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -372,6 +372,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="understanding-groups.html" title="Understanding Groups" class="md-nav__link">
+      Understanding Groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -397,50 +409,70 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#common-examples" class="md-nav__link">
+    Common Examples
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#mean" class="md-nav__link">
     .mean()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#count" class="md-nav__link">
     .count()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#unique" class="md-nav__link">
     .unique()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#n_unique" class="md-nav__link">
     .n_unique()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#sum" class="md-nav__link">
     .sum()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#min" class="md-nav__link">
     .min()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#max" class="md-nav__link">
     .max()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more" class="md-nav__link">
+    More?
   </a>
   
 </li>
@@ -504,6 +536,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../api/mappers.html" title="mappers" class="md-nav__link">
+      mappers
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -528,50 +572,70 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#common-examples" class="md-nav__link">
+    Common Examples
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#mean" class="md-nav__link">
     .mean()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#count" class="md-nav__link">
     .count()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#unique" class="md-nav__link">
     .unique()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#n_unique" class="md-nav__link">
     .n_unique()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#sum" class="md-nav__link">
     .sum()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#min" class="md-nav__link">
     .min()
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#max" class="md-nav__link">
     .max()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more" class="md-nav__link">
+    More?
   </a>
   
 </li>
@@ -601,27 +665,31 @@
 particular there's a lovely set that can calculate summaries on keys.
 Each of these methods has a string equivalent that is used in <code>.agg()</code>
 when making aggregations. Here's a few common ones.</p>
+<h2 id="common-examples">Common Examples<a class="headerlink" href="#common-examples" title="Permanent link">&para;</a></h2>
 <h3 id="mean"><code>.mean()</code><a class="headerlink" href="#mean" title="Permanent link">&para;</a></h3>
 <p>You can calculate the mean of values for which a key exists.</p>
-<p><img alt="" src="../api/mean.png" /></p>
+<p><img alt="" src="../img/mean.png" /></p>
 <h3 id="count"><code>.count()</code><a class="headerlink" href="#count" title="Permanent link">&para;</a></h3>
 <p>You can count the number of rows for which a key exists.</p>
-<p><img alt="" src="../api/count.png" /></p>
+<p><img alt="" src="../img/count.png" /></p>
 <h3 id="unique"><code>.unique()</code><a class="headerlink" href="#unique" title="Permanent link">&para;</a></h3>
 <p>You can retreive all unique values for a certain key.</p>
-<p><img alt="" src="../api/unique.png" /></p>
+<p><img alt="" src="../img/unique.png" /></p>
 <h3 id="n_unique"><code>.n_unique()</code><a class="headerlink" href="#n_unique" title="Permanent link">&para;</a></h3>
 <p>You can the number of unique values for a certain key.</p>
-<p><img alt="" src="../api/nunique.png" /></p>
+<p><img alt="" src="../img/nunique.png" /></p>
 <h3 id="sum"><code>.sum()</code><a class="headerlink" href="#sum" title="Permanent link">&para;</a></h3>
 <p>You can calculate the sum of values for which a key exists.</p>
-<p><img alt="" src="../api/sum.png" /></p>
+<p><img alt="" src="../img/sum.png" /></p>
 <h3 id="min"><code>.min()</code><a class="headerlink" href="#min" title="Permanent link">&para;</a></h3>
 <p>You can calculate the minimum of values for which a key exists.</p>
-<p><img alt="" src="../api/min.png" /></p>
+<p><img alt="" src="../img/min.png" /></p>
 <h3 id="max"><code>.max()</code><a class="headerlink" href="#max" title="Permanent link">&para;</a></h3>
 <p>You can calculate the maximum of values for which a key exists.</p>
-<p><img alt="" src="../api/max.png" /></p>
+<p><img alt="" src="../img/max.png" /></p>
+<h2 id="more">More?<a class="headerlink" href="#more" title="Permanent link">&para;</a></h2>
+<p>If you'd like to see more information these methods check the API
+of the <code>Clumper</code> object. That's where you'll find them.</p>
                 
                   
                 
@@ -643,7 +711,7 @@ when making aggregations. Here's a few common ones.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="verbs.html" title="Understanding Verbs" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="understanding-groups.html" title="Understanding Groups" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -652,7 +720,7 @@ when making aggregations. Here's a few common ones.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Understanding Verbs
+                Understanding Groups
               </span>
             </div>
           </a>

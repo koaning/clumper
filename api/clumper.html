@@ -372,6 +372,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../guides/understanding-groups.html" title="Understanding Groups" class="md-nav__link">
+      Understanding Groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../guides/summary-methods.html" title="Summary Methods" class="md-nav__link">
       Summary Methods
     </a>
@@ -634,6 +646,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="mappers.html" title="mappers" class="md-nav__link">
+      mappers
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -865,10 +889,7 @@ it nicer to explore.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.agg"><code class="highlight"><span class="n">agg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.agg" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 60
- 61
- 62
- 63
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 63
  64
  65
  66
@@ -926,7 +947,10 @@ it nicer to explore.</p>
 118
 119
 120
-121</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
+121
+122
+123
+124</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
     <span class="k">def</span> <span class="nf">agg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Does an aggregation on a collection of dictionaries. If there are no groups active</span>
@@ -942,7 +966,7 @@ it nicer to explore.</p>
 
 <span class="sd">        The following aggregation functions are available: `mean`, `count`, `unique`, `n_unique`, `sum`, `min`, `max`.</span>
 
-<span class="sd">        ![](split-apply-combine.png)</span>
+<span class="sd">        ![](../img/split-apply-combine.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.</span>
@@ -1003,7 +1027,7 @@ which everything is combined again into a single collection.</p>
 <li>the summary you'd like to calculate on that key (second item in the tuple)</li>
 </ol>
 <p>The following aggregation functions are available: <code>mean</code>, <code>count</code>, <code>unique</code>, <code>n_unique</code>, <code>sum</code>, <code>min</code>, <code>max</code>.</p>
-<p><img alt="" src="split-apply-combine.png" /></p>
+<p><img alt="" src="../img/split-apply-combine.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1052,17 +1076,17 @@ which everything is combined again into a single collection.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.collect"><code class="highlight"><span class="n">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.collect" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>437
-438
-439
-440
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>440
 441
 442
-443</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+443
+444
+445
+446</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a list instead of a `Clumper` object.</span>
 
-<span class="sd">        ![](collect.png)</span>
+<span class="sd">        ![](../img/collect.png)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob</span>
 </code></pre></div>
@@ -1070,19 +1094,19 @@ which everything is combined again into a single collection.</p>
 
 </details>
 <p>Returns a list instead of a <code>Clumper</code> object.</p>
-<p><img alt="" src="collect.png" /></p>
+<p><img alt="" src="../img/collect.png" /></p>
 <h2 id="clumper.clump.Clumper.concat"><code class="highlight"><span class="n">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.concat" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>132
-133
-134
-135
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>135
 136
 137
-138</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">):</span>
+138
+139
+140
+141</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Concatenate two or more `Clumper` objects together.</span>
 
-<span class="sd">        ![](concat.png)</span>
+<span class="sd">        ![](../img/concat.png)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Clumper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">blob</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">blob</span><span class="p">)</span>
 </code></pre></div>
@@ -1090,12 +1114,9 @@ which everything is combined again into a single collection.</p>
 
 </details>
 <p>Concatenate two or more <code>Clumper</code> objects together.</p>
-<p><img alt="" src="concat.png" /></p>
+<p><img alt="" src="../img/concat.png" /></p>
 <h2 id="clumper.clump.Clumper.copy"><code class="highlight"><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.copy" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>445
-446
-447
-448
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>448
 449
 450
 451
@@ -1110,11 +1131,14 @@ which everything is combined again into a single collection.</p>
 460
 461
 462
-463</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+463
+464
+465
+466</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Makes a copy of the collection.</span>
 
-<span class="sd">        ![](copy.png)</span>
+<span class="sd">        ![](../img/copy.png)</span>
 
 <span class="sd">        Usage:</span>
 
@@ -1134,7 +1158,7 @@ which everything is combined again into a single collection.</p>
 
 </details>
 <p>Makes a copy of the collection.</p>
-<p><img alt="" src="copy.png" /></p>
+<p><img alt="" src="../img/copy.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
@@ -1146,10 +1170,7 @@ which everything is combined again into a single collection.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.count"><code class="highlight"><span class="n">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.count" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>516
-517
-518
-519
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>519
 520
 521
 522
@@ -1169,12 +1190,15 @@ which everything is combined again into a single collection.</p>
 536
 537
 538
-539</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+539
+540
+541
+542</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Counts how often a key appears in the collection.</span>
 
-<span class="sd">        ![](count.png)</span>
+<span class="sd">        ![](../img/count.png)</span>
 
 <span class="sd">        Usage:</span>
 
@@ -1198,7 +1222,7 @@ which everything is combined again into a single collection.</p>
 
 </details>
 <p>Counts how often a key appears in the collection.</p>
-<p><img alt="" src="count.png" /></p>
+<p><img alt="" src="../img/count.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
@@ -1214,12 +1238,12 @@ which everything is combined again into a single collection.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.create_new"><code class="highlight"><span class="n">create_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.create_new" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>33
-34
-35
-36
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>36
 37
-38</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">create_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">):</span>
+38
+39
+40
+41</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">create_new</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Creates a new collection of data while preserving settings of the</span>
 <span class="sd">        current collection (most notably, `groups`).</span>
@@ -1232,10 +1256,7 @@ which everything is combined again into a single collection.</p>
 <p>Creates a new collection of data while preserving settings of the
 current collection (most notably, <code>groups</code>).</p>
 <h2 id="clumper.clump.Clumper.drop"><code class="highlight"><span class="n">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.drop" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>257
-258
-259
-260
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>260
 261
 262
 263
@@ -1258,11 +1279,14 @@ current collection (most notably, <code>groups</code>).</p>
 280
 281
 282
-283</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
+283
+284
+285
+286</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes a subset of keys from each item in the collection.</span>
 
-<span class="sd">        ![](drop.png)</span>
+<span class="sd">        ![](../img/drop.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            keys: the keys to remove</span>
@@ -1290,7 +1314,7 @@ current collection (most notably, <code>groups</code>).</p>
 
 </details>
 <p>Removes a subset of keys from each item in the collection.</p>
-<p><img alt="" src="drop.png" /></p>
+<p><img alt="" src="../img/drop.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1324,22 +1348,22 @@ current collection (most notably, <code>groups</code>).</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.group_by"><code class="highlight"><span class="n">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">cols</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.group_by" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>40
-41
-42
-43
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>43
 44
 45
 46
 47
 48
-49</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">cols</span><span class="p">):</span>
+49
+50
+51
+52</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">cols</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets a group on this clumper object or overrides a previous setting.</span>
 <span class="sd">        A group will affect how some verbs behave. You can undo this behavior</span>
 <span class="sd">        with `.ungroup()`.</span>
 
-<span class="sd">        ![](groupby.png)</span>
+<span class="sd">        ![](../img/groupby.png)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">cols</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -1350,16 +1374,16 @@ current collection (most notably, <code>groups</code>).</p>
 <p>Sets a group on this clumper object or overrides a previous setting.
 A group will affect how some verbs behave. You can undo this behavior
 with <code>.ungroup()</code>.</p>
-<p><img alt="" src="groupby.png" /></p>
+<p><img alt="" src="../img/groupby.png" /></p>
 <h2 id="clumper.clump.Clumper.group_combos"><code class="highlight"><span class="n">group_combos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.group_combos" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>140
-141
-142
-143
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>143
 144
 145
 146
-147</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">group_combos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+147
+148
+149
+150</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">group_combos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a dictionary of group-value/clumper pairs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1373,10 +1397,7 @@ with <code>.ungroup()</code>.</p>
 </details>
 <p>Returns a dictionary of group-value/clumper pairs.</p>
 <h2 id="clumper.clump.Clumper.head"><code class="highlight"><span class="n">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.head" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>175
-176
-177
-178
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>178
 179
 180
 181
@@ -1399,11 +1420,14 @@ with <code>.ungroup()</code>.</p>
 198
 199
 200
-201</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+201
+202
+203
+204</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects the top `n` items from the collection.</span>
 
-<span class="sd">        ![](head.png)</span>
+<span class="sd">        ![](../img/head.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            n: the number of items to grab</span>
@@ -1431,7 +1455,7 @@ with <code>.ungroup()</code>.</p>
 
 </details>
 <p>Selects the top <code>n</code> items from the collection.</p>
-<p><img alt="" src="head.png" /></p>
+<p><img alt="" src="../img/head.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1462,10 +1486,7 @@ with <code>.ungroup()</code>.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.keep"><code class="highlight"><span class="n">keep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.keep" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>149
-150
-151
-152
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>152
 153
 154
 155
@@ -1486,11 +1507,14 @@ with <code>.ungroup()</code>.</p>
 170
 171
 172
-173</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">keep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">):</span>
+173
+174
+175
+176</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">keep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Allows you to select which items to keep and which items to remove.</span>
 
-<span class="sd">        ![](keep.png)</span>
+<span class="sd">        ![](../img/keep.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            funcs: functions that indicate which items to keep</span>
@@ -1516,7 +1540,7 @@ with <code>.ungroup()</code>.</p>
 
 </details>
 <p>Allows you to select which items to keep and which items to remove.</p>
-<p><img alt="" src="keep.png" /></p>
+<p><img alt="" src="../img/keep.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1547,10 +1571,7 @@ with <code>.ungroup()</code>.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.map"><code class="highlight"><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.map" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>357
-358
-359
-360
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>360
 361
 362
 363
@@ -1570,13 +1591,16 @@ with <code>.ungroup()</code>.</p>
 377
 378
 379
-380</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+380
+381
+382
+383</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Directly map one item to another one using a function.</span>
 <span class="sd">        If you&#39;re dealing with dictionaries, consider using</span>
 <span class="sd">        `mutate` instead.</span>
 
-<span class="sd">        ![](map.png</span>
+<span class="sd">        ![](../img/map.png</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            func: the function that will map each item</span>
@@ -1601,7 +1625,7 @@ with <code>.ungroup()</code>.</p>
 <p>Directly map one item to another one using a function.
 If you're dealing with dictionaries, consider using
 <code>mutate</code> instead.</p>
-<p>![](map.png</p>
+<p>![](../img/map.png</p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1632,10 +1656,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.max"><code class="highlight"><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.max" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>591
-592
-593
-594
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>594
 595
 596
 597
@@ -1655,12 +1676,15 @@ If you're dealing with dictionaries, consider using
 611
 612
 613
-614</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+614
+615
+616
+617</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns maximum value that a key has.</span>
 
-<span class="sd">        ![](max.png)</span>
+<span class="sd">        ![](../img/max.png)</span>
 
 <span class="sd">        Usage:</span>
 
@@ -1684,7 +1708,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Returns maximum value that a key has.</p>
-<p><img alt="" src="max.png" /></p>
+<p><img alt="" src="../img/max.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
@@ -1700,10 +1724,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.mean"><code class="highlight"><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.mean" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>490
-491
-492
-493
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>493
 494
 495
 496
@@ -1724,12 +1745,15 @@ If you're dealing with dictionaries, consider using
 511
 512
 513
-514</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+514
+515
+516
+517</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Give the mean of the values that belong to a key.</span>
 
-<span class="sd">        ![](mean.png)</span>
+<span class="sd">        ![](../img/mean.png)</span>
 
 <span class="sd">        Usage:</span>
 
@@ -1754,7 +1778,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Give the mean of the values that belong to a key.</p>
-<p><img alt="" src="mean.png" /></p>
+<p><img alt="" src="../img/mean.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
@@ -1770,10 +1794,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.min"><code class="highlight"><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.min" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>566
-567
-568
-569
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>569
 570
 571
 572
@@ -1793,12 +1814,15 @@ If you're dealing with dictionaries, consider using
 586
 587
 588
-589</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+589
+590
+591
+592</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns minimum value that a key has.</span>
 
-<span class="sd">        ![](min.png)</span>
+<span class="sd">        ![](../img/min.png)</span>
 
 <span class="sd">        Usage:</span>
 
@@ -1822,7 +1846,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Returns minimum value that a key has.</p>
-<p><img alt="" src="min.png" /></p>
+<p><img alt="" src="../img/min.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
@@ -1838,10 +1862,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.mutate"><code class="highlight"><span class="n">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.mutate" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>285
-286
-287
-288
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>288
 289
 290
 291
@@ -1873,12 +1894,15 @@ If you're dealing with dictionaries, consider using
 317
 318
 319
-320</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
+320
+321
+322
+323</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
     <span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds or overrides key-value pairs in the collection of dictionaries.</span>
 
-<span class="sd">        ![](mutate.png)</span>
+<span class="sd">        ![](../img/mutate.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            kwargs: keyword arguments of keyname/function-pairs</span>
@@ -1914,7 +1938,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Adds or overrides key-value pairs in the collection of dictionaries.</p>
-<p><img alt="" src="mutate.png" /></p>
+<p><img alt="" src="../img/mutate.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -1953,10 +1977,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.n_unique"><code class="highlight"><span class="n">n_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.n_unique" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>541
-542
-543
-544
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>544
 545
 546
 547
@@ -1976,12 +1997,15 @@ If you're dealing with dictionaries, consider using
 561
 562
 563
-564</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+564
+565
+566
+567</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">n_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns number of unique values that a key has.</span>
 
-<span class="sd">        ![](n_unique.png)</span>
+<span class="sd">        ![](../img/n_unique.png)</span>
 
 <span class="sd">        Usage:</span>
 
@@ -2005,7 +2029,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Returns number of unique values that a key has.</p>
-<p><img alt="" src="n_unique.png" /></p>
+<p><img alt="" src="../img/n_unique.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
@@ -2021,10 +2045,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.pipe"><code class="highlight"><span class="n">pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.pipe" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>409
-410
-411
-412
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>412
 413
 414
 415
@@ -2047,7 +2068,10 @@ If you're dealing with dictionaries, consider using
 432
 433
 434
-435</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+435
+436
+437
+438</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies a function to the `Clumper` object in a chain-able manner.</span>
 
@@ -2126,10 +2150,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.reduce"><code class="highlight"><span class="n">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.reduce" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>382
-383
-384
-385
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>385
 386
 387
 388
@@ -2151,11 +2172,14 @@ If you're dealing with dictionaries, consider using
 404
 405
 406
-407</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+407
+408
+409
+410</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reduce the collection using reducing functions.</span>
 
-<span class="sd">        ![](reduce.png)</span>
+<span class="sd">        ![](../img/reduce.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            kwargs: key-function pairs</span>
@@ -2182,7 +2206,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Reduce the collection using reducing functions.</p>
-<p><img alt="" src="reduce.png" /></p>
+<p><img alt="" src="../img/reduce.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -2215,10 +2239,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.select"><code class="highlight"><span class="n">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.select" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>231
-232
-233
-234
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>234
 235
 236
 237
@@ -2239,11 +2260,14 @@ If you're dealing with dictionaries, consider using
 252
 253
 254
-255</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
+255
+256
+257
+258</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects a subset of the keys in each item in the collection.</span>
 
-<span class="sd">        ![](select.png)</span>
+<span class="sd">        ![](../img/select.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            keys: the keys to keep</span>
@@ -2269,7 +2293,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Selects a subset of the keys in each item in the collection.</p>
-<p><img alt="" src="select.png" /></p>
+<p><img alt="" src="../img/select.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -2303,10 +2327,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.sort"><code class="highlight"><span class="n">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.sort" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>322
-323
-324
-325
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>325
 326
 327
 328
@@ -2336,12 +2357,15 @@ If you're dealing with dictionaries, consider using
 352
 353
 354
-355</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
+355
+356
+357
+358</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
     <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Allows you to sort the collection of dictionaries.</span>
 
-<span class="sd">        ![](sort.png)</span>
+<span class="sd">        ![](../img/sort.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            key: the number of items to grab</span>
@@ -2375,7 +2399,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Allows you to sort the collection of dictionaries.</p>
-<p><img alt="" src="sort.png" /></p>
+<p><img alt="" src="../img/sort.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -2423,10 +2447,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.sum"><code class="highlight"><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.sum" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>465
-466
-467
-468
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>468
 469
 470
 471
@@ -2446,12 +2467,15 @@ If you're dealing with dictionaries, consider using
 485
 486
 487
-488</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+488
+489
+490
+491</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Give the sum of the values that belong to a key.</span>
 
-<span class="sd">        ![](sum.png)</span>
+<span class="sd">        ![](../img/sum.png)</span>
 
 <span class="sd">        Usage:</span>
 
@@ -2475,7 +2499,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Give the sum of the values that belong to a key.</p>
-<p><img alt="" src="sum.png" /></p>
+<p><img alt="" src="../img/sum.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
@@ -2491,10 +2515,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.tail"><code class="highlight"><span class="n">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.tail" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>203
-204
-205
-206
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>206
 207
 208
 209
@@ -2517,11 +2538,14 @@ If you're dealing with dictionaries, consider using
 226
 227
 228
-229</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+229
+230
+231
+232</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects the bottom `n` items from the collection.</span>
 
-<span class="sd">        ![](tail.png)</span>
+<span class="sd">        ![](../img/tail.png)</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">            n: the number of items to grab</span>
@@ -2549,7 +2573,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Selects the bottom <code>n</code> items from the collection.</p>
-<p><img alt="" src="tail.png" /></p>
+<p><img alt="" src="../img/tail.png" /></p>
 <p><strong>Parameters</strong></p>
 <table>
 <thead>
@@ -2580,18 +2604,18 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.ungroup"><code class="highlight"><span class="n">ungroup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.ungroup" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>51
-52
-53
-54
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>54
 55
 56
 57
-58</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">ungroup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+58
+59
+60
+61</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">ungroup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes all grouping from the collection.</span>
 
-<span class="sd">        ![](ungroup.png)</span>
+<span class="sd">        ![](../img/ungroup.png)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span>
@@ -2600,12 +2624,9 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Removes all grouping from the collection.</p>
-<p><img alt="" src="ungroup.png" /></p>
+<p><img alt="" src="../img/ungroup.png" /></p>
 <h2 id="clumper.clump.Clumper.unique"><code class="highlight"><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.unique" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>616
-617
-618
-619
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>619
 620
 621
 622
@@ -2625,12 +2646,15 @@ If you're dealing with dictionaries, consider using
 636
 637
 638
-639</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[])</span>
+639
+640
+641
+642</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[])</span>
     <span class="k">def</span> <span class="nf">unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a set of unique values that a key has.</span>
 
-<span class="sd">        ![](unique.png)</span>
+<span class="sd">        ![](../img/unique.png)</span>
 
 <span class="sd">        Usage:</span>
 
@@ -2654,7 +2678,7 @@ If you're dealing with dictionaries, consider using
 
 </details>
 <p>Returns a set of unique values that a key has.</p>
-<p><img alt="" src="unique.png" /></p>
+<p><img alt="" src="../img/unique.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
@@ -2703,6 +2727,20 @@ If you're dealing with dictionaries, consider using
             </div>
           </a>
         
+        
+          <a href="mappers.html" title="mappers" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                mappers
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
         
       </nav>
     </div>
