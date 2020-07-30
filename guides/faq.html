@@ -13,7 +13,7 @@
         <meta name="description" content="A small python library that can clump lists of data together.">
       
       
-        <link rel="canonical" href="https://koaning.github.io/clumper/guides/summary-methods.html">
+        <link rel="canonical" href="https://koaning.github.io/clumper/guides/faq.html">
       
       
         <meta name="author" content="Vincent D. Warmerdam">
@@ -42,7 +42,7 @@
     
     
       
-        <title>Useful Methods - Clumper Docs</title>
+        <title>FAQ - Clumper Docs</title>
       
     
     
@@ -93,7 +93,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#summary-methods" tabindex="0" class="md-skip">
+      <a href="#usecase" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -119,7 +119,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Useful Methods
+                FAQ
               
             </span>
           
@@ -372,6 +372,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="summary-methods.html" title="Useful Methods" class="md-nav__link">
+      Useful Methods
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -381,11 +393,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Useful Methods
+        FAQ
       </label>
     
-    <a href="summary-methods.html" title="Useful Methods" class="md-nav__link md-nav__link--active">
-      Useful Methods
+    <a href="faq.html" title="FAQ" class="md-nav__link md-nav__link--active">
+      FAQ
     </a>
     
       
@@ -397,58 +409,23 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#summary-methods" class="md-nav__link">
-    Summary Methods
+  <a href="#usecase" class="md-nav__link">
+    Usecase
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mean" class="md-nav__link">
-    .mean()
+  <a href="#when-should-i-use-clumper" class="md-nav__link">
+    When should I use Clumper?
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#count" class="md-nav__link">
-    .count()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unique" class="md-nav__link">
-    .unique()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#n_unique" class="md-nav__link">
-    .n_unique()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sum" class="md-nav__link">
-    .sum()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#min" class="md-nav__link">
-    .min()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#max" class="md-nav__link">
-    .max()
+  <a href="#when-should-i-not-use-clumper" class="md-nav__link">
+    When should I not use Clumper?
   </a>
   
 </li>
@@ -459,9 +436,56 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#more" class="md-nav__link">
-    More?
+  <a href="#library-assumptions" class="md-nav__link">
+    Library Assumptions
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-does-clumper-deal-with-missing-data" class="md-nav__link">
+    How does Clumper deal with missing data?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#am-i-limited-to-dictionaries" class="md-nav__link">
+    Am I limited to dictionaries?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integer-example" class="md-nav__link">
+    Integer Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#character-example" class="md-nav__link">
+    Character Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verbs-that-need-dictionaries" class="md-nav__link">
+    Verbs that need Dictionaries
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -473,18 +497,6 @@
   
 </nav>
     
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="faq.html" title="FAQ" class="md-nav__link">
-      FAQ
-    </a>
   </li>
 
         
@@ -560,58 +572,23 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#summary-methods" class="md-nav__link">
-    Summary Methods
+  <a href="#usecase" class="md-nav__link">
+    Usecase
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#mean" class="md-nav__link">
-    .mean()
+  <a href="#when-should-i-use-clumper" class="md-nav__link">
+    When should I use Clumper?
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#count" class="md-nav__link">
-    .count()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unique" class="md-nav__link">
-    .unique()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#n_unique" class="md-nav__link">
-    .n_unique()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#sum" class="md-nav__link">
-    .sum()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#min" class="md-nav__link">
-    .min()
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#max" class="md-nav__link">
-    .max()
+  <a href="#when-should-i-not-use-clumper" class="md-nav__link">
+    When should I not use Clumper?
   </a>
   
 </li>
@@ -622,9 +599,56 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#more" class="md-nav__link">
-    More?
+  <a href="#library-assumptions" class="md-nav__link">
+    Library Assumptions
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-does-clumper-deal-with-missing-data" class="md-nav__link">
+    How does Clumper deal with missing data?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#am-i-limited-to-dictionaries" class="md-nav__link">
+    Am I limited to dictionaries?
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#integer-example" class="md-nav__link">
+    Integer Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#character-example" class="md-nav__link">
+    Character Example
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verbs-that-need-dictionaries" class="md-nav__link">
+    Verbs that need Dictionaries
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -644,131 +668,102 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/koaning/clumper/edit/master/docs/guides/summary-methods.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/koaning/clumper/edit/master/docs/guides/faq.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                  <h1>Useful Methods</h1>
+                  <h1>FAQ</h1>
                 
-                <p>The <code>Clumper</code> object also offers useful methods that aren't verbs.</p>
-<h2 id="summary-methods">Summary Methods<a class="headerlink" href="#summary-methods" title="Permanent link">&para;</a></h2>
-<p>Here's a sample of useful methods to get summaries from your collection.
-Each of these methods has a string equivalent that is used in <code>.agg()</code>
-when making aggregations. Here's a few common ones.</p>
-<h3 id="mean"><code>.mean()</code><a class="headerlink" href="#mean" title="Permanent link">&para;</a></h3>
-<p>You can calculate the mean of values for which a key exists.</p>
-<p><img alt="" src="../img/mean.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-
-<span class="n">list_of_dicts</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">}</span>
+                <h3 id="usecase">Usecase<a class="headerlink" href="#usecase" title="Permanent link">&para;</a></h3>
+<h4 id="when-should-i-use-clumper">When should I use <code>Clumper</code>?<a class="headerlink" href="#when-should-i-use-clumper" title="Permanent link">&para;</a></h4>
+<p>This package might solve some problems for you if:</p>
+<ul>
+<li>You're dealing with nested data.</li>
+<li>You're dealing with data that's not super big.</li>
+<li>You enjoy using a functional-style of exploring data.</li>
+</ul>
+<h4 id="when-should-i-not-use-clumper">When should I not use <code>Clumper</code>?<a class="headerlink" href="#when-should-i-not-use-clumper" title="Permanent link">&para;</a></h4>
+<p>This package might not be the best choice if:</p>
+<ul>
+<li>You're dealing with very large datasets.</li>
+<li>You're dealing with data that strictly</li>
+</ul>
+<h3 id="library-assumptions">Library Assumptions<a class="headerlink" href="#library-assumptions" title="Permanent link">&para;</a></h3>
+<h4 id="how-does-clumper-deal-with-missing-data">How does <code>Clumper</code> deal with missing data?<a class="headerlink" href="#how-does-clumper-deal-with-missing-data" title="Permanent link">&para;</a></h4>
+<p>If your datastructure represents a table with rows and columns then you'd
+usually denote missing data via something like <code>NA</code> or <code>NaN</code>. This is common
+in SQL but also in numeric libraries like <code>numpy</code>. Since this library tries
+to focus on json-like data-structures we also deal with it differently.</p>
+<p>If you'd be dealing with a csv, you'd consider this example to contain missing data.</p>
+<div class="highlight"><pre><span></span><code><span class="n">list_of_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">}</span>
 <span class="p">]</span>
-
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="count"><code>.count()</code><a class="headerlink" href="#count" title="Permanent link">&para;</a></h3>
-<p>You can count the number of rows for which a key exists.</p>
-<p><img alt="" src="../img/count.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-
-<span class="n">list_of_dicts</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">}</span>
+<p>Instead, this is how <code>Clumper</code> would represent it.</p>
+<div class="highlight"><pre><span></span><code><span class="n">list_of_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">}</span>
 <span class="p">]</span>
-
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-<h3 id="unique"><code>.unique()</code><a class="headerlink" href="#unique" title="Permanent link">&para;</a></h3>
-<p>You can retreive all unique values for a certain key.</p>
-<p><img alt="" src="../img/unique.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-
-<span class="n">list_of_dicts</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">}</span>
-<span class="p">]</span>
-
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<p>In this case we have an item where the key <code>"a"</code> is acutally missing. In the
+previous example we definately had a key but the value was equal to <code>None</code>.</p>
+<h2 id="am-i-limited-to-dictionaries">Am I limited to dictionaries?<a class="headerlink" href="#am-i-limited-to-dictionaries" title="Permanent link">&para;</a></h2>
+<p>Although this library has lists of dictionaries in mind,
+we actually don't force this on you. We just assume a sequence
+as input. From here it's your responsibility to come up
+with reasonable lambda functions for the verbs that follow.</p>
+<p>Most verbs are flexible enough that they don't assume the
+lambda functions to act on dictionaries.</p>
+<p>For example. If you look at this code:</p>
+<div class="highlight"><pre><span></span><code>.sort(lambda d: d)
 </code></pre></div>
 
-<h3 id="n_unique"><code>.n_unique()</code><a class="headerlink" href="#n_unique" title="Permanent link">&para;</a></h3>
-<p>You can the number of unique values for a certain key.</p>
-<p><img alt="" src="../img/nunique.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-
-<span class="n">list_of_dicts</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">}</span>
-<span class="p">]</span>
-
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">n_unique</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">n_unique</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<p>Then you can infer that we're sorting based on whatever
+the value in our collection is. It would work on a list
+of integers, floats or characters. If you'd instead have:</p>
+<div class="highlight"><pre><span></span><code>.sort(lambda d: d[0])
 </code></pre></div>
 
-<h3 id="sum"><code>.sum()</code><a class="headerlink" href="#sum" title="Permanent link">&para;</a></h3>
-<p>You can calculate the sum of values for which a key exists.</p>
-<p><img alt="" src="../img/sum.png" /></p>
+<p>Then it wouldn't work anymore if <code>d</code> is a integer, float
+or string but it would work if <code>d</code> is a list, tuple or a
+dictionary with a key of <code>0</code> available.</p>
+<h3 id="integer-example">Integer Example<a class="headerlink" href="#integer-example" title="Permanent link">&para;</a></h3>
+<p>Here we take the top 50 numbers from a list and then sort.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
-<span class="n">list_of_dicts</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">}</span>
-<span class="p">]</span>
-
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+  <span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 </code></pre></div>
 
-<h3 id="min"><code>.min()</code><a class="headerlink" href="#min" title="Permanent link">&para;</a></h3>
-<p>You can calculate the minimum of values for which a key exists.</p>
-<p><img alt="" src="../img/min.png" /></p>
+<p>Neither <code>.head()</code> nor <code>.sort()</code> makes an assumption of the
+conents of the <code>Clumper</code> collection. Pay attention though that
+the <code>lambda</code> function inside of <code>.sort()</code> is appropriate for the
+data in the collection.</p>
+<h3 id="character-example">Character Example<a class="headerlink" href="#character-example" title="Permanent link">&para;</a></h3>
+<p>Here we start out with a sequence of letters
+and we turn it into a collection of dictionaries.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
-<span class="n">list_of_dicts</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">}</span>
-<span class="p">]</span>
-
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="s1">&#39;abcedfghijklmnopqrstuvwxyz&#39;</span><span class="p">)</span>
+  <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;char&#39;</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> <span class="s1">&#39;ord&#39;</span><span class="p">:</span> <span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)}))</span>
 </code></pre></div>
 
-<h3 id="max"><code>.max()</code><a class="headerlink" href="#max" title="Permanent link">&para;</a></h3>
-<p>You can calculate the maximum of values for which a key exists.</p>
-<p><img alt="" src="../img/max.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-
-<span class="n">list_of_dicts</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
-    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">}</span>
-<span class="p">]</span>
-
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-<span class="n">Clumper</span><span class="p">(</span><span class="n">list_of_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
-</code></pre></div>
-
-<h2 id="more">More?<a class="headerlink" href="#more" title="Permanent link">&para;</a></h2>
-<p>If you'd like to see more information these methods check the API
-of the <code>Clumper</code> object. That's where you'll find them.</p>
+<h3 id="verbs-that-need-dictionaries">Verbs that need Dictionaries<a class="headerlink" href="#verbs-that-need-dictionaries" title="Permanent link">&para;</a></h3>
+<p>There's a short list verbs that carry some restrictions</p>
+<ul>
+<li><strong>.select()</strong> needs to select keys so the sequences must contain dictionaries</li>
+<li><strong>.drop()</strong> needs to remove keys so the sequences must contain dictionaries</li>
+<li><strong>.agg()</strong> needs a collection of dictionaries to construct aggregations. If you
+really need this feature for non-dictionary sequences consider the <strong>.reduce()</strong> method.</li>
+<li><strong>.mutate()</strong> is really flexible in terms of input that it
+accepts but it will always produce a dictionary as output.
+If you really need a non-dictionary output, consider the <strong>map()</strong> method.</li>
+</ul>
                 
                   
                 
@@ -790,7 +785,7 @@ of the <code>Clumper</code> object. That's where you'll find them.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="understanding-groups.html" title="Understanding Groups" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="summary-methods.html" title="Useful Methods" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -799,19 +794,19 @@ of the <code>Clumper</code> object. That's where you'll find them.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Understanding Groups
+                Useful Methods
               </span>
             </div>
           </a>
         
         
-          <a href="faq.html" title="FAQ" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../api/clumper.html" title="Clumper" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                FAQ
+                Clumper
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
