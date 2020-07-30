@@ -12,6 +12,7 @@ nav:
   - Guides:
       - Getting Started: guides/getting-started.md
       - Understanding Verbs: guides/verbs.md
+      - Understanding Groups: guides/understanding-groups.md
       - Summary Methods: guides/summary-methods.md
       - Advanced Details: guides/advanced.md
   - API:
@@ -38,10 +39,11 @@ theme:
     primary: indigo
     accent: blue
 markdown_extensions:
-  - toc:
-      permalink: true
-  - pymdownx.highlight:
-      use_pygments: true
+  - codehilite
   - pymdownx.inlinehilite
   - pymdownx.details
-  - codehilite
+  - pymdownx.tabbed
+  - pymdownx.highlight:
+      use_pygments: true
+  - toc:
+      permalink: true

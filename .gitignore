@@ -134,3 +134,6 @@ dmypy.json
 # Ignore Code Editor Settings
 .vscode/
 .idea
+
+# MacOS ... why?!
+.DS_Store

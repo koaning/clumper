@@ -30,6 +30,9 @@ class Clumper:
     def __iter__(self):
         return self.blob.__iter__()
 
+    def __repr__(self):
+        return f"<Clumper groups={self.groups} len={len(self)} @{hex(id(self))}>"
+
     def create_new(self, blob):
         """
         Creates a new collection of data while preserving settings of the
@@ -43,7 +46,7 @@ class Clumper:
         A group will affect how some verbs behave. You can undo this behavior
         with `.ungroup()`.
 
-        ![](groupby.png)
+        ![](../img/groupby.png)
         """
         self.groups = cols
         return self
@@ -52,7 +55,7 @@ class Clumper:
         """
         Removes all grouping from the collection.
 
-        ![](ungroup.png)
+        ![](../img/ungroup.png)
         """
         self.groups = tuple()
         return self
@@ -73,7 +76,7 @@ class Clumper:
 
         The following aggregation functions are available: `mean`, `count`, `unique`, `n_unique`, `sum`, `min`, `max`.
 
-        ![](split-apply-combine.png)
+        ![](../img/split-apply-combine.png)
 
         Arguments:
             kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.
@@ -133,7 +136,7 @@ class Clumper:
         """
         Concatenate two or more `Clumper` objects together.
 
-        ![](concat.png)
+        ![](../img/concat.png)
         """
         return Clumper(self.blob + other.blob)
 
@@ -150,7 +153,7 @@ class Clumper:
         """
         Allows you to select which items to keep and which items to remove.
 
-        ![](keep.png)
+        ![](../img/keep.png)
 
         Arguments:
             funcs: functions that indicate which items to keep
@@ -176,7 +179,7 @@ class Clumper:
         """
         Selects the top `n` items from the collection.
 
-        ![](head.png)
+        ![](../img/head.png)
 
         Arguments:
             n: the number of items to grab
@@ -204,7 +207,7 @@ class Clumper:
         """
         Selects the bottom `n` items from the collection.
 
-        ![](tail.png)
+        ![](../img/tail.png)
 
         Arguments:
             n: the number of items to grab
@@ -232,7 +235,7 @@ class Clumper:
         """
         Selects a subset of the keys in each item in the collection.
 
-        ![](select.png)
+        ![](../img/select.png)
 
         Arguments:
             keys: the keys to keep
@@ -258,7 +261,7 @@ class Clumper:
         """
         Removes a subset of keys from each item in the collection.
 
-        ![](drop.png)
+        ![](../img/drop.png)
 
         Arguments:
             keys: the keys to remove
@@ -287,7 +290,7 @@ class Clumper:
         """
         Adds or overrides key-value pairs in the collection of dictionaries.
 
-        ![](mutate.png)
+        ![](../img/mutate.png)
 
         Arguments:
             kwargs: keyword arguments of keyname/function-pairs
@@ -324,7 +327,7 @@ class Clumper:
         """
         Allows you to sort the collection of dictionaries.
 
-        ![](sort.png)
+        ![](../img/sort.png)
 
         Arguments:
             key: the number of items to grab
@@ -360,7 +363,7 @@ class Clumper:
         If you're dealing with dictionaries, consider using
         `mutate` instead.
 
-        ![](map.png
+        ![](../img/map.png
 
         Arguments:
             func: the function that will map each item
@@ -383,7 +386,7 @@ class Clumper:
         """
         Reduce the collection using reducing functions.
 
-        ![](reduce.png)
+        ![](../img/reduce.png)
 
         Arguments:
             kwargs: key-function pairs
@@ -438,7 +441,7 @@ class Clumper:
         """
         Returns a list instead of a `Clumper` object.
 
-        ![](collect.png)
+        ![](../img/collect.png)
         """
         return self.blob
 
@@ -446,7 +449,7 @@ class Clumper:
         """
         Makes a copy of the collection.
 
-        ![](copy.png)
+        ![](../img/copy.png)
 
         Usage:
 
@@ -467,7 +470,7 @@ class Clumper:
         """
         Give the sum of the values that belong to a key.
 
-        ![](sum.png)
+        ![](../img/sum.png)
 
         Usage:
 
@@ -492,7 +495,7 @@ class Clumper:
         """
         Give the mean of the values that belong to a key.
 
-        ![](mean.png)
+        ![](../img/mean.png)
 
         Usage:
 
@@ -518,7 +521,7 @@ class Clumper:
         """
         Counts how often a key appears in the collection.
 
-        ![](count.png)
+        ![](../img/count.png)
 
         Usage:
 
@@ -543,7 +546,7 @@ class Clumper:
         """
         Returns number of unique values that a key has.
 
-        ![](n_unique.png)
+        ![](../img/n_unique.png)
 
         Usage:
 
@@ -568,7 +571,7 @@ class Clumper:
         """
         Returns minimum value that a key has.
 
-        ![](min.png)
+        ![](../img/min.png)
 
         Usage:
 
@@ -593,7 +596,7 @@ class Clumper:
         """
         Returns maximum value that a key has.
 
-        ![](max.png)
+        ![](../img/max.png)
 
         Usage:
 
@@ -618,7 +621,7 @@ class Clumper:
         """
         Returns a set of unique values that a key has.
 
-        ![](unique.png)
+        ![](../img/unique.png)
 
         Usage:
 

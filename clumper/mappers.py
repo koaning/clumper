@@ -20,6 +20,8 @@ class row_number:
     """
     This stateful function can be used to calculate row numbers.
 
+    ![](../img/row_number.png)
+
     Usage:
 
     ```python
@@ -50,6 +52,8 @@ class row_number:
 class rolling:
     """
     This stateful function can be used to calculate row numbers.
+
+    ![](../img/rolling.png)
 
     Usage:
 
@@ -93,6 +97,8 @@ class expanding:
     """
     This stateful function can be used to calculate row numbers.
 
+    ![](../img/expanding.png)
+
     Usage:
 
     ```python
@@ -131,6 +137,8 @@ class smoothing:
     """
     This stateful function can be used to calculate row numbers.
 
+    ![](../img/smoothing.png)
+
     Usage:
 
     ```python
@@ -145,11 +153,8 @@ class smoothing:
     ]
 
     (Clumper(list_dicts)
-      .mutate(s=smoothing(key='a', weight=0.5))
-      .collect())
-
-    (Clumper(list_dicts)
-      .mutate(s=smoothing(key='a', weight=0.9))
+      .mutate(s1=smoothing(key='a', weight=0.5),
+              s2=smoothing(key='a', weight=0.9))
       .collect())
     ```
     """
@@ -164,6 +169,33 @@ class smoothing:
             return new[self.key]
         if isinstance(self.key, Callable):
             return self.key(new)
+
+    def __call__(self, new):
+        new = self.apply_key(new)
+        if not self.state:
+            self.state = new
+        self.state = self.state * (1 - self.weight) + new * self.weight
+        return self.state
+
+
+class impute:
+    """
+    If a key is missing from a dictionary, here's how to replace it.
+    """
+
+    def __init__(self, key=None, strategy="prev", value=None):
+        self.state = None
+        if not key:
+            raise ValueError("The `impute` call must receive a `key`.")
+        self.key = key
+
+        allowed_strategy = ["value", "prev"]
+        if strategy not in allowed_strategy:
+            raise ValueError(
+                f"The `impute` call requires a `strategy` in {allowed_strategy}, got: `{strategy}`."
+            )
+        self.strategy = strategy
+        self.value = value
 
     def __call__(self, new):
         new = self.apply_key(new)

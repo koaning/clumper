@@ -34,7 +34,7 @@ Schematically, this is what the code does.
 First we use the **mutate** verb. This allows us to add values to pairs in
 our collection.
 
-![](../api/first-mutate.png)
+![](../img/first-mutate.png)
 
 The output of this step is another `Clumper` collection.
 
@@ -42,7 +42,7 @@ The output of this step is another `Clumper` collection.
 
 Next we pick up the mutated collection and we apply a sort to it.
 
-![](../api/then-sort.png)
+![](../img/then-sort.png)
 
 Again, the output of this another `Clumper`. This means that we can
 keep adding steps as we further our analysis.
@@ -62,31 +62,31 @@ Here's a list of the verbs that you'll most likely use the most.
 
 The **keep** verb allows you to grab a subset from the original collection.
 
-![](../api/keep.png)
+![](../img/keep.png)
 
 ### Mutate
 
 The **mutate** verb allows you to add/overwrite data to each item in the collection.
 
-![](../api/mutate.png)
+![](../img/mutate.png)
 
 ### Sort
 
 The **sort** verb allows you to sort the collection based on values of items.
 
-![](../api/sort.png)
+![](../img/sort.png)
 
 ### Select
 
 The **select** verb allows you to select a subset of keys for each item.
 
-![](../api/select.png)
+![](../img/select.png)
 
 ### Drop
 
 The **select** verb allows you to remove a subset of keys for each item.
 
-![](../api/drop.png)
+![](../img/drop.png)
 
 ### Group By
 
@@ -96,20 +96,20 @@ certain verbs will change their behavior if there are groups present.
 
 The main use-case for this verb is in combination with **.agg()**.
 
-![](../api/groupby.png)
+![](../img/groupby.png)
 
 ### Ungroup
 
 The **ungroup** verb will remove any groups currently present.
 
-![](../api/ungroup.png)
+![](../img/ungroup.png)
 
 ### Agg
 
 The **agg** verb is short for aggregate. They allow you to summarise the data,
 keeping in mind any groups that are on it.
 
-![](../api/split-apply-combine.png)
+![](../img/split-apply-combine.png)
 
 When defining a summary to apply you'll need to pass three things:
 
