@@ -3,7 +3,7 @@ import itertools as it
 import pytest
 
 from clumper import Clumper
-from clumper.mapping import row_number
+from clumper.mappers import row_number
 
 
 def test_group_combos_one_group():

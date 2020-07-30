@@ -16,6 +16,7 @@ nav:
       - Advanced Details: guides/advanced.md
   - API:
       - Clumper: api/clumper.md
+      - mappers: api/mappers.md
 plugins:
   - mkdocstrings
   - mkdocs-jupyter
