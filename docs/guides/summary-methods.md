@@ -26,7 +26,7 @@ You can retreive all unique values for a certain key.
 
 You can the number of unique values for a certain key.
 
-![](../api/n_unique.png)
+![](../api/nunique.png)
 
 ### `.sum()`
 

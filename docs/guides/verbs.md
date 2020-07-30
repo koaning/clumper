@@ -42,7 +42,7 @@ The output of this step is another `Clumper` collection.
 
 Next we pick up the mutated collection and we apply a sort to it.
 
-![](../api/first-mutate.png)
+![](../api/then-sort.png)
 
 Again, the output of this another `Clumper`. This means that we can
 keep adding steps as we further our analysis.

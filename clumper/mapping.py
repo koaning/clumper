@@ -4,10 +4,20 @@ users with any "map"-kind of step.
 """
 
 
-def row_number():
+def _old_row_number():
+    i = 0
+
+    def incr(_):
+        nonlocal i
+        i += 1
+        return i
+
+    return incr
+
+
+class row_number:
     """
-    This stateful function can be used to calculate row numbers
-    on dictionaries.
+    This stateful function can be used to calculate row numbers.
 
     Usage:
 
@@ -26,11 +36,10 @@ def row_number():
       .collect())
     ```
     """
-    i = 0
 
-    def incr(_):
-        nonlocal i
-        i += 1
-        return i
+    def __init__(self):
+        self.state = 0
 
-    return incr
+    def __call__(self, _):
+        self.state += 1
+        return self.state

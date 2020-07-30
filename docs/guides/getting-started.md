@@ -26,8 +26,8 @@ Here's the first two examples from this list;
   'attack': 62}]
 ```
 
-There's about 800 dictionaries in our list which is
-big enough to want to not go through manually but also
+There's about 800 dictionaries in our list. This is
+big enough to not want to go through manually but also
 small enough that we don't need to worry too much
 about performance.
 

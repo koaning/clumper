@@ -3,6 +3,7 @@ import itertools as it
 import pytest
 
 from clumper import Clumper
+from clumper.mapping import row_number
 
 
 def test_group_combos_one_group():
@@ -26,3 +27,14 @@ def test_subsets_sizes(keys, size):
     clump = Clumper([{"r": 1, "i": i, "j": j, "a": a, "b": b} for i, j, a, b in prod])
     for c in clump.group_by(*keys).subsets():
         assert len(c) == size
+
+
+def test_mutate_group_aware():
+    """
+    Does `row_number` reset during mutate if a group is active?
+    """
+    data = [{"bool": True if i % 2 else False} for i in range(20)]
+    clump = Clumper(data).group_by("bool").mutate(r=row_number())
+    assert len(clump) == len(data)
+    assert clump.groups == ("bool",)
+    assert set(clump.unique("r")) == {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
