@@ -27,7 +27,7 @@ def test_can_collect_tail(base_clumper, idx):
     the first element should be 26 - 10 = 16. Repeat for n=1..26.
     """
     collected = base_clumper.tail(idx).collect()
-    assert collected[0]["i"] == idx
+    assert collected[0]["i"] == 26 - idx
 
 
 @pytest.mark.parametrize("n", [-1, 2.5, "a"])

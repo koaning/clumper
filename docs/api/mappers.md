@@ -1,3 +1,0 @@
-# `mappers`
-
-::: clumper.mappers

@@ -1,5 +1,5 @@
 from clumper import Clumper
-from clumper.mappers import impute
+from clumper.sequence import impute
 
 
 def test_correct_values_prev():

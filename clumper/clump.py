@@ -1,7 +1,8 @@
-from functools import reduce
 import itertools as it
+from functools import reduce
+from statistics import mean, variance, stdev, median
 
-from clumper.decorators import return_value_if_empty, grouped
+from clumper.decorators import return_value_if_empty, grouped, dict_collection_only
 
 
 class Clumper:
@@ -33,7 +34,7 @@ class Clumper:
     def __repr__(self):
         return f"<Clumper groups={self.groups} len={len(self)} @{hex(id(self))}>"
 
-    def create_new(self, blob):
+    def _create_new(self, blob):
         """
         Creates a new collection of data while preserving settings of the
         current collection (most notably, `groups`).
@@ -47,6 +48,13 @@ class Clumper:
         with `.ungroup()`.
 
         ![](../img/groupby.png)
+
+        ```python
+        from clumper import Clumper
+
+        clump = Clumper([{"a": 1}]).group_by("a")
+        assert clump.groups == ("a", )
+        ```
         """
         self.groups = cols
         return self
@@ -56,10 +64,137 @@ class Clumper:
         Removes all grouping from the collection.
 
         ![](../img/ungroup.png)
+
+        ```python
+        from clumper import Clumper
+
+        clump = Clumper([{"a": 1}]).group_by("a")
+        assert clump.groups == ("a", )
+        assert clump.ungroup().groups == tuple()
+        ```
         """
         self.groups = tuple()
         return self
 
+    @grouped
+    @dict_collection_only
+    def transform(self, **kwargs):
+        """
+        Does an aggregation just like `.agg()` however instead of reducing the rows we
+        merge the results back with the original data. This saves a lot of compute time
+        because effectively this prevents us from performing a join.
+
+        ![](../img/transform-with-groups.png)
+
+        Arguments:
+            kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [
+            {"a": 6, "grp": "a"},
+            {"a": 2, "grp": "b"},
+            {"a": 7, "grp": "a"},
+            {"a": 9, "grp": "b"},
+            {"a": 5, "grp": "a"}
+        ]
+
+        tfm_clump = (Clumper(data)
+                      .group_by("grp")
+                      .transform(s=("a", "sum"),
+                                 u=("a", "unique")))
+
+        expected = [
+            {'a': 6, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+            {'a': 7, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+            {'a': 5, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+            {'a': 2, 'grp': 'b', 's': 11, 'u': [9, 2]},
+            {'a': 9, 'grp': 'b', 's': 11, 'u': [9, 2]}
+        ]
+
+        assert tfm_clump.equals(expected)
+        ```
+        """
+        agg_results = self.agg(**kwargs)
+        return self.left_join(agg_results, mapping={k: k for k in self.groups})
+
+    def equals(self, data):
+        """
+        Compares the collection of items with a list. Returns `True` if they have the same contents.
+        """
+        for i in self:
+            if i not in data:
+                return False
+        return True
+
+    @staticmethod
+    def _merge_dicts(d1, d2, mapping, suffix1, suffix2):
+        """
+        Merge two dictionaries together. Keeping suffixes in mind.
+        """
+        map_keys = list(mapping.keys()) + list(mapping.values())
+        keys_to_suffix = [
+            k for k in set(d1.keys()).intersection(set(d2.keys())) if k not in map_keys
+        ]
+        d1_new = {(k + suffix1 if k in keys_to_suffix else k): v for k, v in d1.items()}
+        d2_new = {(k + suffix2 if k in keys_to_suffix else k): v for k, v in d2.items()}
+        return {**d1_new, **d2_new}
+
+    @dict_collection_only
+    def left_join(self, other, mapping, lsuffix="", rsuffix="_joined"):
+        """
+        Performs a left join on two collections.
+
+        Each item from the left set will appear in the final collection. Only
+        some items from the right set may appear if a merge is possible. There
+        may be multiple copies of the left set if it can be joined multiple times.
+        """
+        result = []
+        # This is a naive implementation. Speedup seems possible.
+        for d_i in self:
+            values_i = [d_i[k] for k in mapping.keys() if k in d_i.keys()]
+            d_i_added = False
+            for d_j in other:
+                values_j = [d_j[k] for k in mapping.values() if k in d_j.keys()]
+                if len(mapping) == len(values_i) == len(values_j):
+                    if values_i == values_j:
+                        result.append(
+                            Clumper._merge_dicts(d_i, d_j, mapping, lsuffix, rsuffix)
+                        )
+                        d_i_added = True
+            if not d_i_added:
+                result.append(d_i)
+        return self._create_new(result)
+
+    @dict_collection_only
+    def inner_join(self, other, mapping, lsuffix="", rsuffix="_joined"):
+        """
+        Performs an inner join on two collections.
+
+        Any item A in the left set will only appear if there is an item B from
+        the right set that it can join on. And vise versa.
+        """
+        result = []
+        # This is a naive implementation. Speedup seems possible.
+        for d_i in self:
+            values_i = [d_i[k] for k in mapping.keys() if k in d_i.keys()]
+            for d_j in other:
+                values_j = [d_j[k] for k in mapping.values() if k in d_j.keys()]
+                if len(mapping) == len(values_i) == len(values_j):
+                    if values_i == values_j:
+                        result.append(
+                            Clumper._merge_dicts(d_i, d_j, mapping, lsuffix, rsuffix)
+                        )
+        return self._create_new(result)
+
+    @property
+    def only_has_dictionaries(self):
+        return all([isinstance(d, dict) for d in self])
+
+    @dict_collection_only
     @grouped
     def agg(self, **kwargs):
         """
@@ -74,7 +209,9 @@ class Clumper:
         2. the key you'd like to summarise (first item in the tuple)
         3. the summary you'd like to calculate on that key (second item in the tuple)
 
-        The following aggregation functions are available: `mean`, `count`, `unique`, `n_unique`, `sum`, `min`, `max`.
+        It can also accept a string and it will try to fetch an appropriate function
+        for you. If you pass a string it must be either: `mean`, `count`, `unique`,
+        `n_unique`, `sum`, `min`, `max`, `median`, `var` or `std`.
 
         ![](../img/split-apply-combine.png)
 
@@ -111,21 +248,19 @@ class Clumper:
           .collect())
         ```
         """
-        funcs = {
-            "mean": self.mean,
-            "count": self.count,
-            "unique": self.unique,
-            "n_unique": self.n_unique,
-            "sum": self.sum,
-            "min": self.min,
-            "max": self.max,
+        res = {
+            name: self.summarise_col(func_str, col)
+            for name, (col, func_str) in kwargs.items()
         }
-        res = {name: funcs[func_str](col) for name, (col, func_str) in kwargs.items()}
         return Clumper([res], groups=self.groups)
 
-    def subsets(self):
+    @dict_collection_only
+    def _subsets(self):
+        """
+        Subsets the data into groups, specified by `.group_by()`.
+        """
         result = []
-        for gc in self.group_combos():
+        for gc in self._group_combos():
             subset = self.copy()
             for key, value in gc.items():
                 subset = subset.keep(lambda d: d[key] == value)
@@ -137,10 +272,24 @@ class Clumper:
         Concatenate two or more `Clumper` objects together.
 
         ![](../img/concat.png)
-        """
-        return Clumper(self.blob + other.blob)
 
-    def group_combos(self):
+        ```python
+        from clumper import Clumper
+
+        c1 = Clumper([{"a": 1}])
+        c2 = Clumper([{"a": 2}])
+        c3 = Clumper([{"a": 3}])
+
+        assert len(c1.concat(c2)) == 2
+        assert len(c1.concat(c2, c3)) == 3
+        assert len(c1.concat(c2).concat(c3)) == 3
+        ```
+        """
+
+        data = reduce(lambda a, b: a + b, [o.blob for o in other])
+        return self._create_new(self.blob + data)
+
+    def _group_combos(self):
         """
         Returns a dictionary of group-value/clumper pairs.
         """
@@ -173,7 +322,7 @@ class Clumper:
         data = self.blob.copy()
         for func in funcs:
             data = [d for d in data if func(d)]
-        return self.create_new(data)
+        return self._create_new(data)
 
     def head(self, n=5):
         """
@@ -191,9 +340,10 @@ class Clumper:
 
         list_dicts = [{'a': 1}, {'a': 2}, {'a': 3}, {'a': 4}]
 
-        (Clumper(list_dicts)
-          .head(2)
-          .collect())
+        result = Clumper(list_dicts).head(2)
+        expected = [{'a': 1}, {'a': 2}]
+
+        assert result.equals(expected)
         ```
         """
         if not isinstance(n, int):
@@ -201,7 +351,7 @@ class Clumper:
         if n < 0:
             raise ValueError(f"`n` must be a positive integer, got {n}")
         n = min(n, len(self))
-        return self.create_new([self.blob[i] for i in range(n)])
+        return self._create_new([self.blob[i] for i in range(n)])
 
     def tail(self, n=5):
         """
@@ -219,9 +369,9 @@ class Clumper:
 
         list_dicts = [{'a': 1}, {'a': 2}, {'a': 3}, {'a': 4}]
 
-        (Clumper(list_dicts)
-          .tail(2)
-          .collect())
+        result = Clumper(list_dicts).tail(2)
+        expected = [{'a': 3}, {'a': 4}]
+        assert result.equals(expected)
         ```
         """
         if not isinstance(n, int):
@@ -229,8 +379,9 @@ class Clumper:
         if n < 0:
             raise ValueError(f"`n` must be positive, got {n}")
         n = min(n, len(self))
-        return self.create_new([self.blob[-i] for i in range(len(self) - n, len(self))])
+        return self._create_new(self.blob[len(self) - n : len(self)])
 
+    @dict_collection_only
     def select(self, *keys):
         """
         Selects a subset of the keys in each item in the collection.
@@ -250,13 +401,13 @@ class Clumper:
             {'a': 2, 'b': 3, 'c':4},
             {'a': 1, 'b': 6}]
 
-        (Clumper(list_dicts)
-          .select('a', 'b')
-          .collect())
+        clump = Clumper(list_dicts).select('a', 'b')
+        assert all(["c" not in d.keys() for d in clump])
         ```
         """
-        return self.create_new([{k: d[k] for k in keys} for d in self.blob])
+        return self._create_new([{k: d[k] for k in keys} for d in self.blob])
 
+    @dict_collection_only
     def drop(self, *keys):
         """
         Removes a subset of keys from each item in the collection.
@@ -276,12 +427,11 @@ class Clumper:
             {'a': 2, 'b': 3, 'c':4},
             {'a': 1, 'b': 6}]
 
-        (Clumper(list_dicts)
-          .drop('a', 'c')
-          .collect())
+        clump = Clumper(list_dicts).drop('c')
+        assert all(["c" not in d.keys() for d in clump])
         ```
         """
-        return self.create_new(
+        return self._create_new(
             [{k: v for k, v in d.items() if k not in keys} for d in self.blob]
         )
 
@@ -308,10 +458,17 @@ class Clumper:
             {'a': 2, 'b': 3, 'c':4},
             {'a': 1, 'b': 6}]
 
-        (Clumper(list_dicts)
-          .mutate(c=lambda d: d['a'] + d['b'],
-                  s=lambda d: d['a'] + d['b'] + d['c'])
-          .collect())
+        result = (Clumper(list_dicts)
+                  .mutate(c=lambda d: d['a'] + d['b'],
+                          s=lambda d: d['a'] + d['b'] + d['c']))
+
+        expected = [
+            {'a': 1, 'b': 2, 'c': 3, 's': 6},
+            {'a': 2, 'b': 3, 'c': 5, 's': 10},
+            {'a': 1, 'b': 6, 'c': 7, 's': 14}
+        ]
+
+        assert result.equals(expected)
         ```
         """
         data = []
@@ -320,7 +477,7 @@ class Clumper:
             for key, func in kwargs.items():
                 new[key] = func(new)
             data.append(new)
-        return self.create_new(data)
+        return self._create_new(data)
 
     @grouped
     def sort(self, key, reverse=False):
@@ -355,7 +512,7 @@ class Clumper:
           .collect())
         ```
         """
-        return self.create_new(sorted(self.blob, key=key, reverse=reverse))
+        return self._create_new(sorted(self.blob, key=key, reverse=reverse))
 
     def map(self, func):
         """
@@ -380,7 +537,72 @@ class Clumper:
           .collect())
         ```
         """
-        return self.create_new([func(d) for d in self.blob])
+        return self._create_new([func(d) for d in self.blob])
+
+    @dict_collection_only
+    def keys(self, overlap=False):
+        """
+        Returns all the keys of all the items in the collection.
+
+        Arguments:
+            overlap: if `True` only return the keys that overlap in each set
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [{'a': 1, 'b': 2}, {'a': 2, 'c': 3}]
+
+        assert set(Clumper(data).keys(overlap=True)) == {'a'}
+        assert set(Clumper(data).keys(overlap=False)) == {'a', 'b', 'c'}
+        ```
+        """
+        if overlap:
+            all_keys = [set(d.keys()) for d in self]
+            return list(reduce(lambda a, b: a.intersection(b), all_keys))
+        return list({k for d in self for k in d.keys()})
+
+    @dict_collection_only
+    def explode(self, *to_explode, **kwargs):
+        """
+        Turns a list in an item into multiple items. The opposite of `.implode()`.
+
+        ![](../img/explode.png)
+
+        Arguments:
+            to_explode: keys to explode, will keep the same name
+            kwargs: (new name, keys to explode)-pairs
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [{'a': 1, 'items': [1, 2]}]
+
+        clumper = Clumper(data).explode("items")
+        expected = [{'a': 1, 'items': 1}, {'a': 1, 'items': 2}]
+        assert clumper.equals(expected)
+
+        clumper = Clumper(data).explode(item="items")
+        expected = [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
+        assert clumper.equals(expected)
+        ```
+        """
+        # you can keep the same name by just using *args or overwrite using **kwargs
+        kwargs = {**kwargs, **{k: k for k in to_explode}}
+        new_name, to_explode = kwargs.keys(), kwargs.values()
+
+        res = []
+        for d in self.blob:
+            combinations = it.product(*[d[v] for v in to_explode])
+            for comb in combinations:
+                new_dict = d.copy()
+                for k, v in zip(new_name, comb):
+                    new_dict[k] = v
+                res.append(new_dict)
+        return self._create_new(res).drop(*[k for k in to_explode if k not in new_name])
 
     def reduce(self, **kwargs):
         """
@@ -405,7 +627,7 @@ class Clumper:
           .collect())
         ```
         """
-        return self.create_new(
+        return self._create_new(
             [{k: reduce(func, [b for b in self.blob]) for k, func in kwargs.items()}]
         )
 
@@ -425,14 +647,13 @@ class Clumper:
 
         list_dicts = [{'a': i} for i in range(100)]
 
-        def remove_outliers(clump, min_a=20, max_a=80):
+        def remove_outliers(clump, min_a, max_a):
             return (clump
                       .keep(lambda d: d['a'] >= min_a,
                             lambda d: d['a'] <= max_a))
 
-        (Clumper(list_dicts)
-          .pipe(remove_outliers, min_a=10, max_a=90)
-          .collect())
+        result = Clumper(list_dicts).pipe(remove_outliers, min_a=10, max_a=90)
+        assert len(result) == 81
         ```
         """
         return func(self, *args, **kwargs)
@@ -463,8 +684,52 @@ class Clumper:
         assert id(c1) != id(c2)
         ```
         """
-        return self.create_new([d for d in self.blob])
+        return self._create_new([d for d in self.blob])
 
+    def summarise_col(self, func, key):
+        """
+        Apply your own summary function to a key in the collection.
+
+        It can also accept a string and it will try to fetch an appropriate function
+        for you. If you pass a string it must be either: `mean`, `count`, `unique`,
+        `n_unique`, `sum`, `min`, `max`, `median`, `var` or `std`.
+
+        Note that this method **ignores groups**. It also does not return a `Clumper`
+        collection.
+
+        Usage:
+
+        ```python
+        from clumper import Clump
+
+        clump = Clumper([{"a": 1}, {"a": 2}, {"a": 3}])
+
+        assert clump.summarise_col(sum, "a") == 6
+        assert clump.summarise_col("sum", "a") == 6
+        ```
+        """
+        funcs = {
+            "mean": mean,
+            "count": lambda d: len(d),
+            "unique": lambda d: list(set(d)),
+            "n_unique": lambda d: len(set(d)),
+            "sum": sum,
+            "min": min,
+            "max": max,
+            "median": median,
+            "var": variance,
+            "std": stdev,
+        }
+        if isinstance(func, str):
+            if func not in funcs.keys():
+                raise ValueError(
+                    f"Passed `func` must be in {funcs.keys()}, got {func}."
+                )
+            func = funcs[func]
+        array = [d[key] for d in self if key in d.keys()]
+        return func(array)
+
+    @dict_collection_only
     @return_value_if_empty(value=None)
     def sum(self, col):
         """
@@ -488,8 +753,9 @@ class Clumper:
         Clumper(list_of_dicts).sum("b")
         ```
         """
-        return sum([d[col] for d in self if col in d.keys()])
+        return self.summarise_col("sum", col)
 
+    @dict_collection_only
     @return_value_if_empty(value=None)
     def mean(self, col):
         """
@@ -509,14 +775,14 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).mean("a")
-        Clumper(list_of_dicts).mean("b")
+        assert round(Clumper(list_of_dicts).mean("a"), 1) == 3.5
+        assert round(Clumper(list_of_dicts).mean("b"), 1) == 6.7
         ```
         """
-        s = sum([d[col] for d in self if col in d.keys()])
-        return s / len(self)
+        return self.summarise_col("mean", col)
 
-    @return_value_if_empty(value=None)
+    @dict_collection_only
+    @return_value_if_empty(value=0)
     def count(self, col):
         """
         Counts how often a key appears in the collection.
@@ -535,12 +801,13 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).count("a")
-        Clumper(list_of_dicts).count("b")
+        assert Clumper(list_of_dicts).count("a") == 4
+        assert Clumper(list_of_dicts).count("b") == 3
         ```
         """
-        return len([1 for d in self if col in d.keys()])
+        return self.summarise_col("count", col)
 
+    @dict_collection_only
     @return_value_if_empty(value=0)
     def n_unique(self, col):
         """
@@ -560,12 +827,13 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).n_unique("a")
-        Clumper(list_of_dicts).n_unique("b")
+        assert Clumper(list_of_dicts).n_unique("a") == 3
+        assert Clumper(list_of_dicts).n_unique("b") == 2
         ```
         """
-        return len({d[col] for d in self if col in d.keys()})
+        return self.summarise_col("n_unique", col)
 
+    @dict_collection_only
     @return_value_if_empty(value=None)
     def min(self, col):
         """
@@ -585,12 +853,13 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).min("a")
-        Clumper(list_of_dicts).min("b")
+        assert Clumper(list_of_dicts).min("a") == 2
+        assert Clumper(list_of_dicts).min("b") == 6
         ```
         """
-        return min([d[col] for d in self if col in d.keys()])
+        return self.summarise_col("min", col)
 
+    @dict_collection_only
     @return_value_if_empty(value=None)
     def max(self, col):
         """
@@ -610,12 +879,13 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).max("a")
-        Clumper(list_of_dicts).max("b")
+        assert Clumper(list_of_dicts).max("a") == 7
+        assert Clumper(list_of_dicts).max("b") == 7
         ```
         """
-        return max({d[col] for d in self if col in d.keys()})
+        return self.summarise_col("max", col)
 
+    @dict_collection_only
     @return_value_if_empty(value=[])
     def unique(self, col):
         """
@@ -635,8 +905,8 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).unique("a")
-        Clumper(list_of_dicts).unique("b")
+        assert Clumper(list_of_dicts).unique("a") == [2, 3, 7]
+        assert Clumper(list_of_dicts).unique("b") == [6, 7]
         ```
         """
-        return list({d[col] for d in self if col in d.keys()})
+        return self.summarise_col("unique", col)

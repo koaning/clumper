@@ -32,12 +32,29 @@ def grouped(method):
 
         # You may note the deepcopy() here in the keyword arguments. This is done
         # such that state-ful functions (like `row_number`) automatically reset.
-        results = [method(s, *args, **deepcopy(kwargs)) for s in clumper.subsets()]
+        results = [method(s, *args, **deepcopy(kwargs)) for s in clumper._subsets()]
         blob = reduce(lambda a, b: a + b, [c.collect() for c in results])
 
         # We need to make sure the grouping keys are still available when we do "agg".
         if method.__name__ == "agg":
-            blob = [{**s, **b} for s, b in zip(clumper.group_combos(), blob)]
-        return clumper.create_new(blob)
+            blob = [{**s, **b} for s, b in zip(clumper._group_combos(), blob)]
+        return clumper._create_new(blob)
+
+    return wrapped
+
+
+def dict_collection_only(method):
+    """
+    Handles the behavior when a group is present on a clumper object.
+    """
+
+    @wraps(method)
+    def wrapped(clumper, *args, **kwargs):
+        if not clumper.only_has_dictionaries:
+            non_dict = next(d for d in clumper if not isinstance(d, dict))
+            raise ValueError(
+                f"The `{method}` won't work unless all items are dictionaries. Found: {non_dict}."
+            )
+        return method(clumper, *args, **kwargs)
 
     return wrapped

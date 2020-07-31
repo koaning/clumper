@@ -84,6 +84,62 @@ list_dicts = [
        m=('a', 'mean'))
   .collect())
 ```
+
+### Transform
+
+The `.transform()` verb is similar to the `.agg()` verb. The main difference is
+that it does not reduce any rows/keys during aggregation. Instead they are merged
+back in with the original collection. The examples below should help explain what
+the usecase is.
+
+#### Without Groups
+
+With no groups active we just attach the same summary to every item.
+
+![](../img/transform-without-groups.png)
+
+```python
+from clumper import Clumper
+
+data = [
+    {"a": 6, "grp": "a"},
+    {"a": 2, "grp": "b"},
+    {"a": 7, "grp": "a"},
+    {"a": 9, "grp": "b"},
+    {"a": 5, "grp": "a"}
+]
+
+tfm_data = (Clumper(data)
+             .group_by("grp")
+             .transform(s=("a", "sum"),
+                        u=("a", "unique"))
+             .collect())
+```
+
+#### With Groups
+
+With groups active we calculate a summary per group and only attach
+the relevant summary to each item.
+
+![](../img/transform-with-groups.png)
+
+```python
+from clumper import Clumper
+
+data = [
+    {"a": 6, "grp": "a"},
+    {"a": 2, "grp": "b"},
+    {"a": 7, "grp": "a"},
+    {"a": 9, "grp": "b"},
+    {"a": 5, "grp": "a"}
+]
+
+tfm_data = (Clumper(data)
+             .group_by("grp")
+             .transform(s=("a", "sum"),
+                        u=("a", "unique"))
+             .collect())
+```
 ### Mutate
 
 This library offers stateful functions like `row_number`. If you use
@@ -100,7 +156,7 @@ collection.
 
 ```python
 from clumper import Clumper
-from clumper.mappers import row_number
+from clumper.sequence import row_number
 
 list_dicts = [
     {'a': 6, 'grp': 'a'},
@@ -125,7 +181,7 @@ seeing the new group.
 
 ```python
 from clumper import Clumper
-from clumper.mappers import row_number
+from clumper.sequence import row_number
 
 list_dicts = [
     {'a': 6, 'grp': 'a'},
@@ -189,6 +245,7 @@ list_dicts = [
   .sort(key=lambda d: d['a'])
   .collect())
 ```
+
 ## Ungroup
 
 If you're done with a group and you'd like to move on you can drop all
