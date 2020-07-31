@@ -631,14 +631,13 @@ class Clumper:
 
         list_dicts = [{'a': i} for i in range(100)]
 
-        def remove_outliers(clump, min_a=20, max_a=80):
+        def remove_outliers(clump, min_a, max_a):
             return (clump
                       .keep(lambda d: d['a'] >= min_a,
                             lambda d: d['a'] <= max_a))
 
-        (Clumper(list_dicts)
-          .pipe(remove_outliers, min_a=10, max_a=90)
-          .collect())
+        result = Clumper(list_dicts).pipe(remove_outliers, min_a=10, max_a=90)
+        assert len(result) == 81
         ```
         """
         return func(self, *args, **kwargs)
