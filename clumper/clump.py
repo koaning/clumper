@@ -66,10 +66,39 @@ class Clumper:
     def transform(self, **kwargs):
         """
         Does an aggregation just like `.agg()` however instead of reducing the rows we
-        merge the results back with the original data.
+        merge the results back with the original data. This saves a lot of compute time
+        because effectively this prevents us from performing a join.
 
         Arguments:
             kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [
+            {"a": 1, "b": 1},
+            {"a": 1, "b": 2},
+            {"a": 2, "b": 5},
+            {"a": 2, "b": 5}
+        ]
+
+        tfm_data = (Clumper(data)
+          .group_by("a")
+          .transform(b_sum=("b", "sum"),
+                     b_uniq=("b", "unique"))
+          .collect())
+
+        tfm_expected = [
+            {'a': 1, 'b': 1, 'b_sum': 3, 'b_uniq': [1, 2]},
+            {'a': 1, 'b': 2, 'b_sum': 3, 'b_uniq': [1, 2]},
+            {'a': 2, 'b': 5, 'b_sum': 10, 'b_uniq': [5]},
+            {'a': 2, 'b': 5, 'b_sum': 10, 'b_uniq': [5]}
+        ]
+
+        assert tfm_data == tfm_expected
+        ```
         """
         agg_results = self.agg(**kwargs)
         return self.left_join(agg_results, mapping={k: k for k in self.groups})
@@ -199,12 +228,12 @@ class Clumper:
         return Clumper([res], groups=self.groups)
 
     @dict_collection_only
-    def subsets(self):
+    def _subsets(self):
         """
         Subsets the data into groups, specified by `.group_by()`.
         """
         result = []
-        for gc in self.group_combos():
+        for gc in self._group_combos():
             subset = self.copy()
             for key, value in gc.items():
                 subset = subset.keep(lambda d: d[key] == value)
@@ -219,7 +248,7 @@ class Clumper:
         """
         return Clumper(self.blob + other.blob)
 
-    def group_combos(self):
+    def _group_combos(self):
         """
         Returns a dictionary of group-value/clumper pairs.
         """
@@ -684,8 +713,8 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).mean("a")
-        Clumper(list_of_dicts).mean("b")
+        assert round(Clumper(list_of_dicts).mean("a"), 1) == 3.5
+        assert round(Clumper(list_of_dicts).mean("b"), 1) == 6.7
         ```
         """
         return self.summarise_col(mean, col)
@@ -710,8 +739,8 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).count("a")
-        Clumper(list_of_dicts).count("b")
+        assert Clumper(list_of_dicts).count("a") == 4
+        assert Clumper(list_of_dicts).count("b") == 3
         ```
         """
         return self.summarise_col(len, col)
@@ -736,8 +765,8 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).n_unique("a")
-        Clumper(list_of_dicts).n_unique("b")
+        assert Clumper(list_of_dicts).n_unique("a") == 3
+        assert Clumper(list_of_dicts).n_unique("b") == 2
         ```
         """
         return self.summarise_col(lambda d: len(set(d)), col)
@@ -762,8 +791,8 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).min("a")
-        Clumper(list_of_dicts).min("b")
+        assert Clumper(list_of_dicts).min("a") == 2
+        assert Clumper(list_of_dicts).min("b") == 6
         ```
         """
         return self.summarise_col(min, col)
@@ -788,8 +817,8 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).max("a")
-        Clumper(list_of_dicts).max("b")
+        assert Clumper(list_of_dicts).max("a") == 7
+        assert Clumper(list_of_dicts).max("b") == 7
         ```
         """
         return self.summarise_col(max, col)
@@ -814,8 +843,8 @@ class Clumper:
             {'a': 2, 'b': 7}
         ]
 
-        Clumper(list_of_dicts).unique("a")
-        Clumper(list_of_dicts).unique("b")
+        assert Clumper(list_of_dicts).unique("a") == [2, 3, 7]
+        assert Clumper(list_of_dicts).unique("b") == [6, 7]
         ```
         """
         return self.summarise_col(lambda d: list(set(d)), col)

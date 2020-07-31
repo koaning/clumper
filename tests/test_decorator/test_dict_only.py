@@ -13,7 +13,7 @@ def no_dict_clumper():
     [
         "agg",
         "transform",
-        "subsets",
+        "_subsets",
         "select",
         "drop",
         "keys",
