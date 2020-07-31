@@ -12,11 +12,12 @@ nav:
       - Getting Started: guides/getting-started.md
       - Understanding Verbs: guides/verbs.md
       - Understanding Groups: guides/understanding-groups.md
+      - Understanding Shapes: guides/understanding-reshaping.md
       - Useful Methods: guides/summary-methods.md
       - FAQ: guides/faq.md
   - API:
       - Clumper: api/clumper.md
-      - mappers: api/sequence.md
+      - sequence: api/sequence.md
 plugins:
   - mkdocstrings
   - mkdocs-jupyter

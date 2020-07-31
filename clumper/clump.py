@@ -84,6 +84,8 @@ class Clumper:
         merge the results back with the original data. This saves a lot of compute time
         because effectively this prevents us from performing a join.
 
+        ![](../img/transform-with-groups.png)
+
         Arguments:
             kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.
 
@@ -93,23 +95,25 @@ class Clumper:
         from clumper import Clumper
 
         data = [
-            {"a": 1, "b": 1},
-            {"a": 1, "b": 2},
-            {"a": 2, "b": 5},
-            {"a": 2, "b": 5}
+            {"a": 6, "grp": "a"},
+            {"a": 2, "grp": "b"},
+            {"a": 7, "grp": "a"},
+            {"a": 9, "grp": "b"},
+            {"a": 5, "grp": "a"}
         ]
 
         tfm_data = (Clumper(data)
-          .group_by("a")
-          .transform(b_sum=("b", "sum"),
-                     b_uniq=("b", "unique"))
-          .collect())
+                     .group_by("grp")
+                     .transform(s=("a", "sum"),
+                                u=("a", "unique"))
+                     .collect())
 
         tfm_expected = [
-            {'a': 1, 'b': 1, 'b_sum': 3, 'b_uniq': [1, 2]},
-            {'a': 1, 'b': 2, 'b_sum': 3, 'b_uniq': [1, 2]},
-            {'a': 2, 'b': 5, 'b_sum': 10, 'b_uniq': [5]},
-            {'a': 2, 'b': 5, 'b_sum': 10, 'b_uniq': [5]}
+            {'a': 6, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+            {'a': 7, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+            {'a': 5, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+            {'a': 2, 'grp': 'b', 's': 11, 'u': [9, 2]},
+            {'a': 9, 'grp': 'b', 's': 11, 'u': [9, 2]}
         ]
 
         assert tfm_data == tfm_expected
@@ -555,6 +559,8 @@ class Clumper:
     def explode(self, *to_explode, **kwargs):
         """
         Turns a list in an item into multiple items. The opposite of `.implode()`.
+
+        ![](../img/explode.png)
 
         Arguments:
             to_explode: keys to explode, will keep the same name
