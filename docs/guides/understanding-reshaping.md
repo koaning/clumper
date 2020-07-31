@@ -16,13 +16,37 @@ from clumper import Clumper
 
 data = [{'a': 1, 'items': [1, 2]}]
 
-new_data = Clumper(data).explode("items").collect()
-assert new_data == [{'a': 1, 'items': 1}, {'a': 1, 'items': 2}]
+clumper = Clumper(data).explode("items")
+assert clumper.equals([{'a': 1, 'items': 1}, {'a': 1, 'items': 2}])
 
 new_data = Clumper(data).explode(item="items").collect()
-assert new_data == [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
+assert clumper.equals([{'a': 1, 'item': 1}, {'a': 1, 'item': 2}])
 ```
 
 Note how the syntax allows you to either explode the values
 assigning they to the old keyname or to directly rename
-this field.
+this field. You can also pass multiple keys in a single command.
+
+```python
+from clumper import Clumper
+
+data = [{'a': 1, 'items': [1, 2], 'values':[3, 4]}]
+
+clumper = Clumper(data).explode("items", "values")
+expected = [
+    {'a': 1, 'items': 1, 'values': 3},
+    {'a': 1, 'items': 1, 'values': 4},
+    {'a': 1, 'items': 2, 'values': 3},
+    {'a': 1, 'items': 2, 'values': 4}
+]
+assert clumper.equals(expected)
+
+new_data = Clumper(data).explode(item="items", val="values").collect()
+expected = [
+    {'a': 1, 'item': 1, 'val': 3},
+    {'a': 1, 'item': 1, 'val': 4},
+    {'a': 1, 'item': 2, 'val': 3},
+    {'a': 1, 'item': 2, 'val': 4}
+]
+assert clumper.equals(expected)
+```

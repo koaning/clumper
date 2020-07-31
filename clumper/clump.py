@@ -258,13 +258,15 @@ class Clumper:
     def _subsets(self):
         """
         Subsets the data into groups, specified by `.group_by()`.
+        Only subsets that have length > 0 are returned.
         """
         result = []
         for gc in self._group_combos():
             subset = self.copy()
             for key, value in gc.items():
                 subset = subset.keep(lambda d: d[key] == value)
-            result.append(subset)
+            if len(subset) > 0:
+                result.append(subset)
         return result
 
     def concat(self, *other):
