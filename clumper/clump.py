@@ -245,8 +245,22 @@ class Clumper:
         Concatenate two or more `Clumper` objects together.
 
         ![](../img/concat.png)
+
+        ```python
+        from clumper import Clumper
+
+        c1 = Clumper([{"a": 1}])
+        c2 = Clumper([{"a": 2}])
+        c3 = Clumper([{"a": 3}])
+
+        assert len(c1.concat(c2)) == 2
+        assert len(c1.concat(c2, c3)) == 3
+        assert len(c1.concat(c2).concat(c3)) == 3
+        ```
         """
-        return Clumper(self.blob + other.blob)
+
+        data = reduce(lambda a, b: a + b, [o.blob for o in other])
+        return self.create_new(self.blob + data)
 
     def _group_combos(self):
         """
