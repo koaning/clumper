@@ -102,13 +102,12 @@ class Clumper:
             {"a": 5, "grp": "a"}
         ]
 
-        tfm_data = (Clumper(data)
-                     .group_by("grp")
-                     .transform(s=("a", "sum"),
-                                u=("a", "unique"))
-                     .collect())
+        tfm_clump = (Clumper(data)
+                      .group_by("grp")
+                      .transform(s=("a", "sum"),
+                                 u=("a", "unique")))
 
-        tfm_expected = [
+        expected = [
             {'a': 6, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
             {'a': 7, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
             {'a': 5, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
@@ -116,11 +115,20 @@ class Clumper:
             {'a': 9, 'grp': 'b', 's': 11, 'u': [9, 2]}
         ]
 
-        assert tfm_data == tfm_expected
+        assert tfm_clump.equals(expected)
         ```
         """
         agg_results = self.agg(**kwargs)
         return self.left_join(agg_results, mapping={k: k for k in self.groups})
+
+    def equals(self, data):
+        """
+        Compares the collection of items with a list. Returns `True` if they have the same contents.
+        """
+        for i in self:
+            if i not in data:
+                return False
+        return True
 
     @staticmethod
     def _merge_dicts(d1, d2, mapping, suffix1, suffix2):
@@ -332,9 +340,10 @@ class Clumper:
 
         list_dicts = [{'a': 1}, {'a': 2}, {'a': 3}, {'a': 4}]
 
-        result = Clumper(list_dicts).head(2).collect()
+        result = Clumper(list_dicts).head(2)
         expected = [{'a': 1}, {'a': 2}]
-        assert result == expected
+
+        assert result.equals(expected)
         ```
         """
         if not isinstance(n, int):
@@ -360,9 +369,9 @@ class Clumper:
 
         list_dicts = [{'a': 1}, {'a': 2}, {'a': 3}, {'a': 4}]
 
-        result = Clumper(list_dicts).tail(2).collect()
+        result = Clumper(list_dicts).tail(2)
         expected = [{'a': 3}, {'a': 4}]
-        assert result == expected
+        assert result.equals(expected)
         ```
         """
         if not isinstance(n, int):
@@ -451,8 +460,7 @@ class Clumper:
 
         result = (Clumper(list_dicts)
                   .mutate(c=lambda d: d['a'] + d['b'],
-                          s=lambda d: d['a'] + d['b'] + d['c'])
-                  .collect())
+                          s=lambda d: d['a'] + d['b'] + d['c']))
 
         expected = [
             {'a': 1, 'b': 2, 'c': 3, 's': 6},
@@ -460,7 +468,7 @@ class Clumper:
             {'a': 1, 'b': 6, 'c': 7, 's': 14}
         ]
 
-        assert result == expected
+        assert result.equals(expected)
         ```
         """
         data = []
@@ -573,11 +581,13 @@ class Clumper:
 
         data = [{'a': 1, 'items': [1, 2]}]
 
-        new_data = Clumper(data).explode("items").collect()
-        assert new_data == [{'a': 1, 'items': 1}, {'a': 1, 'items': 2}]
+        clumper = Clumper(data).explode("items")
+        expected = [{'a': 1, 'items': 1}, {'a': 1, 'items': 2}]
+        assert clumper.equals(expected)
 
-        new_data = Clumper(data).explode(item="items").collect()
-        assert new_data == [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
+        clumper = Clumper(data).explode(item="items")
+        expected = [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
+        assert clumper.equals(expected)
         ```
         """
         # you can keep the same name by just using *args or overwrite using **kwargs
@@ -686,6 +696,17 @@ class Clumper:
 
         Note that this method **ignores groups**. It also does not return a `Clumper`
         collection.
+
+        Usage:
+
+        ```python
+        from clumper import Clump
+
+        clump = Clumper([{"a": 1}, {"a": 2}, {"a": 3}])
+
+        assert clump.summarise_col(sum, "a") == 6
+        assert clump.summarise_col("sum", "a") == 6
+        ```
         """
         funcs = {
             "mean": mean,
@@ -705,7 +726,8 @@ class Clumper:
                     f"Passed `func` must be in {funcs.keys()}, got {func}."
                 )
             func = funcs[func]
-        return func([d[key] for d in self if key in d.keys()])
+        array = [d[key] for d in self if key in d.keys()]
+        return func(array)
 
     @dict_collection_only
     @return_value_if_empty(value=None)
@@ -731,7 +753,7 @@ class Clumper:
         Clumper(list_of_dicts).sum("b")
         ```
         """
-        return self.summarise_col(sum, col)
+        return self.summarise_col("sum", col)
 
     @dict_collection_only
     @return_value_if_empty(value=None)
@@ -757,7 +779,7 @@ class Clumper:
         assert round(Clumper(list_of_dicts).mean("b"), 1) == 6.7
         ```
         """
-        return self.summarise_col(mean, col)
+        return self.summarise_col("mean", col)
 
     @dict_collection_only
     @return_value_if_empty(value=0)
@@ -783,7 +805,7 @@ class Clumper:
         assert Clumper(list_of_dicts).count("b") == 3
         ```
         """
-        return self.summarise_col(len, col)
+        return self.summarise_col("count", col)
 
     @dict_collection_only
     @return_value_if_empty(value=0)
@@ -809,7 +831,7 @@ class Clumper:
         assert Clumper(list_of_dicts).n_unique("b") == 2
         ```
         """
-        return self.summarise_col(lambda d: len(set(d)), col)
+        return self.summarise_col("n_unique", col)
 
     @dict_collection_only
     @return_value_if_empty(value=None)
@@ -835,7 +857,7 @@ class Clumper:
         assert Clumper(list_of_dicts).min("b") == 6
         ```
         """
-        return self.summarise_col(min, col)
+        return self.summarise_col("min", col)
 
     @dict_collection_only
     @return_value_if_empty(value=None)
@@ -861,7 +883,7 @@ class Clumper:
         assert Clumper(list_of_dicts).max("b") == 7
         ```
         """
-        return self.summarise_col(max, col)
+        return self.summarise_col("max", col)
 
     @dict_collection_only
     @return_value_if_empty(value=[])
@@ -887,4 +909,4 @@ class Clumper:
         assert Clumper(list_of_dicts).unique("b") == [6, 7]
         ```
         """
-        return self.summarise_col(lambda d: list(set(d)), col)
+        return self.summarise_col("unique", col)
