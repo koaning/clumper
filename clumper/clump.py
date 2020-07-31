@@ -34,7 +34,7 @@ class Clumper:
     def __repr__(self):
         return f"<Clumper groups={self.groups} len={len(self)} @{hex(id(self))}>"
 
-    def create_new(self, blob):
+    def _create_new(self, blob):
         """
         Creates a new collection of data while preserving settings of the
         current collection (most notably, `groups`).
@@ -48,6 +48,13 @@ class Clumper:
         with `.ungroup()`.
 
         ![](../img/groupby.png)
+
+        ```python
+        from clumper import Clumper
+
+        clump = Clumper([{"a": 1}]).group_by("a")
+        assert clump.groups == ("a", )
+        ```
         """
         self.groups = cols
         return self
@@ -57,6 +64,14 @@ class Clumper:
         Removes all grouping from the collection.
 
         ![](../img/ungroup.png)
+
+        ```python
+        from clumper import Clumper
+
+        clump = Clumper([{"a": 1}]).group_by("a")
+        assert clump.groups == ("a", )
+        assert clump.ungroup().groups == tuple()
+        ```
         """
         self.groups = tuple()
         return self
@@ -140,7 +155,7 @@ class Clumper:
                         d_i_added = True
             if not d_i_added:
                 result.append(d_i)
-        return self.create_new(result)
+        return self._create_new(result)
 
     @dict_collection_only
     def inner_join(self, other, mapping, lsuffix="", rsuffix="_joined"):
@@ -161,7 +176,7 @@ class Clumper:
                         result.append(
                             Clumper._merge_dicts(d_i, d_j, mapping, lsuffix, rsuffix)
                         )
-        return self.create_new(result)
+        return self._create_new(result)
 
     @property
     def only_has_dictionaries(self):
@@ -260,7 +275,7 @@ class Clumper:
         """
 
         data = reduce(lambda a, b: a + b, [o.blob for o in other])
-        return self.create_new(self.blob + data)
+        return self._create_new(self.blob + data)
 
     def _group_combos(self):
         """
@@ -295,7 +310,7 @@ class Clumper:
         data = self.blob.copy()
         for func in funcs:
             data = [d for d in data if func(d)]
-        return self.create_new(data)
+        return self._create_new(data)
 
     def head(self, n=5):
         """
@@ -313,9 +328,9 @@ class Clumper:
 
         list_dicts = [{'a': 1}, {'a': 2}, {'a': 3}, {'a': 4}]
 
-        (Clumper(list_dicts)
-          .head(2)
-          .collect())
+        result = Clumper(list_dicts).head(2).collect()
+        expected = [{'a': 1}, {'a': 2}]
+        assert result == expected
         ```
         """
         if not isinstance(n, int):
@@ -323,7 +338,7 @@ class Clumper:
         if n < 0:
             raise ValueError(f"`n` must be a positive integer, got {n}")
         n = min(n, len(self))
-        return self.create_new([self.blob[i] for i in range(n)])
+        return self._create_new([self.blob[i] for i in range(n)])
 
     def tail(self, n=5):
         """
@@ -341,9 +356,9 @@ class Clumper:
 
         list_dicts = [{'a': 1}, {'a': 2}, {'a': 3}, {'a': 4}]
 
-        (Clumper(list_dicts)
-          .tail(2)
-          .collect())
+        result = Clumper(list_dicts).tail(2).collect()
+        expected = [{'a': 3}, {'a': 4}]
+        assert result == expected
         ```
         """
         if not isinstance(n, int):
@@ -351,7 +366,7 @@ class Clumper:
         if n < 0:
             raise ValueError(f"`n` must be positive, got {n}")
         n = min(n, len(self))
-        return self.create_new([self.blob[-i] for i in range(len(self) - n, len(self))])
+        return self._create_new(self.blob[len(self) - n : len(self)])
 
     @dict_collection_only
     def select(self, *keys):
@@ -373,12 +388,11 @@ class Clumper:
             {'a': 2, 'b': 3, 'c':4},
             {'a': 1, 'b': 6}]
 
-        (Clumper(list_dicts)
-          .select('a', 'b')
-          .collect())
+        clump = Clumper(list_dicts).select('a', 'b')
+        assert all(["c" not in d.keys() for d in clump])
         ```
         """
-        return self.create_new([{k: d[k] for k in keys} for d in self.blob])
+        return self._create_new([{k: d[k] for k in keys} for d in self.blob])
 
     @dict_collection_only
     def drop(self, *keys):
@@ -400,12 +414,11 @@ class Clumper:
             {'a': 2, 'b': 3, 'c':4},
             {'a': 1, 'b': 6}]
 
-        (Clumper(list_dicts)
-          .drop('a', 'c')
-          .collect())
+        clump = Clumper(list_dicts).drop('c')
+        assert all(["c" not in d.keys() for d in clump])
         ```
         """
-        return self.create_new(
+        return self._create_new(
             [{k: v for k, v in d.items() if k not in keys} for d in self.blob]
         )
 
@@ -432,10 +445,18 @@ class Clumper:
             {'a': 2, 'b': 3, 'c':4},
             {'a': 1, 'b': 6}]
 
-        (Clumper(list_dicts)
-          .mutate(c=lambda d: d['a'] + d['b'],
-                  s=lambda d: d['a'] + d['b'] + d['c'])
-          .collect())
+        result = (Clumper(list_dicts)
+                  .mutate(c=lambda d: d['a'] + d['b'],
+                          s=lambda d: d['a'] + d['b'] + d['c'])
+                  .collect())
+
+        expected = [
+            {'a': 1, 'b': 2, 'c': 3, 's': 6},
+            {'a': 2, 'b': 3, 'c': 5, 's': 10},
+            {'a': 1, 'b': 6, 'c': 7, 's': 14}
+        ]
+
+        assert result == expected
         ```
         """
         data = []
@@ -444,7 +465,7 @@ class Clumper:
             for key, func in kwargs.items():
                 new[key] = func(new)
             data.append(new)
-        return self.create_new(data)
+        return self._create_new(data)
 
     @grouped
     def sort(self, key, reverse=False):
@@ -479,7 +500,7 @@ class Clumper:
           .collect())
         ```
         """
-        return self.create_new(sorted(self.blob, key=key, reverse=reverse))
+        return self._create_new(sorted(self.blob, key=key, reverse=reverse))
 
     def map(self, func):
         """
@@ -504,7 +525,7 @@ class Clumper:
           .collect())
         ```
         """
-        return self.create_new([func(d) for d in self.blob])
+        return self._create_new([func(d) for d in self.blob])
 
     @dict_collection_only
     def keys(self, overlap=False):
@@ -565,7 +586,7 @@ class Clumper:
                 for k, v in zip(new_name, comb):
                     new_dict[k] = v
                 res.append(new_dict)
-        return self.create_new(res).drop(*[k for k in to_explode if k not in new_name])
+        return self._create_new(res).drop(*[k for k in to_explode if k not in new_name])
 
     def reduce(self, **kwargs):
         """
@@ -590,7 +611,7 @@ class Clumper:
           .collect())
         ```
         """
-        return self.create_new(
+        return self._create_new(
             [{k: reduce(func, [b for b in self.blob]) for k, func in kwargs.items()}]
         )
 
@@ -648,7 +669,7 @@ class Clumper:
         assert id(c1) != id(c2)
         ```
         """
-        return self.create_new([d for d in self.blob])
+        return self._create_new([d for d in self.blob])
 
     def summarise_col(self, func, key):
         """

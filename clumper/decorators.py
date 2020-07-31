@@ -38,7 +38,7 @@ def grouped(method):
         # We need to make sure the grouping keys are still available when we do "agg".
         if method.__name__ == "agg":
             blob = [{**s, **b} for s, b in zip(clumper._group_combos(), blob)]
-        return clumper.create_new(blob)
+        return clumper._create_new(blob)
 
     return wrapped
 
