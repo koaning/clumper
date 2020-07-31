@@ -16,7 +16,7 @@ nav:
       - FAQ: guides/faq.md
   - API:
       - Clumper: api/clumper.md
-      - mappers: api/mappers.md
+      - mappers: api/sequence.md
 plugins:
   - mkdocstrings
   - mkdocs-jupyter

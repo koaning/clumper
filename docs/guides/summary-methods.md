@@ -4,7 +4,9 @@ The `Clumper` object also offers useful methods that aren't verbs.
 
 Here's a sample of useful methods to get summaries from your collection.
 Each of these methods has a string equivalent that is used in `.agg()`
-when making aggregations. Here's a few common ones.
+when making aggregations. We'll list a few common ones here but take note:
+all of these are methods **ignore the grouping**. If you want to use these
+methods with grouping, use `.agg()` instead.
 
 ### `.mean()`
 

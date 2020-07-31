@@ -1,5 +1,6 @@
-from functools import reduce
 import itertools as it
+from functools import reduce
+from statistics import mean, variance, stdev, median
 
 from clumper.decorators import return_value_if_empty, grouped, dict_collection_only
 
@@ -152,7 +153,9 @@ class Clumper:
         2. the key you'd like to summarise (first item in the tuple)
         3. the summary you'd like to calculate on that key (second item in the tuple)
 
-        The following aggregation functions are available: `mean`, `count`, `unique`, `n_unique`, `sum`, `min`, `max`.
+        It can also accept a string and it will try to fetch an appropriate function
+        for you. If you pass a string it must be either: `mean`, `count`, `unique`,
+        `n_unique`, `sum`, `min`, `max`, `median`, `var` or `std`.
 
         ![](../img/split-apply-combine.png)
 
@@ -189,16 +192,10 @@ class Clumper:
           .collect())
         ```
         """
-        funcs = {
-            "mean": self.mean,
-            "count": self.count,
-            "unique": self.unique,
-            "n_unique": self.n_unique,
-            "sum": self.sum,
-            "min": self.min,
-            "max": self.max,
+        res = {
+            name: self.summarise_col(func_str, col)
+            for name, (col, func_str) in kwargs.items()
         }
-        res = {name: funcs[func_str](col) for name, (col, func_str) in kwargs.items()}
         return Clumper([res], groups=self.groups)
 
     @dict_collection_only
@@ -610,6 +607,37 @@ class Clumper:
         """
         return self.create_new([d for d in self.blob])
 
+    def summarise_col(self, func, key):
+        """
+        Apply your own summary function to a key in the collection.
+
+        It can also accept a string and it will try to fetch an appropriate function
+        for you. If you pass a string it must be either: `mean`, `count`, `unique`,
+        `n_unique`, `sum`, `min`, `max`, `median`, `var` or `std`.
+
+        Note that this method **ignores groups**. It also does not return a `Clumper`
+        collection.
+        """
+        funcs = {
+            "mean": mean,
+            "count": lambda d: len(d),
+            "unique": lambda d: list(set(d)),
+            "n_unique": lambda d: len(set(d)),
+            "sum": sum,
+            "min": min,
+            "max": max,
+            "median": median,
+            "var": variance,
+            "std": stdev,
+        }
+        if isinstance(func, str):
+            if func not in funcs.keys():
+                raise ValueError(
+                    f"Passed `func` must be in {funcs.keys()}, got {func}."
+                )
+            func = funcs[func]
+        return func([d[key] for d in self if key in d.keys()])
+
     @dict_collection_only
     @return_value_if_empty(value=None)
     def sum(self, col):
@@ -634,7 +662,7 @@ class Clumper:
         Clumper(list_of_dicts).sum("b")
         ```
         """
-        return sum([d[col] for d in self if col in d.keys()])
+        return self.summarise_col(sum, col)
 
     @dict_collection_only
     @return_value_if_empty(value=None)
@@ -660,11 +688,10 @@ class Clumper:
         Clumper(list_of_dicts).mean("b")
         ```
         """
-        s = sum([d[col] for d in self if col in d.keys()])
-        return s / len(self)
+        return self.summarise_col(mean, col)
 
     @dict_collection_only
-    @return_value_if_empty(value=None)
+    @return_value_if_empty(value=0)
     def count(self, col):
         """
         Counts how often a key appears in the collection.
@@ -687,7 +714,7 @@ class Clumper:
         Clumper(list_of_dicts).count("b")
         ```
         """
-        return len([1 for d in self if col in d.keys()])
+        return self.summarise_col(len, col)
 
     @dict_collection_only
     @return_value_if_empty(value=0)
@@ -713,7 +740,7 @@ class Clumper:
         Clumper(list_of_dicts).n_unique("b")
         ```
         """
-        return len({d[col] for d in self if col in d.keys()})
+        return self.summarise_col(lambda d: len(set(d)), col)
 
     @dict_collection_only
     @return_value_if_empty(value=None)
@@ -739,7 +766,7 @@ class Clumper:
         Clumper(list_of_dicts).min("b")
         ```
         """
-        return min([d[col] for d in self if col in d.keys()])
+        return self.summarise_col(min, col)
 
     @dict_collection_only
     @return_value_if_empty(value=None)
@@ -765,7 +792,7 @@ class Clumper:
         Clumper(list_of_dicts).max("b")
         ```
         """
-        return max({d[col] for d in self if col in d.keys()})
+        return self.summarise_col(max, col)
 
     @dict_collection_only
     @return_value_if_empty(value=[])
@@ -791,4 +818,4 @@ class Clumper:
         Clumper(list_of_dicts).unique("b")
         ```
         """
-        return list({d[col] for d in self if col in d.keys()})
+        return self.summarise_col(lambda d: list(set(d)), col)
