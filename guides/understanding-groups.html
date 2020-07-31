@@ -420,8 +420,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mutate" class="md-nav__link">
-    Mutate
+  <a href="#transform" class="md-nav__link">
+    Transform
   </a>
   
     <nav class="md-nav">
@@ -447,8 +447,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sort" class="md-nav__link">
-    Sort
+  <a href="#mutate" class="md-nav__link">
+    Mutate
   </a>
   
     <nav class="md-nav">
@@ -463,6 +463,33 @@
         
           <li class="md-nav__item">
   <a href="#with-groups_2" class="md-nav__link">
+    With Groups
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    Sort
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#without-groups_3" class="md-nav__link">
+    Without Groups
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-groups_3" class="md-nav__link">
     With Groups
   </a>
   
@@ -493,6 +520,18 @@
   
 </nav>
     
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="understanding-reshaping.html" title="Understanding Shapes" class="md-nav__link">
+      Understanding Shapes
+    </a>
   </li>
 
         
@@ -562,8 +601,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../api/mappers.html" title="mappers" class="md-nav__link">
-      mappers
+    <a href="../api/sequence.html" title="sequence" class="md-nav__link">
+      sequence
     </a>
   </li>
 
@@ -627,8 +666,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#mutate" class="md-nav__link">
-    Mutate
+  <a href="#transform" class="md-nav__link">
+    Transform
   </a>
   
     <nav class="md-nav">
@@ -654,8 +693,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#sort" class="md-nav__link">
-    Sort
+  <a href="#mutate" class="md-nav__link">
+    Mutate
   </a>
   
     <nav class="md-nav">
@@ -670,6 +709,33 @@
         
           <li class="md-nav__item">
   <a href="#with-groups_2" class="md-nav__link">
+    With Groups
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sort" class="md-nav__link">
+    Sort
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#without-groups_3" class="md-nav__link">
+    Without Groups
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-groups_3" class="md-nav__link">
     With Groups
   </a>
   
@@ -782,17 +848,63 @@ groups are made available in the new collection.</p>
   <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
 </code></pre></div>
 
+<h3 id="transform">Transform<a class="headerlink" href="#transform" title="Permanent link">&para;</a></h3>
+<p>The <code>.transform()</code> verb is similar to the <code>.agg()</code> verb. The main difference is
+that it does not reduce any rows/keys during aggregation. Instead they are merged
+back in with the original collection. The examples below should help explain what
+the usecase is.</p>
+<h4 id="without-groups_1">Without Groups<a class="headerlink" href="#without-groups_1" title="Permanent link">&para;</a></h4>
+<p>With no groups active we just attach the same summary to every item.</p>
+<p><img alt="" src="../img/transform-without-groups.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">tfm_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+             <span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;grp&quot;</span><span class="p">)</span>
+             <span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">),</span>
+                        <span class="n">u</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;unique&quot;</span><span class="p">))</span>
+             <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+</code></pre></div>
+
+<h4 id="with-groups_1">With Groups<a class="headerlink" href="#with-groups_1" title="Permanent link">&para;</a></h4>
+<p>With groups active we calculate a summary per group and only attach
+the relevant summary to each item.</p>
+<p><img alt="" src="../img/transform-with-groups.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="s2">&quot;b&quot;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;grp&quot;</span><span class="p">:</span> <span class="s2">&quot;a&quot;</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">tfm_data</span> <span class="o">=</span> <span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+             <span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s2">&quot;grp&quot;</span><span class="p">)</span>
+             <span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;sum&quot;</span><span class="p">),</span>
+                        <span class="n">u</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;unique&quot;</span><span class="p">))</span>
+             <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+</code></pre></div>
+
 <h3 id="mutate">Mutate<a class="headerlink" href="#mutate" title="Permanent link">&para;</a></h3>
 <p>This library offers stateful functions like <code>row_number</code>. If you use
 these functions while there is a group active you'll notice different
 behavior.</p>
-<h4 id="without-groups_1">Without Groups<a class="headerlink" href="#without-groups_1" title="Permanent link">&para;</a></h4>
+<h4 id="without-groups_2">Without Groups<a class="headerlink" href="#without-groups_2" title="Permanent link">&para;</a></h4>
 <p>When there is no group we just start counting at one
 and we continue counting until we're at the end of the
 collection.</p>
 <p><img alt="" src="../img/mutate-without-group.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-<span class="kn">from</span> <span class="nn">clumper.mappers</span> <span class="kn">import</span> <span class="n">row_number</span>
+<span class="kn">from</span> <span class="nn">clumper.sequence</span> <span class="kn">import</span> <span class="n">row_number</span>
 
 <span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;grp&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">},</span>
@@ -807,13 +919,13 @@ collection.</p>
   <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
 </code></pre></div>
 
-<h4 id="with-groups_1">With Groups<a class="headerlink" href="#with-groups_1" title="Permanent link">&para;</a></h4>
+<h4 id="with-groups_2">With Groups<a class="headerlink" href="#with-groups_2" title="Permanent link">&para;</a></h4>
 <p>Because there are groups you'll notice that the order
 is different but also that the <code>row_number</code> resets when
 seeing the new group.</p>
 <p><img alt="" src="../img/mutate-with-group.png" /></p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-<span class="kn">from</span> <span class="nn">clumper.mappers</span> <span class="kn">import</span> <span class="n">row_number</span>
+<span class="kn">from</span> <span class="nn">clumper.sequence</span> <span class="kn">import</span> <span class="n">row_number</span>
 
 <span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;grp&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">},</span>
@@ -830,7 +942,7 @@ seeing the new group.</p>
 </code></pre></div>
 
 <h3 id="sort">Sort<a class="headerlink" href="#sort" title="Permanent link">&para;</a></h3>
-<h4 id="without-groups_2">Without Groups<a class="headerlink" href="#without-groups_2" title="Permanent link">&para;</a></h4>
+<h4 id="without-groups_3">Without Groups<a class="headerlink" href="#without-groups_3" title="Permanent link">&para;</a></h4>
 <p>With no groups active, we just sort the entire collection
 based on the <code>key</code> that is provided.</p>
 <p><img alt="" src="../img/sort-no-group.png" /></p>
@@ -849,7 +961,7 @@ based on the <code>key</code> that is provided.</p>
   <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
 </code></pre></div>
 
-<h4 id="with-groups_2">With Groups<a class="headerlink" href="#with-groups_2" title="Permanent link">&para;</a></h4>
+<h4 id="with-groups_3">With Groups<a class="headerlink" href="#with-groups_3" title="Permanent link">&para;</a></h4>
 <p>With groups active, still perform the sorting but only
 within each group.</p>
 <p><img alt="" src="../img/sort-with-group.png" /></p>
@@ -908,13 +1020,13 @@ groups by calling <code>.ungroup()</code>.</p>
           </a>
         
         
-          <a href="summary-methods.html" title="Useful Methods" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="understanding-reshaping.html" title="Understanding Shapes" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Useful Methods
+                Understanding Shapes
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">

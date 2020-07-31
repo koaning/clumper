@@ -372,6 +372,18 @@
           
           
 
+
+  <li class="md-nav__item">
+    <a href="understanding-reshaping.html" title="Understanding Shapes" class="md-nav__link">
+      Understanding Shapes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
   
 
 
@@ -530,8 +542,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../api/mappers.html" title="mappers" class="md-nav__link">
-      mappers
+    <a href="../api/sequence.html" title="sequence" class="md-nav__link">
+      sequence
     </a>
   </li>
 
@@ -653,7 +665,9 @@
 <h2 id="summary-methods">Summary Methods<a class="headerlink" href="#summary-methods" title="Permanent link">&para;</a></h2>
 <p>Here's a sample of useful methods to get summaries from your collection.
 Each of these methods has a string equivalent that is used in <code>.agg()</code>
-when making aggregations. Here's a few common ones.</p>
+when making aggregations. We'll list a few common ones here but take note:
+all of these are methods <strong>ignore the grouping</strong>. If you want to use these
+methods with grouping, use <code>.agg()</code> instead.</p>
 <h3 id="mean"><code>.mean()</code><a class="headerlink" href="#mean" title="Permanent link">&para;</a></h3>
 <p>You can calculate the mean of values for which a key exists.</p>
 <p><img alt="" src="../img/mean.png" /></p>
@@ -790,7 +804,7 @@ of the <code>Clumper</code> object. That's where you'll find them.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="understanding-groups.html" title="Understanding Groups" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="understanding-reshaping.html" title="Understanding Shapes" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -799,7 +813,7 @@ of the <code>Clumper</code> object. That's where you'll find them.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Understanding Groups
+                Understanding Shapes
               </span>
             </div>
           </a>

@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://koaning.github.io/clumper/index.html</loc>
-     <lastmod>2020-07-30</lastmod>
+     <lastmod>2020-07-31</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://koaning.github.io/clumper/guides/getting-started.html</loc>
-     <lastmod>2020-07-30</lastmod>
+     <lastmod>2020-07-31</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://koaning.github.io/clumper/guides/verbs.html</loc>
-     <lastmod>2020-07-30</lastmod>
+     <lastmod>2020-07-31</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://koaning.github.io/clumper/guides/understanding-groups.html</loc>
-     <lastmod>2020-07-30</lastmod>
+     <lastmod>2020-07-31</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://koaning.github.io/clumper/guides/understanding-reshaping.html</loc>
+     <lastmod>2020-07-31</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://koaning.github.io/clumper/guides/summary-methods.html</loc>
-     <lastmod>2020-07-30</lastmod>
+     <lastmod>2020-07-31</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://koaning.github.io/clumper/guides/faq.html</loc>
-     <lastmod>2020-07-30</lastmod>
+     <lastmod>2020-07-31</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://koaning.github.io/clumper/api/clumper.html</loc>
-     <lastmod>2020-07-30</lastmod>
+     <lastmod>2020-07-31</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
-     <loc>https://koaning.github.io/clumper/api/mappers.html</loc>
-     <lastmod>2020-07-30</lastmod>
+     <loc>https://koaning.github.io/clumper/api/sequence.html</loc>
+     <lastmod>2020-07-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>

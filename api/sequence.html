@@ -13,7 +13,7 @@
         <meta name="description" content="A small python library that can clump lists of data together.">
       
       
-        <link rel="canonical" href="https://koaning.github.io/clumper/api/mappers.html">
+        <link rel="canonical" href="https://koaning.github.io/clumper/api/sequence.html">
       
       
         <meta name="author" content="Vincent D. Warmerdam">
@@ -42,7 +42,7 @@
     
     
       
-        <title>mappers - Clumper Docs</title>
+        <title>sequence - Clumper Docs</title>
       
     
     
@@ -93,7 +93,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#mappers" tabindex="0" class="md-skip">
+      <a href="#from-clumpersequence-import" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -119,7 +119,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                mappers
+                sequence
               
             </span>
           
@@ -372,6 +372,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../guides/understanding-reshaping.html" title="Understanding Shapes" class="md-nav__link">
+      Understanding Shapes
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../guides/summary-methods.html" title="Useful Methods" class="md-nav__link">
       Useful Methods
     </a>
@@ -443,11 +455,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        mappers
+        sequence
       </label>
     
-    <a href="mappers.html" title="mappers" class="md-nav__link md-nav__link--active">
-      mappers
+    <a href="sequence.html" title="sequence" class="md-nav__link md-nav__link--active">
+      sequence
     </a>
     
       
@@ -461,35 +473,35 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#clumper.mappers.expanding" class="md-nav__link">
+  <a href="#clumper.sequence.expanding" class="md-nav__link">
     expanding
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#clumper.mappers.impute" class="md-nav__link">
+  <a href="#clumper.sequence.impute" class="md-nav__link">
     impute
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#clumper.mappers.rolling" class="md-nav__link">
+  <a href="#clumper.sequence.rolling" class="md-nav__link">
     rolling
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#clumper.mappers.row_number" class="md-nav__link">
+  <a href="#clumper.sequence.row_number" class="md-nav__link">
     row_number
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#clumper.mappers.smoothing" class="md-nav__link">
+  <a href="#clumper.sequence.smoothing" class="md-nav__link">
     smoothing
   </a>
   
@@ -532,35 +544,35 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#clumper.mappers.expanding" class="md-nav__link">
+  <a href="#clumper.sequence.expanding" class="md-nav__link">
     expanding
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#clumper.mappers.impute" class="md-nav__link">
+  <a href="#clumper.sequence.impute" class="md-nav__link">
     impute
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#clumper.mappers.rolling" class="md-nav__link">
+  <a href="#clumper.sequence.rolling" class="md-nav__link">
     rolling
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#clumper.mappers.row_number" class="md-nav__link">
+  <a href="#clumper.sequence.row_number" class="md-nav__link">
     row_number
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#clumper.mappers.smoothing" class="md-nav__link">
+  <a href="#clumper.sequence.smoothing" class="md-nav__link">
     smoothing
   </a>
   
@@ -582,12 +594,12 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/koaning/clumper/edit/master/docs/api/mappers.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/koaning/clumper/edit/master/docs/api/sequence.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                <h1 id="mappers"><code>mappers</code><a class="headerlink" href="#mappers" title="Permanent link">&para;</a></h1>
+                <h1 id="from-clumpersequence-import"><code>from clumper.sequence import *</code><a class="headerlink" href="#from-clumpersequence-import" title="Permanent link">&para;</a></h1>
 <p>A collection of functions to be used in <code>mutate</code>/<code>map</code>-verbs.</p>
-<h2 id="clumper.mappers.expanding"><code class="highlight"><span class="n">expanding</span></code><a class="headerlink" href="#clumper.mappers.expanding" title="Permanent link">&para;</a></h2>
+<h2 id="clumper.sequence.expanding"><code class="highlight"><span class="n">expanding</span></code><a class="headerlink" href="#clumper.sequence.expanding" title="Permanent link">&para;</a></h2>
 <p>This stateful function can be used to expand a key into a large list containing all the seen values.</p>
 <p><img alt="" src="../img/expanding.png" /></p>
 <p><strong>Parameters</strong></p>
@@ -611,7 +623,7 @@
 </table>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-<span class="kn">from</span> <span class="nn">clumper.mappers</span> <span class="kn">import</span> <span class="n">expanding</span>
+<span class="kn">from</span> <span class="nn">clumper.sequence</span> <span class="kn">import</span> <span class="n">expanding</span>
 
 <span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
@@ -625,7 +637,7 @@
   <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
 </code></pre></div>
 
-<h2 id="clumper.mappers.impute"><code class="highlight"><span class="n">impute</span></code><a class="headerlink" href="#clumper.mappers.impute" title="Permanent link">&para;</a></h2>
+<h2 id="clumper.sequence.impute"><code class="highlight"><span class="n">impute</span></code><a class="headerlink" href="#clumper.sequence.impute" title="Permanent link">&para;</a></h2>
 <p>This stateful function can be used to calculate row numbers. Uses exponential smoothing.</p>
 <p><strong>Parameters</strong></p>
 <table>
@@ -660,7 +672,7 @@
 </table>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-<span class="kn">from</span> <span class="nn">clumper.mappers</span> <span class="kn">import</span> <span class="n">impute</span>
+<span class="kn">from</span> <span class="nn">clumper.sequence</span> <span class="kn">import</span> <span class="n">impute</span>
 
 <span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
@@ -680,7 +692,7 @@
   <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
 </code></pre></div>
 
-<h2 id="clumper.mappers.rolling"><code class="highlight"><span class="n">rolling</span></code><a class="headerlink" href="#clumper.mappers.rolling" title="Permanent link">&para;</a></h2>
+<h2 id="clumper.sequence.rolling"><code class="highlight"><span class="n">rolling</span></code><a class="headerlink" href="#clumper.sequence.rolling" title="Permanent link">&para;</a></h2>
 <p>This stateful function can be used to create a moving window
 over a key.</p>
 <p><img alt="" src="../img/rolling.png" /></p>
@@ -711,7 +723,7 @@ over a key.</p>
 </table>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-<span class="kn">from</span> <span class="nn">clumper.mappers</span> <span class="kn">import</span> <span class="n">rolling</span>
+<span class="kn">from</span> <span class="nn">clumper.sequence</span> <span class="kn">import</span> <span class="n">rolling</span>
 
 <span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
@@ -725,12 +737,12 @@ over a key.</p>
   <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
 </code></pre></div>
 
-<h2 id="clumper.mappers.row_number"><code class="highlight"><span class="n">row_number</span></code><a class="headerlink" href="#clumper.mappers.row_number" title="Permanent link">&para;</a></h2>
+<h2 id="clumper.sequence.row_number"><code class="highlight"><span class="n">row_number</span></code><a class="headerlink" href="#clumper.sequence.row_number" title="Permanent link">&para;</a></h2>
 <p>This stateful function can be used to calculate row numbers.</p>
 <p><img alt="" src="../img/row_number.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-<span class="kn">from</span> <span class="nn">clumper.mappers</span> <span class="kn">import</span> <span class="n">row_number</span>
+<span class="kn">from</span> <span class="nn">clumper.sequence</span> <span class="kn">import</span> <span class="n">row_number</span>
 
 <span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
@@ -744,7 +756,7 @@ over a key.</p>
   <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
 </code></pre></div>
 
-<h2 id="clumper.mappers.smoothing"><code class="highlight"><span class="n">smoothing</span></code><a class="headerlink" href="#clumper.mappers.smoothing" title="Permanent link">&para;</a></h2>
+<h2 id="clumper.sequence.smoothing"><code class="highlight"><span class="n">smoothing</span></code><a class="headerlink" href="#clumper.sequence.smoothing" title="Permanent link">&para;</a></h2>
 <p>This stateful function can be used to calculate row numbers. Uses exponential smoothing.</p>
 <p><img alt="" src="../img/smoothing.png" /></p>
 <p><strong>Parameters</strong></p>
@@ -774,7 +786,7 @@ over a key.</p>
 </table>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-<span class="kn">from</span> <span class="nn">clumper.mappers</span> <span class="kn">import</span> <span class="n">smoothing</span>
+<span class="kn">from</span> <span class="nn">clumper.sequence</span> <span class="kn">import</span> <span class="n">smoothing</span>
 
 <span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[</span>
     <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
