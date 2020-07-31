@@ -10,9 +10,9 @@ nav:
     - Index: index.md
   - Guides:
       - Getting Started: guides/getting-started.md
-      - Understanding Verbs: guides/verbs.md
-      - Understanding Groups: guides/understanding-groups.md
-      - Understanding Shapes: guides/understanding-reshaping.md
+      - About Verbs: guides/verbs.md
+      - About Groups: guides/understanding-groups.md
+      - About Reshaping: guides/understanding-reshaping.md
       - Useful Methods: guides/summary-methods.md
       - FAQ: guides/faq.md
   - API:
