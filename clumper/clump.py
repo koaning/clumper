@@ -86,6 +86,7 @@ class Clumper:
         d2_new = {(k + suffix2 if k in keys_to_suffix else k): v for k, v in d2.items()}
         return {**d1_new, **d2_new}
 
+    @dict_collection_only
     def left_join(self, other, mapping, lsuffix="", rsuffix="_joined"):
         """
         Performs a left join on two collections.
@@ -111,6 +112,7 @@ class Clumper:
                 result.append(d_i)
         return self.create_new(result)
 
+    @dict_collection_only
     def inner_join(self, other, mapping, lsuffix="", rsuffix="_joined"):
         """
         Performs an inner join on two collections.
@@ -135,6 +137,7 @@ class Clumper:
     def only_has_dictionaries(self):
         return all([isinstance(d, dict) for d in self])
 
+    @dict_collection_only
     @grouped
     def agg(self, **kwargs):
         """
@@ -198,7 +201,11 @@ class Clumper:
         res = {name: funcs[func_str](col) for name, (col, func_str) in kwargs.items()}
         return Clumper([res], groups=self.groups)
 
+    @dict_collection_only
     def subsets(self):
+        """
+        Subsets the data into groups, specified by `.group_by()`.
+        """
         result = []
         for gc in self.group_combos():
             subset = self.copy()
@@ -306,6 +313,7 @@ class Clumper:
         n = min(n, len(self))
         return self.create_new([self.blob[-i] for i in range(len(self) - n, len(self))])
 
+    @dict_collection_only
     def select(self, *keys):
         """
         Selects a subset of the keys in each item in the collection.
@@ -332,6 +340,7 @@ class Clumper:
         """
         return self.create_new([{k: d[k] for k in keys} for d in self.blob])
 
+    @dict_collection_only
     def drop(self, *keys):
         """
         Removes a subset of keys from each item in the collection.
@@ -457,6 +466,7 @@ class Clumper:
         """
         return self.create_new([func(d) for d in self.blob])
 
+    @dict_collection_only
     def keys(self, overlap=False):
         """
         Returns all the keys of all the items in the collection.
@@ -480,12 +490,14 @@ class Clumper:
             return list(reduce(lambda a, b: a.intersection(b), all_keys))
         return list({k for d in self for k in d.keys()})
 
+    @dict_collection_only
     def explode(self, *to_explode, **kwargs):
         """
         Turns a list in an item into multiple items. The opposite of `.implode()`.
 
         Arguments:
-            to_explode: key_to_explode
+            to_explode: keys to explode, will keep the same name
+            kwargs: (new name, keys to explode)-pairs
 
         Usage:
 
@@ -598,6 +610,7 @@ class Clumper:
         """
         return self.create_new([d for d in self.blob])
 
+    @dict_collection_only
     @return_value_if_empty(value=None)
     def sum(self, col):
         """
@@ -623,6 +636,7 @@ class Clumper:
         """
         return sum([d[col] for d in self if col in d.keys()])
 
+    @dict_collection_only
     @return_value_if_empty(value=None)
     def mean(self, col):
         """
@@ -649,6 +663,7 @@ class Clumper:
         s = sum([d[col] for d in self if col in d.keys()])
         return s / len(self)
 
+    @dict_collection_only
     @return_value_if_empty(value=None)
     def count(self, col):
         """
@@ -674,6 +689,7 @@ class Clumper:
         """
         return len([1 for d in self if col in d.keys()])
 
+    @dict_collection_only
     @return_value_if_empty(value=0)
     def n_unique(self, col):
         """
@@ -699,6 +715,7 @@ class Clumper:
         """
         return len({d[col] for d in self if col in d.keys()})
 
+    @dict_collection_only
     @return_value_if_empty(value=None)
     def min(self, col):
         """
@@ -724,6 +741,7 @@ class Clumper:
         """
         return min([d[col] for d in self if col in d.keys()])
 
+    @dict_collection_only
     @return_value_if_empty(value=None)
     def max(self, col):
         """
@@ -749,6 +767,7 @@ class Clumper:
         """
         return max({d[col] for d in self if col in d.keys()})
 
+    @dict_collection_only
     @return_value_if_empty(value=[])
     def unique(self, col):
         """
