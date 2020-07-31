@@ -6,6 +6,11 @@
 
 Part of a video series on [calmcode.io](https://calmcode.io).
 
+# Alpha Notice
+
+This package is really new and not a whole lot of users have
+been able to find *all* the edge cases yet.
+
 ## Base Example
 
 Clumper allows you to quickly parse through a list of json-like data.

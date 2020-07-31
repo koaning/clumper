@@ -1,7 +1,7 @@
 from functools import reduce
 import itertools as it
 
-from clumper.decorators import return_value_if_empty, grouped
+from clumper.decorators import return_value_if_empty, grouped, dict_collection_only
 
 
 class Clumper:
@@ -59,6 +59,81 @@ class Clumper:
         """
         self.groups = tuple()
         return self
+
+    @grouped
+    @dict_collection_only
+    def transform(self, **kwargs):
+        """
+        Does an aggregation just like `.agg()` however instead of reducing the rows we
+        merge the results back with the original data.
+
+        Arguments:
+            kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.
+        """
+        agg_results = self.agg(**kwargs)
+        return self.left_join(agg_results, mapping={k: k for k in self.groups})
+
+    @staticmethod
+    def _merge_dicts(d1, d2, mapping, suffix1, suffix2):
+        """
+        Merge two dictionaries together. Keeping suffixes in mind.
+        """
+        map_keys = list(mapping.keys()) + list(mapping.values())
+        keys_to_suffix = [
+            k for k in set(d1.keys()).intersection(set(d2.keys())) if k not in map_keys
+        ]
+        d1_new = {(k + suffix1 if k in keys_to_suffix else k): v for k, v in d1.items()}
+        d2_new = {(k + suffix2 if k in keys_to_suffix else k): v for k, v in d2.items()}
+        return {**d1_new, **d2_new}
+
+    def left_join(self, other, mapping, lsuffix="", rsuffix="_joined"):
+        """
+        Performs a left join on two collections.
+
+        Each item from the left set will appear in the final collection. Only
+        some items from the right set may appear if a merge is possible. There
+        may be multiple copies of the left set if it can be joined multiple times.
+        """
+        result = []
+        # This is a naive implementation. Speedup seems possible.
+        for d_i in self:
+            values_i = [d_i[k] for k in mapping.keys() if k in d_i.keys()]
+            d_i_added = False
+            for d_j in other:
+                values_j = [d_j[k] for k in mapping.values() if k in d_j.keys()]
+                if len(mapping) == len(values_i) == len(values_j):
+                    if values_i == values_j:
+                        result.append(
+                            Clumper._merge_dicts(d_i, d_j, mapping, lsuffix, rsuffix)
+                        )
+                        d_i_added = True
+            if not d_i_added:
+                result.append(d_i)
+        return self.create_new(result)
+
+    def inner_join(self, other, mapping, lsuffix="", rsuffix="_joined"):
+        """
+        Performs an inner join on two collections.
+
+        Any item A in the left set will only appear if there is an item B from
+        the right set that it can join on. And vise versa.
+        """
+        result = []
+        # This is a naive implementation. Speedup seems possible.
+        for d_i in self:
+            values_i = [d_i[k] for k in mapping.keys() if k in d_i.keys()]
+            for d_j in other:
+                values_j = [d_j[k] for k in mapping.values() if k in d_j.keys()]
+                if len(mapping) == len(values_i) == len(values_j):
+                    if values_i == values_j:
+                        result.append(
+                            Clumper._merge_dicts(d_i, d_j, mapping, lsuffix, rsuffix)
+                        )
+        return self.create_new(result)
+
+    @property
+    def only_has_dictionaries(self):
+        return all([isinstance(d, dict) for d in self])
 
     @grouped
     def agg(self, **kwargs):
@@ -381,6 +456,64 @@ class Clumper:
         ```
         """
         return self.create_new([func(d) for d in self.blob])
+
+    def keys(self, overlap=False):
+        """
+        Returns all the keys of all the items in the collection.
+
+        Arguments:
+            overlap: if `True` only return the keys that overlap in each set
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [{'a': 1, 'b': 2}, {'a': 2, 'c': 3}]
+
+        assert set(Clumper(data).keys(overlap=True)) == {'a'}
+        assert set(Clumper(data).keys(overlap=False)) == {'a', 'b', 'c'}
+        ```
+        """
+        if overlap:
+            all_keys = [set(d.keys()) for d in self]
+            return list(reduce(lambda a, b: a.intersection(b), all_keys))
+        return list({k for d in self for k in d.keys()})
+
+    def explode(self, *to_explode, **kwargs):
+        """
+        Turns a list in an item into multiple items. The opposite of `.implode()`.
+
+        Arguments:
+            to_explode: key_to_explode
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [{'a': 1, 'items': [1, 2]}]
+
+        new_data = Clumper(data).explode("items").collect()
+        assert new_data == [{'a': 1, 'items': 1}, {'a': 1, 'items': 2}]
+
+        new_data = Clumper(data).explode(item="items").collect()
+        assert new_data == [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
+        ```
+        """
+        # you can keep the same name by just using *args or overwrite using **kwargs
+        kwargs = {**kwargs, **{k: k for k in to_explode}}
+        new_name, to_explode = kwargs.keys(), kwargs.values()
+
+        res = []
+        for d in self.blob:
+            combinations = it.product(*[d[v] for v in to_explode])
+            for comb in combinations:
+                new_dict = d.copy()
+                for k, v in zip(new_name, comb):
+                    new_dict[k] = v
+                res.append(new_dict)
+        return self.create_new(res).drop(*[k for k in to_explode if k not in new_name])
 
     def reduce(self, **kwargs):
         """

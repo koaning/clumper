@@ -41,3 +41,20 @@ def grouped(method):
         return clumper.create_new(blob)
 
     return wrapped
+
+
+def dict_collection_only(method):
+    """
+    Handles the behavior when a group is present on a clumper object.
+    """
+
+    @wraps(method)
+    def wrapped(clumper, *args, **kwargs):
+        if not clumper.only_has_dictionaries:
+            non_dict = next(d for d in clumper if not isinstance(d, dict))
+            raise ValueError(
+                f"The `{method}` won't work unless all items are dictionaries. Found: {non_dict}."
+            )
+        return method(clumper, *args, **kwargs)
+
+    return wrapped
