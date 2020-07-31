@@ -26,7 +26,7 @@ class row_number:
 
     ```python
     from clumper import Clumper
-    from clumper.mappers import row_number
+    from clumper.sequence import row_number
 
     list_dicts = [
         {'a': 1, 'b': 2},
@@ -64,7 +64,7 @@ class rolling:
 
     ```python
     from clumper import Clumper
-    from clumper.mappers import rolling
+    from clumper.sequence import rolling
 
     list_dicts = [
         {'a': 1, 'b': 2},
@@ -111,7 +111,7 @@ class expanding:
 
     ```python
     from clumper import Clumper
-    from clumper.mappers import expanding
+    from clumper.sequence import expanding
 
     list_dicts = [
         {'a': 1, 'b': 2},
@@ -155,7 +155,7 @@ class smoothing:
 
     ```python
     from clumper import Clumper
-    from clumper.mappers import smoothing
+    from clumper.sequence import smoothing
 
     list_dicts = [
         {'a': 1, 'b': 2},
@@ -207,7 +207,7 @@ class impute:
 
     ```python
     from clumper import Clumper
-    from clumper.mappers import impute
+    from clumper.sequence import impute
 
     list_dicts = [
         {'a': 1, 'b': 2},

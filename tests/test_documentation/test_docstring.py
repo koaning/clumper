@@ -1,6 +1,6 @@
 import pytest
 from clumper import Clumper
-from clumper.mappers import row_number, smoothing, expanding, rolling, impute
+from clumper.sequence import row_number, smoothing, expanding, rolling, impute
 
 
 def handle_docstring(doc, indent):

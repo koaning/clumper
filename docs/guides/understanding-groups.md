@@ -100,7 +100,7 @@ collection.
 
 ```python
 from clumper import Clumper
-from clumper.mappers import row_number
+from clumper.sequence import row_number
 
 list_dicts = [
     {'a': 6, 'grp': 'a'},
@@ -125,7 +125,7 @@ seeing the new group.
 
 ```python
 from clumper import Clumper
-from clumper.mappers import row_number
+from clumper.sequence import row_number
 
 list_dicts = [
     {'a': 6, 'grp': 'a'},
@@ -189,6 +189,7 @@ list_dicts = [
   .sort(key=lambda d: d['a'])
   .collect())
 ```
+
 ## Ungroup
 
 If you're done with a group and you'd like to move on you can drop all

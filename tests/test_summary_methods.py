@@ -12,16 +12,6 @@ def n(request):
     return request.param
 
 
-def test_case_zero():
-    empty_c = Clumper([])
-    assert empty_c.mean("i") is None
-    assert empty_c.max("i") is None
-    assert empty_c.min("i") is None
-    assert empty_c.sum("i") is None
-    assert empty_c.unique("i") == []
-    assert empty_c.n_unique("i") == 0
-
-
 def test_n_unique(n):
     assert make_clumper(n, constant=True).n_unique("i") == 1
     assert make_clumper(n, constant=False).n_unique("i") == n
