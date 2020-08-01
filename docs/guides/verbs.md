@@ -1,94 +1,149 @@
-This document is to help give you an overview of what kind of verbs are in this library.
+Here's a list of the common verbs that you'll most likely use the most.
 
-## What are Verbs?
-
-In this library verbs are special kinds of methods. They really are
-just methods in essense but they imply a general pattern. In `Clumper`,
-a verb is a method that;
-
-1. Always returns a `Clumper` back, so it's chain-able.
-2. Has a name that tells you *what* is happening to the data while
-the parameters tell you *how* it is changing the data.
-
-This combination of properties allows you to write code in the same
-way you'd explain the steps to a human. Take this code for example.
-
-```python
-from clumper import Clumper
-
-list_of_dicts = [
-    {'a': 7, 'b': 2},
-    {'a': 2, 'b': 4},
-    {'a': 3, 'b': 6}
-]
-
-(Clumper(list_of_dicts)
-  .mutate(c = lambda d: d['a'] + d['b'])
-  .sort(lambda d: d['c']))
-```
-
-Schematically, this is what the code does.
-
-### Mutate
-
-First we use the **mutate** verb. This allows us to add values to pairs in
-our collection.
-
-![](../img/first-mutate.png)
-
-The output of this step is another `Clumper` collection.
-
-### Sort
-
-Next we pick up the mutated collection and we apply a sort to it.
-
-![](../img/then-sort.png)
-
-Again, the output of this another `Clumper`. This means that we can
-keep adding steps as we further our analysis.
-
-### Method Chaining
-
-This style of programming is really powerful and it keeps you productive
-once you've gotten a hang of the lambda functions. The lambda functions
-that you pass in can be general python. This also means that you're free
-to use nested dictionaries, sets or whatever you like doing in python.
-
-## Common Verbs
-
-Here's a list of the verbs that you'll most likely use the most.
-
-### Keep
+## Keep
 
 The **keep** verb allows you to grab a subset from the original collection.
 
 ![](../img/keep.png)
 
-### Mutate
+### Base Example
+
+Here's a basic example of what `keep` and do.
+
+```python
+from clumper import Clumper
+
+list_dicts = [{'a': 1}, {'a': 2}, {'a': 3}, {'a': 4}]
+
+clump = Clumper(list_dicts).keep(lambda d: d['a'] >= 3)
+expected = [{'a': 3}, {'a': 4}]
+assert clump.equals(expected)
+```
+
+### Dropping Missing Values
+
+Libraries like pandas offer verbs like `.dropna()`.
+This library does not because we handle missing values
+different. If you've got a collection with a missing value
+then you can simply remove it via `.keep()` though.
+
+```python
+from clumper import Clumper
+
+data = [
+    {"a": 1, "b": 4},
+    {"a": 2, "b": 3},
+    {"a": 3, "b": 2},
+    {"a": 4},
+]
+
+clump = Clumper(data).keep(lambda d: 'b' in d.keys())
+
+expected = [
+    {"a": 1, "b": 4},
+    {"a": 2, "b": 3},
+    {"a": 3, "b": 2},
+]
+
+assert clump.equals(expected)
+```
+
+
+## Mutate
 
 The **mutate** verb allows you to add/overwrite data to each item in the collection.
 
 ![](../img/mutate.png)
 
-### Sort
+### Base Example
+
+```python
+from clumper import Clumper
+
+list_dicts = [
+    {'a': 1, 'b': 2},
+    {'a': 2, 'b': 3, 'c':4},
+    {'a': 1, 'b': 6}]
+
+result = (Clumper(list_dicts)
+          .mutate(c=lambda d: d['a'] + d['b'],
+                  s=lambda d: d['a'] + d['b'] + d['c']))
+
+expected = [
+    {'a': 1, 'b': 2, 'c': 3, 's': 6},
+    {'a': 2, 'b': 3, 'c': 5, 's': 10},
+    {'a': 1, 'b': 6, 'c': 7, 's': 14}
+]
+
+assert result.equals(expected)
+```
+
+## Sort
 
 The **sort** verb allows you to sort the collection based on values of items.
 
 ![](../img/sort.png)
 
-### Select
+### Base Example
+
+```python
+from clumper import Clumper
+
+list_dicts = [
+    {'a': 1, 'b': 2},
+    {'a': 3, 'b': 3},
+    {'a': 2, 'b': 1}]
+
+(Clumper(list_dicts)
+  .sort(lambda d: d['a'])
+  .collect())
+
+(Clumper(list_dicts)
+  .sort(lambda d: d['b'], reverse=True)
+  .collect())
+```
+
+## Select
 
 The **select** verb allows you to select a subset of keys for each item.
 
 ![](../img/select.png)
 
-### Drop
+### Base Example
+
+```python
+from clumper import Clumper
+
+list_dicts = [
+    {'a': 1, 'b': 2},
+    {'a': 2, 'b': 3, 'c':4},
+    {'a': 1, 'b': 6}]
+
+clump = Clumper(list_dicts).select('a', 'b')
+assert all(["c" not in d.keys() for d in clump])
+```
+
+## Drop
 
 The **select** verb allows you to remove a subset of keys for each item.
 
 ![](../img/drop.png)
 
-### Group By
+### Base Example
+
+```python
+from clumper import Clumper
+
+list_dicts = [
+    {'a': 1, 'b': 2},
+    {'a': 2, 'b': 3, 'c':4},
+    {'a': 1, 'b': 6}]
+
+clump = Clumper(list_dicts).drop('c')
+assert all(["c" not in d.keys() for d in clump])
+```
+
+## Group By
 
 The **group_by** verb allows you to set a group on a collection based on
 the values of the keys that you pass. The groups represent subsets and
@@ -98,13 +153,32 @@ The main use-case for this verb is in combination with **.agg()**.
 
 ![](../img/groupby.png)
 
-### Ungroup
+### Base Example
+
+```python
+from clumper import Clumper
+
+clump = Clumper([{"a": 1}]).group_by("a")
+assert clump.groups == ("a", )
+```
+
+## Ungroup
 
 The **ungroup** verb will remove any groups currently present.
 
 ![](../img/ungroup.png)
 
-### Agg
+### Base Example
+
+```python
+from clumper import Clumper
+
+clump = Clumper([{"a": 1}]).group_by("a")
+assert clump.groups == ("a", )
+assert clump.ungroup().groups == tuple()
+```
+
+## Agg
 
 The **agg** verb is short for aggregate. They allow you to summarise the data,
 keeping in mind any groups that are on it.
@@ -120,3 +194,75 @@ When defining a summary to apply you'll need to pass three things:
 The following aggregation functions are available: `mean`, `count`, `unique`,
 `n_unique`, `sum`, `min` and `max`. For more information on how they work you
 can read more info [here]().
+
+### Base Example
+
+```python
+from clumper import Clumper
+
+list_dicts = [
+    {'a': 1, 'b': 2},
+    {'a': 2, 'b': 3},
+    {'a': 3}
+]
+
+(Clumper(list_dicts)
+  .agg(mean_a=('a', 'mean'),
+       min_b=('b', 'min'),
+       max_b=('b', 'max'))
+  .collect())
+
+another_list_dicts = [
+    {'a': 1, 'c': 'a'},
+    {'a': 2, 'c': 'b'},
+    {'a': 3, 'c': 'a'}
+]
+
+(Clumper(another_list_dicts)
+  .group_by('c')
+  .agg(mean_a=('a', 'mean'),
+       uniq_a=('a', 'unique'))
+  .collect())
+```
+
+### Functional Uses
+
+You can also pass your own aggregating functions to `.agg()`.
+
+```python
+from clumper import Clumper
+
+data = [
+    {"a": 6, "grp": "a"},
+    {"a": 2, "grp": "b"},
+    {"a": 7, "grp": "a"},
+    {"a": 9, "grp": "b"},
+    {"a": 5, "grp": "a"}
+]
+
+tfm_clump = (Clumper(data)
+              .group_by("grp")
+              .transform(s=("a", sum),
+                         u=("a", lambda x: len(set(x)))
+
+expected = [
+    {'a': 6, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+    {'a': 7, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+    {'a': 5, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+    {'a': 2, 'grp': 'b', 's': 11, 'u': [9, 2]},
+    {'a': 9, 'grp': 'b', 's': 11, 'u': [9, 2]}
+]
+
+assert tfm_clump.equals(expected)
+```
+
+The results are exactly the same, but being able to pass in a function
+there might give extra flexibility.
+
+## Collect
+
+![](../img/collect.png)
+
+When you're done with your data-wrangling you may want
+to get a basic python list back. That's what `.collect()`
+will do for you.
