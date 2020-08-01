@@ -137,6 +137,8 @@ dmypy.json
 
 # MacOS ... why?!
 .DS_Store
+*/.DS_Store
+**/.DS_Store
 
 # Datasets in Root
 *.json

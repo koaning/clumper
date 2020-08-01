@@ -19,7 +19,9 @@ nav:
       - Clumper: api/clumper.md
       - sequence: api/sequence.md
 plugins:
-  - mkdocstrings
+  - mkdocstrings:
+      watch:
+        - clumper
   - mkdocs-jupyter
   - search
 copyright: Copyright &copy; 2020 Maintained by <a href="https://twitter.com/fishnets88">Vincent</a>.
