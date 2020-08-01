@@ -7,14 +7,21 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is. Also
+Please add a reproducible codeblock if possible.
 
-**To Reproduce**
-Steps to reproduce the behavior:
+We've included some methods to our library to make this
+relatively easy. Here's an example of a reproducible code-block.
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+```python
+from clumper import Clumper
+
+data = [{"a": 1}, {"a": 2}]
+
+clump = Clumper(data)
+expected = [{"a": 1}, {"a": 2}]
+assert clump.equals(expected)
+```
 
 **Additional context**
+
 Feel free to mention your operating system and python version.

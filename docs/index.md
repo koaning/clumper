@@ -123,6 +123,29 @@ cd clumper
 make install-dev
 ```
 
+### Bugs
+
+If you encounter a bug, we'd love to hear about it!
+We would appreciate though if you could add a reproducible
+example when you [submit an issue on github](https://github.com/koaning/clumper/issues/new/choose).
+
+We've included some methods to our library to make this
+relatively easy. Here's an example of a reproducible code-block.
+
+```python
+from clumper import Clumper
+
+data = [{"a": 1}, {"a": 2}]
+
+clump = Clumper(data)
+expected = [{"a": 1}, {"a": 2}]
+assert clump.equals(expected)
+```
+
+Note how this block uses `.equals()` to demonstrate
+what the expected output is. This is great for maintainers
+because they can just copy the code and work on a fix.
+
 ## Origin Stories
 
 ### Why the name?

@@ -1,3 +1,5 @@
+import json
+import pathlib
 import itertools as it
 from functools import reduce
 from statistics import mean, variance, stdev, median
@@ -33,6 +35,24 @@ class Clumper:
 
     def __repr__(self):
         return f"<Clumper groups={self.groups} len={len(self)} @{hex(id(self))}>"
+
+    @classmethod
+    def read_json(cls, path):
+        """
+        Reads in a json file.
+
+        ![](../img/read_json.png)
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        clump = Clumper.read_json("tests/pokemon.json")
+        assert len(clump) == 800
+        ```
+        """
+        return json.loads(pathlib.Path(path).read_text())
 
     def _create_new(self, blob):
         """
@@ -89,6 +109,9 @@ class Clumper:
         Arguments:
             kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.
 
+        Warning:
+            This method is aware of groups. There may be different results if a group is active.
+
         Usage:
 
         ```python
@@ -124,11 +147,56 @@ class Clumper:
     def equals(self, data):
         """
         Compares the collection of items with a list. Returns `True` if they have the same contents.
+        Note that we do not care about the order of the elements.
+
+        This method is used internally for testing but it can also be very useful for bug reporting.
+
+        ![](../img/equals.png)
+
+        Arguments:
+            data: a list of that to compare against
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [{"a": 1}]
+        clump = Clumper(data)
+        assert clump.equals(data)
+        assert not clump.equals([{"b":1}])
+        ```
         """
         for i in self:
             if i not in data:
                 return False
+        for i in data:
+            if i not in self:
+                return False
         return True
+
+    def drop_duplicates(self):
+        """
+        Iterates over all elements to remove duplicates.
+
+        ![](../img/drop_duplicates.png)
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [{"a": 1}, {"a": 2}, {"a": 2}]
+        clump = Clumper(data).drop_duplicates()
+        expected = [{"a": 1}, {"a": 2}]
+        assert clump.equals(expected)
+        ```
+        """
+        uniques = []
+        for d in self:
+            if d not in uniques:
+                uniques.append(d)
+        return self._create_new(uniques)
 
     @staticmethod
     def _merge_dicts(d1, d2, mapping, suffix1, suffix2):
@@ -151,6 +219,41 @@ class Clumper:
         Each item from the left set will appear in the final collection. Only
         some items from the right set may appear if a merge is possible. There
         may be multiple copies of the left set if it can be joined multiple times.
+
+        ![](../img/left_join.png)
+
+        Arguments:
+            other: another collection to join with
+            mapping: a dictionary of **left-keys**:**right-keys** that explain how to join
+            lsuffix: a suffix to add to the left keys in case of an overlap
+            rsuffix: a suffix to add to the right keys in case of an overlap
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        left = Clumper([
+            {"a": 1, "b": 4},
+            {"a": 2, "b": 6},
+            {"a": 3, "b": 8},
+        ])
+
+        right = Clumper([
+            {"c": 9, "b": 4},
+            {"c": 8, "b": 5},
+            {"c": 7, "b": 6},
+        ])
+
+        result = left.left_join(right, mapping={"b": "b"})
+        expected = [
+            {"a": 1, "b": 4, "c": 9},
+            {"a": 2, "b": 6, "c": 7},
+            {"a": 3, "b": 8},
+        ]
+
+        assert result.equals(expected)
+        ```
         """
         result = []
         # This is a naive implementation. Speedup seems possible.
@@ -174,8 +277,39 @@ class Clumper:
         """
         Performs an inner join on two collections.
 
-        Any item A in the left set will only appear if there is an item B from
-        the right set that it can join on. And vise versa.
+        ![](../img/inner_join.png)
+
+        Arguments:
+            other: another collection to join with
+            mapping: a dictionary of **left-keys**:**right-keys** that explain how to join
+            lsuffix: a suffix to add to the left keys in case of an overlap
+            rsuffix: a suffix to add to the right keys in case of an overlap
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        left = Clumper([
+            {"a": 1, "b":4},
+            {"a": 2, "b":6},
+            {"a": 3, "b":8},
+        ])
+
+        right = Clumper([
+            {"c": 9, "b":4},
+            {"c": 8, "b":5},
+            {"c": 7, "b":6},
+        ])
+
+        result = left.inner_join(right, mapping={"b": "b"})
+        expected = [
+            {"a": 1, "b": 4, "c": 9},
+            {"a": 2, "b": 6, "c": 7},
+        ]
+
+        assert result.equals(expected)
+        ```
         """
         result = []
         # This is a naive implementation. Speedup seems possible.
@@ -211,9 +345,12 @@ class Clumper:
 
         It can also accept a string and it will try to fetch an appropriate function
         for you. If you pass a string it must be either: `mean`, `count`, `unique`,
-        `n_unique`, `sum`, `min`, `max`, `median`, `var` or `std`.
+        `n_unique`, `sum`, `min`, `max`, `median`, `var`, `std`, `first` or `last`.
 
         ![](../img/split-apply-combine.png)
+
+        Warning:
+            This method is aware of groups. There may be different results if a group is active.
 
         Arguments:
             kwargs: keyword arguments that represent the aggregation that is about to happen, see usage below.
@@ -246,6 +383,37 @@ class Clumper:
           .agg(mean_a=('a', 'mean'),
                uniq_a=('a', 'unique'))
           .collect())
+        ```
+
+        Advanced Usage:
+
+        You can also supply this verb your own functions if you'd like.
+
+        ```python
+        from clumper import Clumper
+
+        data = [
+            {"a": 6, "grp": "a"},
+            {"a": 2, "grp": "b"},
+            {"a": 7, "grp": "a"},
+            {"a": 9, "grp": "b"},
+            {"a": 5, "grp": "a"}
+        ]
+
+        tfm_clump = (Clumper(data)
+                      .group_by("grp")
+                      .transform(s=("a", sum),
+                                 u=("a", lambda x: len(set(x)))
+
+        expected = [
+            {'a': 6, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+            {'a': 7, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+            {'a': 5, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
+            {'a': 2, 'grp': 'b', 's': 11, 'u': [9, 2]},
+            {'a': 9, 'grp': 'b', 's': 11, 'u': [9, 2]}
+        ]
+
+        assert tfm_clump.equals(expected)
         ```
         """
         res = {
@@ -316,9 +484,9 @@ class Clumper:
 
         list_dicts = [{'a': 1}, {'a': 2}, {'a': 3}, {'a': 4}]
 
-        (Clumper(list_dicts)
-          .keep(lambda d: d['a'] >= 3)
-          .collect())
+        clump = Clumper(list_dicts).keep(lambda d: d['a'] >= 3)
+        expected = [{'a': 3}, {'a': 4}]
+        assert clump.equals(expected)
         ```
         """
         data = self.blob.copy()
@@ -522,7 +690,7 @@ class Clumper:
         If you're dealing with dictionaries, consider using
         `mutate` instead.
 
-        ![](../img/map.png
+        ![](../img/map.png)
 
         Arguments:
             func: the function that will map each item
@@ -545,6 +713,8 @@ class Clumper:
     def keys(self, overlap=False):
         """
         Returns all the keys of all the items in the collection.
+
+        ![](../img/keys.png)
 
         Arguments:
             overlap: if `True` only return the keys that overlap in each set
@@ -606,6 +776,40 @@ class Clumper:
                 res.append(new_dict)
         return self._create_new(res).drop(*[k for k in to_explode if k not in new_name])
 
+    def rename(self, **kwargs):
+        """
+        Rename items in the collection.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [{'a': 1, 'b': 3}, {'a': 2, 'b': 4}]
+
+        clumper = Clumper(data).rename(c="b")
+        expected = [{'a': 1, 'c': 3}, {'a': 2, 'c': 4}]
+        assert clumper.equals(expected)
+        ```
+        """
+        result = self.copy()
+        for new_name, old_name in kwargs.items():
+            result = result.mutate(**{new_name: lambda d: d[old_name]}).drop(old_name)
+        return result
+
+    def implode(self, **kwargs):
+        if len(kwargs) == 0:
+            raise ValueError("The `implode` method received no input.")
+        return (
+            self.transform(**{k: (v, "values") for k, v in kwargs.items()})
+            .drop(*kwargs.values())
+            .drop_duplicates()
+        )
+
+    @property
+    def shape(self):
+        return len(self), len(self.keys())
+
     def reduce(self, **kwargs):
         """
         Reduce the collection using reducing functions.
@@ -636,6 +840,8 @@ class Clumper:
     def pipe(self, func, *args, **kwargs):
         """
         Applies a function to the `Clumper` object in a chain-able manner.
+
+        ![](../img/pipe.png)
 
         Arguments:
             func: function to apply
@@ -694,7 +900,7 @@ class Clumper:
 
         It can also accept a string and it will try to fetch an appropriate function
         for you. If you pass a string it must be either: `mean`, `count`, `unique`,
-        `n_unique`, `sum`, `min`, `max`, `median`, `var` or `std`.
+        `n_unique`, `sum`, `min`, `max`, `median`, `var`, `std`, `first` or `last`.
 
         Note that this method **ignores groups**. It also does not return a `Clumper`
         collection.
@@ -706,8 +912,8 @@ class Clumper:
 
         clump = Clumper([{"a": 1}, {"a": 2}, {"a": 3}])
 
-        assert clump.summarise_col(sum, "a") == 6
-        assert clump.summarise_col("sum", "a") == 6
+        assert clump.summarise_col("last", "a") == 3
+        assert clump.summarise_col(lambda d: d[-1], "a") == 3
         ```
         """
         funcs = {
@@ -721,6 +927,9 @@ class Clumper:
             "median": median,
             "var": variance,
             "std": stdev,
+            "values": lambda d: d,
+            "first": lambda d: d[0],
+            "last": lambda d: d[-1],
         }
         if isinstance(func, str):
             if func not in funcs.keys():
@@ -815,7 +1024,7 @@ class Clumper:
         """
         Returns number of unique values that a key has.
 
-        ![](../img/n_unique.png)
+        ![](../img/nunique.png)
 
         Usage:
 

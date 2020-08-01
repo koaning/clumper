@@ -107,12 +107,12 @@ from clumper import Clumper
 
 ### Verbs that need Dictionaries
 
-There's a short list verbs that carry some restrictions
+There's a short list of verbs that carry some restrictions
 
-- **.select()** needs to select keys so the sequences must contain dictionaries
-- **.drop()** needs to remove keys so the sequences must contain dictionaries
-- **.agg()** needs a collection of dictionaries to construct aggregations. If you
+- The **.select()** verb needs to select keys so the sequences must contain dictionaries
+- The **.drop()** verb needs to remove keys so the sequences must contain dictionaries
+- The **.agg()/.transform()** verbs need a collection of dictionaries to construct aggregations. If you
 really need this feature for non-dictionary sequences consider the **.reduce()** method.
-- **.mutate()** is really flexible in terms of input that it
+- The **.mutate()** verb is really flexible in terms of input that it
 accepts but it will always produce a dictionary as output.
 If you really need a non-dictionary output, consider the **map()** method.
