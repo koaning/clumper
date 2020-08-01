@@ -350,8 +350,8 @@
 
 
   <li class="md-nav__item">
-    <a href="verbs.html" title="Understanding Verbs" class="md-nav__link">
-      Understanding Verbs
+    <a href="verbs.html" title="Common Verbs" class="md-nav__link">
+      Common Verbs
     </a>
   </li>
 
@@ -362,8 +362,8 @@
 
 
   <li class="md-nav__item">
-    <a href="understanding-groups.html" title="Understanding Groups" class="md-nav__link">
-      Understanding Groups
+    <a href="understanding-groups.html" title="About Groups" class="md-nav__link">
+      About Groups
     </a>
   </li>
 
@@ -374,8 +374,32 @@
 
 
   <li class="md-nav__item">
-    <a href="understanding-reshaping.html" title="Understanding Shapes" class="md-nav__link">
-      Understanding Shapes
+    <a href="understanding-joins.html" title="Merge Verbs" class="md-nav__link">
+      Merge Verbs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="understanding-reshaping.html" title="Reshaping Verbs" class="md-nav__link">
+      Reshaping Verbs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="useful-verbs.html" title="More Verbs" class="md-nav__link">
+      More Verbs
     </a>
   </li>
 
@@ -766,13 +790,13 @@ and we turn it into a collection of dictionaries.</p>
 </code></pre></div>
 
 <h3 id="verbs-that-need-dictionaries">Verbs that need Dictionaries<a class="headerlink" href="#verbs-that-need-dictionaries" title="Permanent link">&para;</a></h3>
-<p>There's a short list verbs that carry some restrictions</p>
+<p>There's a short list of verbs that carry some restrictions</p>
 <ul>
-<li><strong>.select()</strong> needs to select keys so the sequences must contain dictionaries</li>
-<li><strong>.drop()</strong> needs to remove keys so the sequences must contain dictionaries</li>
-<li><strong>.agg()</strong> needs a collection of dictionaries to construct aggregations. If you
+<li>The <strong>.select()</strong> verb needs to select keys so the sequences must contain dictionaries</li>
+<li>The <strong>.drop()</strong> verb needs to remove keys so the sequences must contain dictionaries</li>
+<li>The <strong>.agg()/.transform()</strong> verbs need a collection of dictionaries to construct aggregations. If you
 really need this feature for non-dictionary sequences consider the <strong>.reduce()</strong> method.</li>
-<li><strong>.mutate()</strong> is really flexible in terms of input that it
+<li>The <strong>.mutate()</strong> verb is really flexible in terms of input that it
 accepts but it will always produce a dictionary as output.
 If you really need a non-dictionary output, consider the <strong>map()</strong> method.</li>
 </ul>

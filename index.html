@@ -361,6 +361,19 @@
     Contributing
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bugs" class="md-nav__link">
+    Bugs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -443,8 +456,8 @@
 
 
   <li class="md-nav__item">
-    <a href="guides/verbs.html" title="Understanding Verbs" class="md-nav__link">
-      Understanding Verbs
+    <a href="guides/verbs.html" title="Common Verbs" class="md-nav__link">
+      Common Verbs
     </a>
   </li>
 
@@ -455,8 +468,8 @@
 
 
   <li class="md-nav__item">
-    <a href="guides/understanding-groups.html" title="Understanding Groups" class="md-nav__link">
-      Understanding Groups
+    <a href="guides/understanding-groups.html" title="About Groups" class="md-nav__link">
+      About Groups
     </a>
   </li>
 
@@ -467,8 +480,32 @@
 
 
   <li class="md-nav__item">
-    <a href="guides/understanding-reshaping.html" title="Understanding Shapes" class="md-nav__link">
-      Understanding Shapes
+    <a href="guides/understanding-joins.html" title="Merge Verbs" class="md-nav__link">
+      Merge Verbs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="guides/understanding-reshaping.html" title="Reshaping Verbs" class="md-nav__link">
+      Reshaping Verbs
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="guides/useful-verbs.html" title="More Verbs" class="md-nav__link">
+      More Verbs
     </a>
   </li>
 
@@ -602,6 +639,19 @@
   <a href="#contributing" class="md-nav__link">
     Contributing
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bugs" class="md-nav__link">
+    Bugs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -750,6 +800,25 @@ the repo and quickly get started using the <code>Makefile</code>.</p>
 </code></pre></div>
 
 
+<h3 id="bugs">Bugs<a class="headerlink" href="#bugs" title="Permanent link">&para;</a></h3>
+<p>If you encounter a bug, we'd love to hear about it!
+We would appreciate though if you could add a reproducible
+example when you <a href="https://github.com/koaning/clumper/issues/new/choose">submit an issue on github</a>.</p>
+<p>We've included some methods to our library to make this
+relatively easy. Here's an example of a reproducible code-block.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}]</span>
+
+<span class="n">clump</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}]</span>
+<span class="k">assert</span> <span class="n">clump</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>Note how this block uses <code>.equals()</code> to demonstrate
+what the expected output is. This is great for maintainers
+because they can just copy the code and work on a fix.</p>
 <h2 id="origin-stories">Origin Stories<a class="headerlink" href="#origin-stories" title="Permanent link">&para;</a></h2>
 <h3 id="why-the-name">Why the name?<a class="headerlink" href="#why-the-name" title="Permanent link">&para;</a></h3>
 <p>Sometimes you just want something to "clump" together in the right way.

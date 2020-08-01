@@ -42,7 +42,7 @@
     
     
       
-        <title>Understanding Shapes - Clumper Docs</title>
+        <title>Reshaping Verbs - Clumper Docs</title>
       
     
     
@@ -119,7 +119,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Understanding Shapes
+                Reshaping Verbs
               
             </span>
           
@@ -350,8 +350,8 @@
 
 
   <li class="md-nav__item">
-    <a href="verbs.html" title="Understanding Verbs" class="md-nav__link">
-      Understanding Verbs
+    <a href="verbs.html" title="Common Verbs" class="md-nav__link">
+      Common Verbs
     </a>
   </li>
 
@@ -362,8 +362,20 @@
 
 
   <li class="md-nav__item">
-    <a href="understanding-groups.html" title="Understanding Groups" class="md-nav__link">
-      Understanding Groups
+    <a href="understanding-groups.html" title="About Groups" class="md-nav__link">
+      About Groups
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="understanding-joins.html" title="Merge Verbs" class="md-nav__link">
+      Merge Verbs
     </a>
   </li>
 
@@ -381,11 +393,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Understanding Shapes
+        Reshaping Verbs
       </label>
     
-    <a href="understanding-reshaping.html" title="Understanding Shapes" class="md-nav__link md-nav__link--active">
-      Understanding Shapes
+    <a href="understanding-reshaping.html" title="Reshaping Verbs" class="md-nav__link md-nav__link--active">
+      Reshaping Verbs
     </a>
     
       
@@ -411,6 +423,18 @@
   
 </nav>
     
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="useful-verbs.html" title="More Verbs" class="md-nav__link">
+      More Verbs
+    </a>
   </li>
 
         
@@ -535,7 +559,7 @@
                   <a href="https://github.com/koaning/clumper/edit/master/docs/guides/understanding-reshaping.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                  <h1>Understanding Shapes</h1>
+                  <h1>Reshaping Verbs</h1>
                 
                 <p>Because sequences of nested data really come in all sorts
 of shapes and sizes this library offers verbs to help you
@@ -550,16 +574,38 @@ If you'd like to expand such a list of values you can use
 
 <span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}]</span>
 
-<span class="n">new_data</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
-<span class="k">assert</span> <span class="n">new_data</span> <span class="o">==</span> <span class="p">[{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}]</span>
+<span class="n">clumper</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">clumper</span><span class="o">.</span><span class="n">equals</span><span class="p">([{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}])</span>
 
 <span class="n">new_data</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="s2">&quot;items&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
-<span class="k">assert</span> <span class="n">new_data</span> <span class="o">==</span> <span class="p">[{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}]</span>
+<span class="k">assert</span> <span class="n">clumper</span><span class="o">.</span><span class="n">equals</span><span class="p">([{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}])</span>
 </code></pre></div>
 
 <p>Note how the syntax allows you to either explode the values
 assigning they to the old keyname or to directly rename
-this field.</p>
+this field. You can also pass multiple keys in a single command.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;values&#39;</span><span class="p">:[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]}]</span>
+
+<span class="n">clumper</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">)</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;values&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+<span class="p">]</span>
+<span class="k">assert</span> <span class="n">clumper</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+
+<span class="n">new_data</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="n">item</span><span class="o">=</span><span class="s2">&quot;items&quot;</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="s2">&quot;values&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;val&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+<span class="p">]</span>
+<span class="k">assert</span> <span class="n">clumper</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+</code></pre></div>
                 
                   
                 
@@ -581,7 +627,7 @@ this field.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="understanding-groups.html" title="Understanding Groups" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="understanding-joins.html" title="Merge Verbs" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -590,19 +636,19 @@ this field.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Understanding Groups
+                Merge Verbs
               </span>
             </div>
           </a>
         
         
-          <a href="summary-methods.html" title="Useful Methods" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="useful-verbs.html" title="More Verbs" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Useful Methods
+                More Verbs
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
