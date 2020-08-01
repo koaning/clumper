@@ -20,7 +20,7 @@ dev_packages = test_packages + util_packages + docs_packages
 
 setup(
     name="clumper",
-    version="0.2.1",
-    packages=find_packages(),
+    version="0.2.3",
+    packages=find_packages(include=["clumper", "clumper.*"]),
     extras_require={"dev": dev_packages, "test": test_packages},
 )
