@@ -232,6 +232,19 @@
   
 
       
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="../examples/got.html" class="md-tabs__link">
+          Examples
+        </a>
+      
+    </li>
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -743,6 +756,42 @@
   </li>
 
     
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../examples/got.html" title="Game of Thrones" class="md-nav__link">
+      Game of Thrones
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -1025,15 +1074,7 @@ it nicer to explore.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.agg"><code class="highlight"><span class="n">agg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.agg" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>331
-332
-333
-334
-335
-336
-337
-338
-339
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>339
 340
 341
 342
@@ -1117,7 +1158,15 @@ it nicer to explore.</p>
 420
 421
 422
-423</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+423
+424
+425
+426
+427
+428
+429
+430
+431</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="nd">@grouped</span>
     <span class="k">def</span> <span class="nf">agg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1134,7 +1183,7 @@ it nicer to explore.</p>
 
 <span class="sd">        It can also accept a string and it will try to fetch an appropriate function</span>
 <span class="sd">        for you. If you pass a string it must be either: `mean`, `count`, `unique`,</span>
-<span class="sd">        `n_unique`, `sum`, `min`, `max`, `median`, `var`, `std`, `first` or `last`.</span>
+<span class="sd">        `n_unique`, `sum`, `min`, `max`, `median`, `values`, `var`, `std`, `first` or `last`.</span>
 
 <span class="sd">        ![](../img/split-apply-combine.png)</span>
 
@@ -1226,7 +1275,7 @@ which everything is combined again into a single collection.</p>
 </ol>
 <p>It can also accept a string and it will try to fetch an appropriate function
 for you. If you pass a string it must be either: <code>mean</code>, <code>count</code>, <code>unique</code>,
-<code>n_unique</code>, <code>sum</code>, <code>min</code>, <code>max</code>, <code>median</code>, <code>var</code>, <code>std</code>, <code>first</code> or <code>last</code>.</p>
+<code>n_unique</code>, <code>sum</code>, <code>min</code>, <code>max</code>, <code>median</code>, <code>values</code>, <code>var</code>, <code>std</code>, <code>first</code> or <code>last</code>.</p>
 <p><img alt="" src="../img/split-apply-combine.png" /></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -1308,13 +1357,13 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.collect"><code class="highlight"><span class="n">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.collect" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>869
-870
-871
-872
-873
-874
-875</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>877
+878
+879
+880
+881
+882
+883</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">collect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a list instead of a `Clumper` object.</span>
 
@@ -1328,15 +1377,7 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 <p>Returns a list instead of a <code>Clumper</code> object.</p>
 <p><img alt="" src="../img/collect.png" /></p>
 <h2 id="clumper.clump.Clumper.concat"><code class="highlight"><span class="n">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.concat" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>440
-441
-442
-443
-444
-445
-446
-447
-448
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>448
 449
 450
 451
@@ -1348,7 +1389,15 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 457
 458
 459
-460</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">):</span>
+460
+461
+462
+463
+464
+465
+466
+467
+468</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">concat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">other</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Concatenate two or more `Clumper` objects together.</span>
 
@@ -1387,15 +1436,7 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.copy"><code class="highlight"><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.copy" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>877
-878
-879
-880
-881
-882
-883
-884
-885
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>885
 886
 887
 888
@@ -1405,7 +1446,15 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 892
 893
 894
-895</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+895
+896
+897
+898
+899
+900
+901
+902
+903</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Makes a copy of the collection.</span>
 
@@ -1441,15 +1490,7 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.count"><code class="highlight"><span class="n">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.count" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 995
- 996
- 997
- 998
- 999
-1000
-1001
-1002
-1003
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1003
 1004
 1005
 1006
@@ -1465,7 +1506,15 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 1016
 1017
 1018
-1019</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+1019
+1020
+1021
+1022
+1023
+1024
+1025
+1026
+1027</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1511,15 +1560,7 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.drop"><code class="highlight"><span class="n">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.drop" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>580
-581
-582
-583
-584
-585
-586
-587
-588
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>588
 589
 590
 591
@@ -1537,7 +1578,15 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 603
 604
 605
-606</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+606
+607
+608
+609
+610
+611
+612
+613
+614</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="k">def</span> <span class="nf">drop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes a subset of keys from each item in the collection.</span>
@@ -1602,15 +1651,7 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.drop_duplicates"><code class="highlight"><span class="n">drop_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.drop_duplicates" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>178
-179
-180
-181
-182
-183
-184
-185
-186
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>186
 187
 188
 189
@@ -1623,7 +1664,15 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 196
 197
 198
-199</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">drop_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+199
+200
+201
+202
+203
+204
+205
+206
+207</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">drop_duplicates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Iterates over all elements to remove duplicates.</span>
 
@@ -1661,15 +1710,7 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.equals"><code class="highlight"><span class="n">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.equals" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>147
-148
-149
-150
-151
-152
-153
-154
-155
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>155
 156
 157
 158
@@ -1690,7 +1731,15 @@ for you. If you pass a string it must be either: <code>mean</code>, <code>count<
 173
 174
 175
-176</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+176
+177
+178
+179
+180
+181
+182
+183
+184</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compares the collection of items with a list. Returns `True` if they have the same contents.</span>
 <span class="sd">        Note that we do not care about the order of the elements.</span>
@@ -1757,15 +1806,7 @@ Note that we do not care about the order of the elements.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.explode"><code class="highlight"><span class="n">explode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">to_explode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.explode" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>738
-739
-740
-741
-742
-743
-744
-745
-746
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>746
 747
 748
 749
@@ -1796,7 +1837,15 @@ Note that we do not care about the order of the elements.</p>
 774
 775
 776
-777</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+777
+778
+779
+780
+781
+782
+783
+784
+785</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="k">def</span> <span class="nf">explode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">to_explode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Turns a list in an item into multiple items. The opposite of `.implode()`.</span>
@@ -1882,15 +1931,7 @@ Note that we do not care about the order of the elements.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.group_by"><code class="highlight"><span class="n">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">cols</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.group_by" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>64
-65
-66
-67
-68
-69
-70
-71
-72
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>72
 73
 74
 75
@@ -1898,7 +1939,15 @@ Note that we do not care about the order of the elements.</p>
 77
 78
 79
-80</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">cols</span><span class="p">):</span>
+80
+81
+82
+83
+84
+85
+86
+87
+88</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">cols</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Sets a group on this clumper object or overrides a previous setting.</span>
 <span class="sd">        A group will affect how some verbs behave. You can undo this behavior</span>
@@ -1930,15 +1979,7 @@ with <code>.ungroup()</code>.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.head"><code class="highlight"><span class="n">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.head" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>497
-498
-499
-500
-501
-502
-503
-504
-505
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>505
 506
 507
 508
@@ -1957,7 +1998,15 @@ with <code>.ungroup()</code>.</p>
 521
 522
 523
-524</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+524
+525
+526
+527
+528
+529
+530
+531
+532</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects the top `n` items from the collection.</span>
 
@@ -2022,15 +2071,7 @@ with <code>.ungroup()</code>.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.inner_join"><code class="highlight"><span class="n">inner_join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">lsuffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s1">&#39;_joined&#39;</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.inner_join" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>275
-276
-277
-278
-279
-280
-281
-282
-283
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>283
 284
 285
 286
@@ -2072,7 +2113,15 @@ with <code>.ungroup()</code>.</p>
 322
 323
 324
-325</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+325
+326
+327
+328
+329
+330
+331
+332
+333</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="k">def</span> <span class="nf">inner_join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">lsuffix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s2">&quot;_joined&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs an inner join on two collections.</span>
@@ -2191,15 +2240,7 @@ with <code>.ungroup()</code>.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.keep"><code class="highlight"><span class="n">keep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.keep" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>471
-472
-473
-474
-475
-476
-477
-478
-479
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>479
 480
 481
 482
@@ -2215,7 +2256,15 @@ with <code>.ungroup()</code>.</p>
 492
 493
 494
-495</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">keep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">):</span>
+495
+496
+497
+498
+499
+500
+501
+502
+503</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">keep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Allows you to select which items to keep and which items to remove.</span>
 
@@ -2276,15 +2325,7 @@ with <code>.ungroup()</code>.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.keys"><code class="highlight"><span class="n">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.keys" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>712
-713
-714
-715
-716
-717
-718
-719
-720
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>720
 721
 722
 723
@@ -2300,7 +2341,15 @@ with <code>.ungroup()</code>.</p>
 733
 734
 735
-736</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+736
+737
+738
+739
+740
+741
+742
+743
+744</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns all the keys of all the items in the collection.</span>
@@ -2360,15 +2409,7 @@ with <code>.ungroup()</code>.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.left_join"><code class="highlight"><span class="n">left_join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">lsuffix</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s1">&#39;_joined&#39;</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.left_join" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>214
-215
-216
-217
-218
-219
-220
-221
-222
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>222
 223
 224
 225
@@ -2419,7 +2460,15 @@ with <code>.ungroup()</code>.</p>
 270
 271
 272
-273</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+273
+274
+275
+276
+277
+278
+279
+280
+281</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="k">def</span> <span class="nf">left_join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">mapping</span><span class="p">,</span> <span class="n">lsuffix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">rsuffix</span><span class="o">=</span><span class="s2">&quot;_joined&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Performs a left join on two collections.</span>
@@ -2551,15 +2600,7 @@ may be multiple copies of the left set if it can be joined multiple times.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.map"><code class="highlight"><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.map" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>687
-688
-689
-690
-691
-692
-693
-694
-695
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>695
 696
 697
 698
@@ -2574,7 +2615,15 @@ may be multiple copies of the left set if it can be joined multiple times.</p>
 707
 708
 709
-710</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+710
+711
+712
+713
+714
+715
+716
+717
+718</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Directly map one item to another one using a function.</span>
 <span class="sd">        If you&#39;re dealing with dictionaries, consider using</span>
@@ -2636,15 +2685,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.max"><code class="highlight"><span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.max" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1073
-1074
-1075
-1076
-1077
-1078
-1079
-1080
-1081
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1081
 1082
 1083
 1084
@@ -2660,7 +2701,15 @@ If you're dealing with dictionaries, consider using
 1094
 1095
 1096
-1097</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+1097
+1098
+1099
+1100
+1101
+1102
+1103
+1104
+1105</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2706,31 +2755,31 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.mean"><code class="highlight"><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.mean" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>969
-970
-971
-972
-973
-974
-975
-976
-977
-978
-979
-980
-981
-982
-983
-984
-985
-986
-987
-988
-989
-990
-991
-992
-993</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 977
+ 978
+ 979
+ 980
+ 981
+ 982
+ 983
+ 984
+ 985
+ 986
+ 987
+ 988
+ 989
+ 990
+ 991
+ 992
+ 993
+ 994
+ 995
+ 996
+ 997
+ 998
+ 999
+1000
+1001</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2776,15 +2825,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.min"><code class="highlight"><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.min" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1047
-1048
-1049
-1050
-1051
-1052
-1053
-1054
-1055
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1055
 1056
 1057
 1058
@@ -2800,7 +2841,15 @@ If you're dealing with dictionaries, consider using
 1068
 1069
 1070
-1071</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+1071
+1072
+1073
+1074
+1075
+1076
+1077
+1078
+1079</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -2846,15 +2895,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.mutate"><code class="highlight"><span class="n">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.mutate" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>608
-609
-610
-611
-612
-613
-614
-615
-616
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>616
 617
 618
 619
@@ -2888,7 +2929,15 @@ If you're dealing with dictionaries, consider using
 647
 648
 649
-650</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
+650
+651
+652
+653
+654
+655
+656
+657
+658</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
     <span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adds or overrides key-value pairs in the collection of dictionaries.</span>
@@ -2982,15 +3031,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.n_unique"><code class="highlight"><span class="n">n_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.n_unique" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1021
-1022
-1023
-1024
-1025
-1026
-1027
-1028
-1029
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1029
 1030
 1031
 1032
@@ -3006,7 +3047,15 @@ If you're dealing with dictionaries, consider using
 1042
 1043
 1044
-1045</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+1045
+1046
+1047
+1048
+1049
+1050
+1051
+1052
+1053</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">n_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -3052,15 +3101,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.pipe"><code class="highlight"><span class="n">pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.pipe" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>840
-841
-842
-843
-844
-845
-846
-847
-848
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>848
 849
 850
 851
@@ -3079,7 +3120,15 @@ If you're dealing with dictionaries, consider using
 864
 865
 866
-867</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+867
+868
+869
+870
+871
+872
+873
+874
+875</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">pipe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Applies a function to the `Clumper` object in a chain-able manner.</span>
 
@@ -3159,8 +3208,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.read_json"><code class="highlight"><span class="n">read_json</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></code> <em>(classmethod)</em><a class="headerlink" href="#clumper.clump.Clumper.read_json" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>39
-40
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>40
 41
 42
 43
@@ -3175,10 +3223,18 @@ If you're dealing with dictionaries, consider using
 52
 53
 54
-55</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@classmethod</span>
+55
+56
+57
+58
+59
+60
+61
+62
+63</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">read_json</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Reads in a json file.</span>
+<span class="sd">        Reads in a json file. Can also read files from url.</span>
 
 <span class="sd">        ![](../img/read_json.png)</span>
 
@@ -3189,32 +3245,34 @@ If you're dealing with dictionaries, consider using
 
 <span class="sd">        clump = Clumper.read_json(&quot;tests/pokemon.json&quot;)</span>
 <span class="sd">        assert len(clump) == 800</span>
+
+<span class="sd">        clump = Clumper.read_json(&quot;https://calmcode.io/datasets/got.json&quot;)</span>
+<span class="sd">        assert len(clump) == 30</span>
 <span class="sd">        ```</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;https:&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http:&quot;</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="k">return</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
 </code></pre></div>
 </td></tr></table>
 
 </details>
-<p>Reads in a json file.</p>
+<p>Reads in a json file. Can also read files from url.</p>
 <p><img alt="" src="../img/read_json.png" /></p>
 <p>Usage:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
 <span class="n">clump</span> <span class="o">=</span> <span class="n">Clumper</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s2">&quot;tests/pokemon.json&quot;</span><span class="p">)</span>
 <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">clump</span><span class="p">)</span> <span class="o">==</span> <span class="mi">800</span>
+
+<span class="n">clump</span> <span class="o">=</span> <span class="n">Clumper</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="s2">&quot;https://calmcode.io/datasets/got.json&quot;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">clump</span><span class="p">)</span> <span class="o">==</span> <span class="mi">30</span>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.reduce"><code class="highlight"><span class="n">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.reduce" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>813
-814
-815
-816
-817
-818
-819
-820
-821
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>821
 822
 823
 824
@@ -3231,7 +3289,15 @@ If you're dealing with dictionaries, consider using
 835
 836
 837
-838</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+838
+839
+840
+841
+842
+843
+844
+845
+846</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Reduce the collection using reducing functions.</span>
 
@@ -3295,15 +3361,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.rename"><code class="highlight"><span class="n">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.rename" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>779
-780
-781
-782
-783
-784
-785
-786
-787
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>787
 788
 789
 790
@@ -3314,7 +3372,15 @@ If you're dealing with dictionaries, consider using
 795
 796
 797
-798</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+798
+799
+800
+801
+802
+803
+804
+805
+806</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">rename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Rename items in the collection.</span>
 
@@ -3350,15 +3416,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.select"><code class="highlight"><span class="n">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.select" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>554
-555
-556
-557
-558
-559
-560
-561
-562
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>562
 563
 564
 565
@@ -3374,7 +3432,15 @@ If you're dealing with dictionaries, consider using
 575
 576
 577
-578</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+578
+579
+580
+581
+582
+583
+584
+585
+586</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects a subset of the keys in each item in the collection.</span>
@@ -3437,15 +3503,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.sort"><code class="highlight"><span class="n">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.sort" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>652
-653
-654
-655
-656
-657
-658
-659
-660
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>660
 661
 662
 663
@@ -3470,7 +3528,15 @@ If you're dealing with dictionaries, consider using
 682
 683
 684
-685</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
+685
+686
+687
+688
+689
+690
+691
+692
+693</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
     <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Allows you to sort the collection of dictionaries.</span>
@@ -3557,15 +3623,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.sum"><code class="highlight"><span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.sum" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>943
-944
-945
-946
-947
-948
-949
-950
-951
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>951
 952
 953
 954
@@ -3581,7 +3639,15 @@ If you're dealing with dictionaries, consider using
 964
 965
 966
-967</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+967
+968
+969
+970
+971
+972
+973
+974
+975</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -3627,15 +3693,7 @@ If you're dealing with dictionaries, consider using
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.summarise_col"><code class="highlight"><span class="n">summarise_col</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.summarise_col" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>897
-898
-899
-900
-901
-902
-903
-904
-905
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>905
 906
 907
 908
@@ -3671,13 +3729,21 @@ If you're dealing with dictionaries, consider using
 938
 939
 940
-941</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">summarise_col</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+941
+942
+943
+944
+945
+946
+947
+948
+949</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">summarise_col</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Apply your own summary function to a key in the collection.</span>
 
 <span class="sd">        It can also accept a string and it will try to fetch an appropriate function</span>
 <span class="sd">        for you. If you pass a string it must be either: `mean`, `count`, `unique`,</span>
-<span class="sd">        `n_unique`, `sum`, `min`, `max`, `median`, `var`, `std`, `first` or `last`.</span>
+<span class="sd">        `n_unique`, `sum`, `min`, `max`, `median`, `values`, `var`, `std`, `first` or `last`.</span>
 
 <span class="sd">        Note that this method **ignores groups**. It also does not return a `Clumper`</span>
 <span class="sd">        collection.</span>
@@ -3685,7 +3751,7 @@ If you're dealing with dictionaries, consider using
 <span class="sd">        Usage:</span>
 
 <span class="sd">        ```python</span>
-<span class="sd">        from clumper import Clump</span>
+<span class="sd">        from clumper import Clumper</span>
 
 <span class="sd">        clump = Clumper([{&quot;a&quot;: 1}, {&quot;a&quot;: 2}, {&quot;a&quot;: 3}])</span>
 
@@ -3723,11 +3789,11 @@ If you're dealing with dictionaries, consider using
 <p>Apply your own summary function to a key in the collection.</p>
 <p>It can also accept a string and it will try to fetch an appropriate function
 for you. If you pass a string it must be either: <code>mean</code>, <code>count</code>, <code>unique</code>,
-<code>n_unique</code>, <code>sum</code>, <code>min</code>, <code>max</code>, <code>median</code>, <code>var</code>, <code>std</code>, <code>first</code> or <code>last</code>.</p>
+<code>n_unique</code>, <code>sum</code>, <code>min</code>, <code>max</code>, <code>median</code>, <code>values</code>, <code>var</code>, <code>std</code>, <code>first</code> or <code>last</code>.</p>
 <p>Note that this method <strong>ignores groups</strong>. It also does not return a <code>Clumper</code>
 collection.</p>
 <p>Usage:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clump</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
 <span class="n">clump</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">([{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}])</span>
 
@@ -3736,15 +3802,7 @@ collection.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.tail"><code class="highlight"><span class="n">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.tail" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>526
-527
-528
-529
-530
-531
-532
-533
-534
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>534
 535
 536
 537
@@ -3762,7 +3820,15 @@ collection.</p>
 549
 550
 551
-552</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+552
+553
+554
+555
+556
+557
+558
+559
+560</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Selects the bottom `n` items from the collection.</span>
 
@@ -3825,15 +3891,7 @@ collection.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.transform"><code class="highlight"><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.transform" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 99
-100
-101
-102
-103
-104
-105
-106
-107
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>107
 108
 109
 110
@@ -3871,7 +3929,15 @@ collection.</p>
 142
 143
 144
-145</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
+145
+146
+147
+148
+149
+150
+151
+152
+153</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@grouped</span>
     <span class="nd">@dict_collection_only</span>
     <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -3977,22 +4043,22 @@ because effectively this prevents us from performing a join.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.ungroup"><code class="highlight"><span class="n">ungroup</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.ungroup" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">ungroup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="k">def</span> <span class="nf">ungroup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Removes all grouping from the collection.</span>
 
@@ -4022,15 +4088,7 @@ because effectively this prevents us from performing a join.</p>
 </code></pre></div>
 
 <h2 id="clumper.clump.Clumper.unique"><code class="highlight"><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span></code><a class="headerlink" href="#clumper.clump.Clumper.unique" title="Permanent link">&para;</a></h2>
-<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1099
-1100
-1101
-1102
-1103
-1104
-1105
-1106
-1107
+<details class="note"><summary>Show source code in <code>clumper/clump.py</code></summary><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1107
 1108
 1109
 1110
@@ -4046,7 +4104,15 @@ because effectively this prevents us from performing a join.</p>
 1120
 1121
 1122
-1123</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
+1123
+1124
+1125
+1126
+1127
+1128
+1129
+1130
+1131</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code>    <span class="nd">@dict_collection_only</span>
     <span class="nd">@return_value_if_empty</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">[])</span>
     <span class="k">def</span> <span class="nf">unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

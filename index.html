@@ -232,6 +232,19 @@
   
 
       
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="examples/got.html" class="md-tabs__link">
+          Examples
+        </a>
+      
+    </li>
+  
+
+      
     </ul>
   </div>
 </nav>
@@ -331,13 +344,6 @@
         <li class="md-nav__item">
   <a href="#early-notice" class="md-nav__link">
     Early Notice
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#base-example" class="md-nav__link">
-    Base Example
   </a>
   
 </li>
@@ -587,6 +593,42 @@
   </li>
 
     
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      Examples
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        Examples
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="examples/got.html" title="Game of Thrones" class="md-nav__link">
+      Game of Thrones
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -610,13 +652,6 @@
         <li class="md-nav__item">
   <a href="#early-notice" class="md-nav__link">
     Early Notice
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#base-example" class="md-nav__link">
-    Base Example
   </a>
   
 </li>
@@ -708,68 +743,7 @@
 <h2 id="early-notice">Early Notice<a class="headerlink" href="#early-notice" title="Permanent link">&para;</a></h2>
 <p>This package is quite new and not a whole lot of users have
 been able to find <em>all the edge cases</em> yet. Each verb in our
-library has at least one test, but there may be edges. </p>
-<h2 id="base-example">Base Example<a class="headerlink" href="#base-example" title="Permanent link">&para;</a></h2>
-<p>Clumper allows you to quickly parse through a list of data.</p>
-<p>Here's an example of a list of dictionaries.</p>
-<div class="codehilite"><pre><span></span><code><span class="err">pokemon</span> <span class="err">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="err">&#39;name&#39;:</span> <span class="err">&#39;Bulbasaur&#39;,</span> <span class="err">&#39;type&#39;:</span> <span class="err">[&#39;Grass&#39;,</span> <span class="err">&#39;Poison&#39;],</span> <span class="err">&#39;hp&#39;:</span> <span class="err">45,</span> <span class="err">&#39;attack&#39;:</span> <span class="err">49</span><span class="p">},</span>
-    <span class="p">{</span><span class="err">&#39;name&#39;:</span> <span class="err">&#39;Charmander&#39;,</span> <span class="err">&#39;type&#39;:</span> <span class="err">[&#39;Fire&#39;],</span> <span class="err">&#39;hp&#39;:</span> <span class="err">39,</span> <span class="err">&#39;attack&#39;:</span> <span class="err">52</span><span class="p">},</span>
-    <span class="err">...</span>
-<span class="p">]</span>
-</code></pre></div>
-
-
-<details class="note"><summary>Download this dataset.</summary><p>You can fetch the dataset by from the commandline.</p>
-<p><pre style="padding: 8px">
-wget https://calmcode.io/datasets/pokemon.json
-</pre></p>
-<p>You can fetch the dataset by from python.</p>
-<p><pre style="padding: 8px" lang="python">
-import json
-import urllib.request <br>
-url = 'http://calmcode.io/datasets/pokemon.json'
-with urllib.request.urlopen(url) as f:
-    pokemon = json.loads(f.read())
-</pre></p>
-<p>You can also download it manually <a href="https://calmcode.io/datasets.html">here</a>.</p>
-</details>
-<p>Given this list of dictionaries we can write the following query;</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-
-<span class="p">(</span><span class="n">Clumper</span><span class="p">(</span><span class="n">pokemon</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">keep</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">mutate</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
-          <span class="n">ratio</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;attack&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;hp&#39;</span><span class="p">])</span>
-  <span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">,</span> <span class="s1">&#39;ratio&#39;</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;ratio&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-  <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
-</code></pre></div>
-
-
-<details class="note"><summary>What this code does line-by-line.</summary><p>This code will perform the following steps.</p>
-<ol>
-<li>It imports <code>Clumper</code>.</li>
-<li>It turns the list of pokemon dictionaries into a <code>Clumper</code>.</li>
-<li>It removes all the pokemon that have more than 1 type.</li>
-<li>The dictionaries that are left will have their <code>type</code> now as a string instead of a list of strings.</li>
-<li>The dictionaries that are left will also have a property called <code>ratio</code> which calculates the ratio between <code>hp</code> and <code>attack</code>.</li>
-<li>All the keys besides <code>name</code>, <code>type</code> and <code>ratio</code> are removed.</li>
-<li>The collection is sorted by <code>ratio</code>, from high to low.</li>
-<li>We grab the top 5 after sorting.</li>
-<li>The results are returned as a list of dictionaries.</li>
-</ol>
-</details>
-<p>This is what we get back:</p>
-<div class="codehilite"><pre><span></span><code><span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Diglett&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Ground&#39;</span><span class="p">,</span> <span class="s1">&#39;ratio&#39;</span><span class="p">:</span> <span class="mf">5.5</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;DeoxysAttack Forme&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Psychic&#39;</span><span class="p">,</span> <span class="s1">&#39;ratio&#39;</span><span class="p">:</span> <span class="mf">3.6</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Krabby&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Water&#39;</span><span class="p">,</span> <span class="s1">&#39;ratio&#39;</span><span class="p">:</span> <span class="mf">3.5</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;DeoxysNormal Forme&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Psychic&#39;</span><span class="p">,</span> <span class="s1">&#39;ratio&#39;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">},</span>
- <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;BanetteMega Banette&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;Ghost&#39;</span><span class="p">,</span> <span class="s1">&#39;ratio&#39;</span><span class="p">:</span> <span class="mf">2.578125</span><span class="p">}]</span>
-</code></pre></div>
-
-
+library has at least one test, but there may be edges.</p>
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
 <ul>
 <li>This library has no dependencies besides a modern version of python.</li>
