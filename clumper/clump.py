@@ -1,7 +1,7 @@
 import json
 import pathlib
 import itertools as it
-import urllib3
+import urllib.request
 from functools import reduce
 from statistics import mean, variance, stdev, median
 
@@ -57,9 +57,8 @@ class Clumper:
         ```
         """
         if path.startswith("https:") or path.startswith("http:"):
-            http = urllib3.PoolManager()
-            r = http.request("GET", path)
-            data = json.loads(r.data)
+            with urllib.request.urlopen(path) as resp:
+                data = json.loads(resp.read())
             return Clumper(data)
         return Clumper(json.loads(pathlib.Path(path).read_text()))
 
