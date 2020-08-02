@@ -354,7 +354,7 @@ class Clumper:
 
         It can also accept a string and it will try to fetch an appropriate function
         for you. If you pass a string it must be either: `mean`, `count`, `unique`,
-        `n_unique`, `sum`, `min`, `max`, `median`, `var`, `std`, `first` or `last`.
+        `n_unique`, `sum`, `min`, `max`, `median`, `values`, `var`, `std`, `first` or `last`.
 
         ![](../img/split-apply-combine.png)
 
@@ -909,7 +909,7 @@ class Clumper:
 
         It can also accept a string and it will try to fetch an appropriate function
         for you. If you pass a string it must be either: `mean`, `count`, `unique`,
-        `n_unique`, `sum`, `min`, `max`, `median`, `var`, `std`, `first` or `last`.
+        `n_unique`, `sum`, `min`, `max`, `median`, `values`, `var`, `std`, `first` or `last`.
 
         Note that this method **ignores groups**. It also does not return a `Clumper`
         collection.

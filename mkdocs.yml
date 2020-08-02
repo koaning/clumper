@@ -20,6 +20,8 @@ nav:
   - API:
       - Clumper: api/clumper.md
       - sequence: api/sequence.md
+  - Examples:
+      - Game of Thrones: examples/got.md
 plugins:
   - mkdocstrings:
       watch:

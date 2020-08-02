@@ -25,34 +25,14 @@ pokemon = [
 ]
 ```
 
-<details>
-  <summary><b>Download this dataset.</b></summary>
-You can fetch the dataset by from the commandline.
-
-<pre style="padding: 8px">
-wget https://calmcode.io/datasets/pokemon.json
-</pre>
-
-You can fetch the dataset by from python.
-
-<pre style="padding: 8px" lang="python">
-import json
-import urllib.request <br>
-url = 'http://calmcode.io/datasets/pokemon.json'
-with urllib.request.urlopen(url) as f:
-    pokemon = json.loads(f.read())
-</pre>
-
-
-You can also download it manually [here](https://calmcode.io/datasets.html).
-</details>
-
 Given this list of dictionaries we can write the following query;
 
 ```python
 from clumper import Clumper
 
-(Clumper(pokemon)
+clump = Clumper.read_json('https://calmcode.io/datasets/pokemon.json')
+
+(clump
   .keep(lambda d: len(d['type']) == 1)
   .mutate(type=lambda d: d['type'][0],
           ratio=lambda d: d['attack']/d['hp'])
@@ -67,7 +47,7 @@ from clumper import Clumper
 This code will perform the following steps.
 
 0. It imports `Clumper`.
-1. It turns the list of pokemon dictionaries into a `Clumper`.
+1. It fetches a list of json-blobs about pokemon from the internet.
 2. It removes all the pokemon that have more than 1 type.
 3. The dictionaries that are left will have their `type` now as a string instead of a list of strings.
 4. The dictionaries that are left will also have a property called `ratio` which calculates the ratio between `hp` and `attack`.
