@@ -1,6 +1,7 @@
 import json
 import pathlib
 import itertools as it
+import urllib.request
 from functools import reduce
 from statistics import mean, variance, stdev, median
 
@@ -39,7 +40,7 @@ class Clumper:
     @classmethod
     def read_json(cls, path):
         """
-        Reads in a json file.
+        Reads in a json file. Can also read files from url.
 
         ![](../img/read_json.png)
 
@@ -50,9 +51,16 @@ class Clumper:
 
         clump = Clumper.read_json("tests/pokemon.json")
         assert len(clump) == 800
+
+        clump = Clumper.read_json("https://calmcode.io/datasets/got.json")
+        assert len(clump) == 30
         ```
         """
-        return json.loads(pathlib.Path(path).read_text())
+        if path.startswith("https:") or path.startswith("http:"):
+            with urllib.request.urlopen(path) as resp:
+                data = json.loads(resp.read())
+            return Clumper(data)
+        return Clumper(json.loads(pathlib.Path(path).read_text()))
 
     def _create_new(self, blob):
         """
@@ -345,7 +353,7 @@ class Clumper:
 
         It can also accept a string and it will try to fetch an appropriate function
         for you. If you pass a string it must be either: `mean`, `count`, `unique`,
-        `n_unique`, `sum`, `min`, `max`, `median`, `var`, `std`, `first` or `last`.
+        `n_unique`, `sum`, `min`, `max`, `median`, `values`, `var`, `std`, `first` or `last`.
 
         ![](../img/split-apply-combine.png)
 
@@ -900,7 +908,7 @@ class Clumper:
 
         It can also accept a string and it will try to fetch an appropriate function
         for you. If you pass a string it must be either: `mean`, `count`, `unique`,
-        `n_unique`, `sum`, `min`, `max`, `median`, `var`, `std`, `first` or `last`.
+        `n_unique`, `sum`, `min`, `max`, `median`, `values`, `var`, `std`, `first` or `last`.
 
         Note that this method **ignores groups**. It also does not return a `Clumper`
         collection.
@@ -908,7 +916,7 @@ class Clumper:
         Usage:
 
         ```python
-        from clumper import Clump
+        from clumper import Clumper
 
         clump = Clumper([{"a": 1}, {"a": 2}, {"a": 3}])
 
