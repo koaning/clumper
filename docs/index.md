@@ -6,11 +6,11 @@
 
 Part of a video series on [calmcode.io](https://calmcode.io).
 
-## Alpha Notice
+## Early Notice
 
-This package is really new and not a whole lot of users have
-been able to find *all* the edge cases yet. We have plenty of
-unit tests but be aware.
+This package is quite new and not a whole lot of users have
+been able to find *all the edge cases* yet. Each verb in our
+library has at least one test, but there may be edges.
 
 ## Base Example
 

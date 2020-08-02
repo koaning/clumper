@@ -20,7 +20,7 @@ def handle_docstring(doc, indent):
             exec(code_part)
 
 
-@pytest.mark.parametrize("m", [m for m in dir(Clumper) if "_" not in m])
+@pytest.mark.parametrize("m", [m for m in dir(Clumper) if not m.startswith("_")])
 def test_clumper_docstrings(m):
     """
     Take the docstring of every method on the `Clumper` class.

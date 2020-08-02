@@ -1,6 +1,7 @@
 import json
 import pathlib
 import itertools as it
+import urllib3
 from functools import reduce
 from statistics import mean, variance, stdev, median
 
@@ -39,7 +40,7 @@ class Clumper:
     @classmethod
     def read_json(cls, path):
         """
-        Reads in a json file.
+        Reads in a json file. Can also read files from url.
 
         ![](../img/read_json.png)
 
@@ -50,9 +51,17 @@ class Clumper:
 
         clump = Clumper.read_json("tests/pokemon.json")
         assert len(clump) == 800
+
+        clump = Clumper.read_json("https://calmcode.io/datasets/got.json")
+        assert len(clump) == 30
         ```
         """
-        return json.loads(pathlib.Path(path).read_text())
+        if path.startswith("https:") or path.startswith("http:"):
+            http = urllib3.PoolManager()
+            r = http.request("GET", path)
+            data = json.loads(r.data)
+            return Clumper(data)
+        return Clumper(json.loads(pathlib.Path(path).read_text()))
 
     def _create_new(self, blob):
         """
@@ -908,7 +917,7 @@ class Clumper:
         Usage:
 
         ```python
-        from clumper import Clump
+        from clumper import Clumper
 
         clump = Clumper([{"a": 1}, {"a": 2}, {"a": 3}])
 
