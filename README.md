@@ -19,7 +19,7 @@ Here's an example of such a dataset.
 
 ```python
 pokemon = [
-    {'name': 'Bulbasaur', 'type': ['Grass', 'Poison'], 'hp': 45, 'attack': 49}
+    {'name': 'Bulbasaur', 'type': ['Grass', 'Poison'], 'hp': 45, 'attack': 49},
     {'name': 'Charmander', 'type': ['Fire'], 'hp': 39, 'attack': 52},
     ...
 ]
