@@ -2,9 +2,11 @@ import json
 import pathlib
 import itertools as it
 import urllib.request
+from typing import Callable
 from functools import reduce
 from statistics import mean, variance, stdev, median
 
+from clumper.underscore import _underscore
 from clumper.decorators import return_value_if_empty, grouped, dict_collection_only
 
 
@@ -38,7 +40,7 @@ class Clumper:
         return f"<Clumper groups={self.groups} len={len(self)} @{hex(id(self))}>"
 
     @classmethod
-    def read_json(cls, path):
+    def read_json(cls, path, n=None):
         """
         Reads in a json file. Can also read files from url.
 
@@ -59,8 +61,11 @@ class Clumper:
         if path.startswith("https:") or path.startswith("http:"):
             with urllib.request.urlopen(path) as resp:
                 data = json.loads(resp.read())
-            return Clumper(data)
-        return Clumper(json.loads(pathlib.Path(path).read_text()))
+        else:
+            data = json.loads(pathlib.Path(path).read_text())
+        if n is not None:
+            data = data[:n]
+        return Clumper(data)
 
     def _create_new(self, blob):
         """
@@ -497,9 +502,14 @@ class Clumper:
         assert clump.equals(expected)
         ```
         """
-        data = self.blob.copy()
+        data = self.blob
         for func in funcs:
-            data = [d for d in data if func(d)]
+            if isinstance(func, str):
+                data = eval(f"[_ for _ in data if {func}]")
+            elif isinstance(func, _underscore):
+                data = eval(f"[_ for _ in data if {func.str_repr}]")
+            else:
+                data = [d for d in data if func(d)]
         return self._create_new(data)
 
     def head(self, n=5):
@@ -650,10 +660,13 @@ class Clumper:
         ```
         """
         data = []
-        for d in self.blob.copy():
+        for d in self.blob:
             new = {k: v for k, v in d.items()}
             for key, func in kwargs.items():
-                new[key] = func(new)
+                if not isinstance(func, Callable):
+                    new[key] = func
+                else:
+                    new[key] = func(new)
             data.append(new)
         return self._create_new(data)
 

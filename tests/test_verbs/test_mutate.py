@@ -24,3 +24,13 @@ def test_can_reuse_call(base_clumper):
     new_clumper = base_clumper.mutate(j=lambda d: d["i"] * 2, k=lambda d: d["j"] * 2)
     assert all([c["i"] * 2 == c["j"] for c in new_clumper.collect()])
     assert all([c["j"] * 2 == c["k"] for c in new_clumper.collect()])
+
+
+def test_can_use_value(base_clumper):
+    """
+    Make sure that we create new values using old values in
+    the same call to mutate.
+    """
+    new_clumper = base_clumper.mutate(j=1, k=lambda d: d["j"] * 2)
+    assert all([c["j"] == 1 for c in new_clumper.collect()])
+    assert all([c["j"] * 2 == c["k"] for c in new_clumper.collect()])
