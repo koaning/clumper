@@ -90,8 +90,6 @@ class Clumper:
         # Reached here so there are no errors. Parse the array to Clumper object
         return Clumper(data_array)
 
-        return Clumper(data_array)
-
     def _create_new(self, blob):
         """
         Creates a new collection of data while preserving settings of the
