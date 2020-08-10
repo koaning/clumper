@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-base_packages = []
+base_packages = ["jsonlines>==1.2.0"]
 
 test_packages = [
     "pytest>=5.4.3",
