@@ -23,8 +23,8 @@ new_data = Clumper(data).explode(item="items").collect()
 assert clumper.equals([{'a': 1, 'item': 1}, {'a': 1, 'item': 2}])
 ```
 
-Note how the syntax allows you to either explode the values
-assigning they to the old keyname or to directly rename
+Note how the syntax allows you to either explode the values,
+assigning them to the old keyname or to directly rename
 this field. You can also pass multiple keys in a single command.
 
 ```python
