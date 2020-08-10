@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
-import logging
-import sys
+
 
 base_packages = ["jsonlines>==1.2.0"]
 
@@ -21,9 +20,6 @@ docs_packages = [
 
 dev_packages = test_packages + util_packages + docs_packages
 
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-log = logging.getLogger()
-log.debug(test_packages)
 setup(
     name="clumper",
     version="0.2.3",
