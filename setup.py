@@ -6,9 +6,10 @@ test_packages = [
     "pytest>=5.4.3",
     "black>=19.10b0",
     "flake8>=3.8.3",
+    "pytest-datafiles>=2.0",
 ]
 
-util_packages = ["jupyterlab>=2.2.0", "pre-commit>=2.6.0"]
+util_packages = ["jupyterlab>=2.2.0", "jsonline>==1.2.0", "pre-commit>=2.6.0"]
 
 docs_packages = [
     "mkdocs>=1.1",
