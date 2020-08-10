@@ -1,4 +1,4 @@
-There's a few extra verbs and use-cases of verbs that
+There are a few extra verbs and use-cases of verbs that
 are worth highlighting.
 
 ## Duplicates

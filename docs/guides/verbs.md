@@ -8,7 +8,7 @@ The **keep** verb allows you to grab a subset from the original collection.
 
 ### Base Example
 
-Here's a basic example of what `keep` and do.
+Here's a basic example of what `keep` does.
 
 ```python
 from clumper import Clumper
@@ -24,7 +24,7 @@ assert clump.equals(expected)
 
 Libraries like pandas offer verbs like `.dropna()`.
 This library does not because we handle missing values
-different. If you've got a collection with a missing value
+differently. If you've got a collection with a missing value
 then you can simply remove it via `.keep()` though.
 
 ```python
@@ -80,7 +80,7 @@ assert result.equals(expected)
 
 ## Sort
 
-The **sort** verb allows you to sort the collection based on values of items.
+The **sort** verb allows you to sort the collection based on the values of items.
 
 ![](../img/sort.png)
 
@@ -125,7 +125,7 @@ assert all(["c" not in d.keys() for d in clump])
 
 ## Drop
 
-The **select** verb allows you to remove a subset of keys for each item.
+The **drop** verb allows you to remove a subset of keys for each item.
 
 ![](../img/drop.png)
 

@@ -75,8 +75,8 @@ Here's what the code did.
 The idea behind the library is that the API is like the English language.
 We could say that the dataset is like a **noun** and that each method is like a **verb**.
 
-Each verb will tell the API *what* will needs to happen to the data and the
-input to the verb will tell you how *how* this will happen. For example,
+Each verb will tell the API *what* needs to happen to the data and the
+input to the verb will tell you *how* this will happen. For example,
 the `.keep()` method will filter out data and how it will filter data is
 explained by the lambda function that we pass in.
 

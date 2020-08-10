@@ -89,7 +89,7 @@ from clumper import Clumper
 ```
 
 Neither `.head()` nor `.sort()` makes an assumption of the
-conents of the `Clumper` collection. Pay attention though that
+contents of the `Clumper` collection. Pay attention though that
 the `lambda` function inside of `.sort()` is appropriate for the
 data in the collection.
 

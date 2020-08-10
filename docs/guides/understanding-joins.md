@@ -1,10 +1,10 @@
 Sometimes you'd like to merge two collections into one.
-There's a few ways of doing that in this library.
+There are a few ways of doing that in this library.
 
 ## Concat
 
 If you just want to stack collections on top
-of eachother, you can use `concat` for that. It's
+of each other, you can use `concat` for that. It's
 short for "concatenate".
 
 ![](../img/concat.png)
