@@ -4,7 +4,6 @@ on:
   push:
     branches:
     - master
-    - read_jsonl_file
   pull_request:
     branches:
     - master
