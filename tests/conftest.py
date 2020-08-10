@@ -9,3 +9,7 @@ def base_clumper():
         for i, c in enumerate("abcdefghijklmnopqrstuvwxyz")
     ]
     return Clumper(data)
+
+
+def pytest_configure(config):
+    config.addinivalue_line("markers", "datafiles: load datafiles")

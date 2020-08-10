@@ -1,5 +1,6 @@
 import json
 import pathlib
+import jsonlines
 import itertools as it
 import urllib.request
 from functools import reduce
@@ -61,6 +62,33 @@ class Clumper:
                 data = json.loads(resp.read())
             return Clumper(data)
         return Clumper(json.loads(pathlib.Path(path).read_text()))
+
+    @classmethod
+    def read_jsonl(cls, path, lines=None):
+        """
+        Reads in a jsonl file. You can also specify how many lines you want to read in.
+
+        """
+        data_array = []
+        # Case 1 : Handle local files
+        if path.startswith("https:") and path.startswith("http:"):
+            raise ValueError(
+                "Currently the jsonl files must be in the local machine. Please specify a local file."
+            )
+        else:
+            try:
+                with jsonlines.open(path) as f:
+                    for current_line_nr, line_data in enumerate(f):
+                        if lines is not None and current_line_nr > lines - 1:
+                            break
+                        else:
+                            data_array.append(line_data)
+            except Exception:
+                print("Error occured during reading reading jsonl file")
+                raise
+
+        # Reached here so there are no errors. Parse the array to Clumper object
+        return Clumper(data_array)
 
     def _create_new(self, blob):
         """
