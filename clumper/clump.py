@@ -79,7 +79,7 @@ class Clumper:
             try:
                 with jsonlines.open(path) as f:
                     for current_line_nr, line_data in enumerate(f):
-                        if lines is not None and current_line_nr > lines:
+                        if lines is not None and current_line_nr > lines - 1:
                             break
                         else:
                             data_array.append(line_data)
