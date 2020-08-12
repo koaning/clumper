@@ -12,6 +12,5 @@ def base_clumper():
 
 
 @pytest.fixture(scope="module")
-def single_json_file_name():
-
-    return "tests/test_read_write/sample_jsonl_files/cards.jsonl"
+def single_json_file_path():
+    return "tests/cards.jsonl"
