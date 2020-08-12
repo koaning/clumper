@@ -73,7 +73,7 @@ class Clumper:
          ```python
         from clumper import Clumper
 
-        clump = Clumper.read_json("tests/cards.jsonl")
+        clump = Clumper.read_jsonl("tests/cards.jsonl")
         assert len(clump) == 4
 
         ```
