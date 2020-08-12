@@ -1,6 +1,5 @@
 import json
 import pathlib
-import jsonlines
 import itertools as it
 import urllib.request
 from functools import reduce
@@ -77,12 +76,12 @@ class Clumper:
             )
         else:
             try:
-                with jsonlines.open(path) as f:
-                    for current_line_nr, line_data in enumerate(f):
-                        if lines is not None and current_line_nr > lines - 1:
+                with open(path) as f:
+                    for current_line_nr, json_string in enumerate(f):
+                        json_object = json.loads(json_string)
+                        data_array.append(json_object)
+                        if lines is not None and current_line_nr + 1 == lines:
                             break
-                        else:
-                            data_array.append(line_data)
             except Exception:
                 print("Error occured during reading reading jsonl file")
                 raise
