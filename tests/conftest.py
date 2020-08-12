@@ -11,6 +11,5 @@ def base_clumper():
     return Clumper(data)
 
 
-@pytest.fixture(scope="module")
-def single_json_file_path():
-    return "tests/cards.jsonl"
+def pytest_configure(config):
+    config.addinivalue_line("markers", "datafiles: load datafiles")
