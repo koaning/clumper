@@ -67,24 +67,39 @@ class Clumper:
         """
         Reads in a jsonl file. You can also specify how many lines you want to read in.
 
+
+        Usage:
+
+         ```python
+        from clumper import Clumper
+
+        clump = Clumper.read_jsonl("tests/cards.jsonl")
+        assert len(clump) == 4
+
+        ```
         """
         data_array = []
+
+        if lines is not None:
+            assert lines >= 0, "Number of lines to read must be non-negative"
+
         # Case 1 : Handle local files
         if path.startswith("https:") and path.startswith("http:"):
             raise ValueError(
                 "Currently the jsonl files must be in the local machine. Please specify a local file."
             )
-        else:
-            try:
-                with open(path) as f:
-                    for current_line_nr, json_string in enumerate(f):
-                        json_object = json.loads(json_string)
-                        data_array.append(json_object)
-                        if lines is not None and current_line_nr + 1 == lines:
-                            break
-            except Exception:
-                print("Error occured during reading reading jsonl file")
-                raise
+
+        try:
+            with open(path) as f:
+                for current_line_nr, json_string in enumerate(f):
+                    if lines is not None and current_line_nr == lines:
+                        break
+                    json_object = json.loads(json_string)
+                    data_array.append(json_object)
+
+        except Exception:
+            print("Error occured during parsing jsonl file")
+            raise
 
         # Reached here so there are no errors. Parse the array to Clumper object
         return Clumper(data_array)
