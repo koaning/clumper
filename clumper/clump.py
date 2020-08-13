@@ -1,6 +1,7 @@
 import json
 import pathlib
 import itertools as it
+import requests
 import urllib.request
 from functools import reduce
 from statistics import mean, variance, stdev, median
@@ -83,20 +84,28 @@ class Clumper:
         if lines is not None:
             assert lines >= 0, "Number of lines to read must be non-negative"
 
-        # Case 1 : Handle local files
-        if path.startswith("https:") and path.startswith("http:"):
-            raise ValueError(
-                "Currently the jsonl files must be in the local machine. Please specify a local file."
-            )
+        def iterate_over_file(file_handler):
+            nonlocal data_array, lines
+
+            for current_line_nr, json_string in enumerate(file_handler):
+                if lines is not None and current_line_nr == lines:
+                    break
+                json_object = json.loads(json_string)
+                data_array.append(json_object)
+            return data_array
 
         try:
-            with open(path) as f:
-                for current_line_nr, json_string in enumerate(f):
-                    if lines is not None and current_line_nr == lines:
-                        break
-                    json_object = json.loads(json_string)
-                    data_array.append(json_object)
-
+            # Case 1 : Open cloud file in stream
+            if path.startswith("https:") or path.startswith("http:"):
+                with requests.get(path, stream=True) as f:
+                    f.raise_for_status()
+                    # Iterate over the lines
+                    f = f.iter_lines()
+                    iterate_over_file(f)
+            # Case 2 : Open local file
+            else:
+                with open(path) as f:
+                    iterate_over_file(f)
         except Exception:
             print("Error occured during parsing jsonl file")
             raise
