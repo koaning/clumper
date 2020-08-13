@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-base_packages = []
+base_packages = ["requests>=2.24.0"]
 
 test_packages = base_packages + [
     "pytest>=5.4.3",
