@@ -68,16 +68,6 @@ class Clumper:
         """
         Reads in a jsonl file. You can also specify how many lines you want to read in.
 
-
-        Usage:
-
-         ```python
-        from clumper import Clumper
-
-        clump = Clumper.read_jsonl("tests/cards.jsonl")
-        assert len(clump) == 4
-
-        ```
         """
         data_array = []
 
