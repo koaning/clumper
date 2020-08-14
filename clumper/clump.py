@@ -1,7 +1,6 @@
 import json
 import pathlib
 import itertools as it
-import requests
 import urllib.request
 from functools import reduce
 from statistics import mean, variance, stdev, median
@@ -87,21 +86,17 @@ class Clumper:
         try:
             # Case 1 : Open cloud file in stream
             if path.startswith("https:") or path.startswith("http:"):
-                with requests.get(path, stream=True) as f:
-                    f.raise_for_status()
-                    # Iterate over the lines
-                    f = f.iter_lines()
+                with urllib.request.urlopen(path) as f:
                     iterate_over_file(f)
-            # Case 2 : Open local file
-            else:
-                with open(path) as f:
-                    iterate_over_file(f)
+                    return Clumper(data_array)
+            # Case 2 : Local file
+            with open(path) as f:
+                iterate_over_file(f)
+                return Clumper(data_array)
+
         except Exception:
             print("Error occured during parsing jsonl file")
             raise
-
-        # Reached here so there are no errors. Parse the array to Clumper object
-        return Clumper(data_array)
 
     def _create_new(self, blob):
         """
