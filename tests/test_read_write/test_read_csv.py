@@ -1,77 +1,79 @@
 import pytest
+from itertools import product
 from clumper import Clumper
 
 
-@pytest.mark.parametrize(
-    "path, delimiter, nrows, fieldnames, length",
-    [
-        ("tests/monopoly.csv", ",", None, None, 22),
-        ("tests/monopoly.csv", ",", 10, None, 10),
-        (
-            "tests/monopoly.csv",
-            ",",
-            10,
-            [
-                "name",
-                "ogun_rent",
-                "ragnar_house_1",
-                "house_2",
-                "zeus_house_3",
-                "house_4",
-                "hotel",
-                "deed_cost",
-                "house_cost",
-                "euripides_color",
-                "tile",
-            ],
-            10,
-        ),
-        ("https://calmcode.io/datasets/monopoly.csv", ",", None, None, 22),
-        ("https://calmcode.io/datasets/monopoly.csv", ",", 15, None, 15),
-        (
-            "https://calmcode.io/datasets/monopoly.csv",
-            ",",
-            15,
-            [
-                "namaste",
-                "rernt",
-                "house1",
-                "house2",
-                "house3",
-                "house4",
-                "hotell",
-                "deed_cost",
-                "house_cost",
-                "color",
-                "tille",
-            ],
-            15,
-        ),
-    ],
-)
-def test_read_csv(path, delimiter, nrows, fieldnames, length):
-    "Test that the length of clumper matches the total number of rows in the csv. Also test that the correct field names and number are returned"
-    clump = Clumper.read_csv(
-        path=path, delimiter=delimiter, nrows=nrows, fieldnames=fieldnames
-    )
-    field_names = {
-        "name",
-        "rent",
-        "house_1",
-        "house_2",
-        "house_3",
-        "house_4",
-        "hotel",
-        "deed_cost",
-        "house_cost",
-        "color",
-        "tile",
-    }
+paths = ["tests/monopoly.csv", "https://calmcode.io/datasets/monopoly.csv"]
+nrows = [(None, 22), (10, 10), (15, 15)]
+fields = [
+    (
+        None,
+        [
+            "name",
+            "rent",
+            "house_1",
+            "house_2",
+            "house_3",
+            "house_4",
+            "hotel",
+            "deed_cost",
+            "house_cost",
+            "color",
+            "tile",
+        ],
+        22,
+    ),
+    (
+        [
+            "namee",
+            "rent",
+            "house1",
+            "house2",
+            "house3",
+            "house4",
+            "hotell",
+            "deed_cost",
+            "house_cost",
+            "colour",
+            "tille",
+        ],
+        [
+            "namee",
+            "rent",
+            "house1",
+            "house2",
+            "house3",
+            "house4",
+            "hotell",
+            "deed_cost",
+            "house_cost",
+            "colour",
+            "tille",
+        ],
+        23,
+    ),
+]
+
+path_nrows = [(path, nrows, length) for path, (nrows, length) in product(paths, nrows)]
+path_fields = [
+    (path, fieldnames, fields_check, length)
+    for path, (fieldnames, fields_check, length) in product(paths, fields)
+]
+
+
+@pytest.mark.parametrize("path,nrows,length", path_nrows)
+def test_read_csv(path, nrows, length):
+    "Test that the length of clumper matches the total number of rows in the csv."
+    clump = Clumper.read_csv(path=path, nrows=nrows)
     assert len(clump) == length
-    if not fieldnames:
-        assert not field_names.difference(clump.keys())
-    else:
-        assert not set(fieldnames).difference(clump.keys())
+
+
+@pytest.mark.parametrize("path,fieldnames,field_check,length", path_fields)
+def test_fieldnames(path, fieldnames, field_check, length):
+    "Test that fieldnames matches keys of Clumper. Also test number of rows returned."
+    clump = Clumper.read_csv(path=path, fieldnames=fieldnames)
+    assert not set(field_check).difference(clump.keys())
+    assert len(clump) == length
 
 
 def test_wrong_delimiter():
@@ -84,3 +86,10 @@ def test_read_csv_negative_nrows():
     "Test that an error is raised if nrows is negative."
     with pytest.raises(ValueError):
         Clumper.read_csv("tests/monopoly.csv", nrows=-5)
+
+
+res = Clumper.read_csv(
+    "https://calmcode.io/datasets/bigmac.csv",
+    fieldnames=["date", "currency", "country", "price", "dollar_rate", "cost"],
+)
+print(res.keys())

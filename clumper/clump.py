@@ -66,9 +66,18 @@ class Clumper:
     @classmethod
     def read_csv(cls, path, delimiter=",", fieldnames=None, nrows=None):
         """
-        Reads in a csv file. Can also read files from url. The delimiter should be a single character; the default is `,`.
-        `nrows` limits the number of rows read in and can be useful when dealing with large files; by default, all the rows will be read.
-        You can also supply fieldnames, by default, the first row of the csv file is treated as the header row.
+        Reads in a csv file. Can also read files from url.
+
+        Arguments
+        ---------
+        path : filename or url
+        delimiter: must be a single character. `,` is the default.
+        fieldnames: You may prefer a different set of keys for the data, in which case, you can supply new keys with the fieldnames.
+        By default, the first row of the csv will provide the Clumper keys if fieldnames is None. If fieldnames is provided,
+        then the first row stays as part of the data. You should ensure that the correct number of fieldnames is supplied,
+        as an incorrect number can lead to truncation of the clumper. So, if you have seven columns and your fieldnames length is 3,
+        then every row will have only 3 values, the remaining four will be cut off.
+        nrows: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
 
         Usage:
 
@@ -84,8 +93,15 @@ class Clumper:
         clump = Clumper.read_csv("https://calmcode.io/datasets/monopoly.csv")
         assert len(clump) == 22
 
-        clump = Clumper.read_csv("tests/monopoly.csv", fieldnames=list("ABCDEFGHIJK"))
-        assert not set("ABCDEFGHIJK").difference(clump.keys())
+        # By default, the first row of the csv is treated as the keys of the Clumper.
+        # If the fieldnames argument is not None, then the first row stays as part of the data.
+        fieldnames = ['date', 'currency', 'country', 'price', 'dollar_rate', 'cost']
+        clump = Clumper.read_csv("https://calmcode.io/datasets/bigmac.csv",
+                                 # supply new fieldnames
+                                 fieldnames=fieldnames)
+        # check first row :
+        first_row = ['date', 'currency_code','name','local_price', 'dollar_ex', 'dollar_price']
+        assert clump.head(1).equals([dict(zip(fieldnames, first_row))])
         ```
         """
         if path.startswith("https:") or path.startswith("http:"):
