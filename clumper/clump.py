@@ -1,4 +1,5 @@
 import json
+import csv
 import pathlib
 import itertools as it
 import urllib.request
@@ -61,6 +62,56 @@ class Clumper:
                 data = json.loads(resp.read())
             return Clumper(data)
         return Clumper(json.loads(pathlib.Path(path).read_text()))
+
+    @classmethod
+    def read_csv(cls, path, delimiter=",", fieldnames=None, nrows=None):
+        """
+        Reads in a csv file. Can also read files from url.
+
+        Parameters
+        ----------
+        path : filename or url
+        delimiter: must be a single character. `,` is the default.
+        fieldnames: If `None`, the first row of the csv is assumed as the header.
+        nrows: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        clump = Clumper.read_csv("tests/iris.csv")
+        assert len(clump) == 150
+
+        clump = Clumper.read_csv("tests/iris.csv", nrows = 30)
+        assert len(clump) == 30
+
+        clump = Clumper.read_csv("https://calmcode.io/datasets/monopoly.csv")
+        assert len(clump) == 22
+        ```
+        """
+        if path.startswith("https:") or path.startswith("http:"):
+            with urllib.request.urlopen(path) as resp:
+
+                if fieldnames is not None:
+                    fieldnames = fieldnames
+                else:
+                    fieldnames = resp.readline().decode().strip().split(",")
+
+                # this section allows us to chunk the rows, if nrows is supplied
+                if nrows is not None:
+                    _, body = zip(
+                        *it.takewhile(lambda line: line[0] < nrows, enumerate(resp))
+                    )
+                else:
+                    body = resp.readlines()
+                body = (word.decode().strip().split(",") for word in body)
+                body = it.product([fieldnames], body)
+                return Clumper([dict(zip(key, values)) for key, values in body])
+
+        with open(path, newline="") as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=delimiter, fieldnames=fieldnames)
+            return Clumper(list(it.islice(reader, 0, nrows)))
 
     def _create_new(self, blob):
         """
