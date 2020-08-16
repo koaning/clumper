@@ -63,11 +63,11 @@ class Clumper:
         return Clumper(json.loads(pathlib.Path(path).read_text()))
 
     @classmethod
-    def read_jsonl(cls, path, lines=None):
+    def read_jsonl(cls, path: str, lines=None):
         """
         Reads in a jsonl file. You can also specify how many lines you want to read in.
 
-         Usage:
+        Usage:
 
         ```python
         from clumper import Clumper
@@ -80,12 +80,16 @@ class Clumper:
         assert len(clump) == 800
 
         """
-        data_array = []
+
+        assert path.lower().endswith(
+            ".jsonl"
+        ), "The file extension must be .jsonl or JSONL"
 
         if lines is not None:
             assert lines >= 0, "Number of lines to read must be non-negative"
 
         try:
+
             # Case 1 : Open cloud file in stream
             if path.startswith("https:") or path.startswith("http:"):
                 f = urllib.request.urlopen(path)
@@ -93,14 +97,16 @@ class Clumper:
             else:
                 f = open(path)
 
-            # Read it
+            # Initalize a place to store the parsed data as list
+            data_array = []
+            # Read it, parse and close it
             with f:
                 for current_line_nr, json_string in enumerate(f):
                     if lines is not None and current_line_nr == lines:
                         break
                     json_object = json.loads(json_string)
                     data_array.append(json_object)
-
+            # Return it
             return Clumper(data_array)
 
         except Exception:
