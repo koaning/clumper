@@ -80,7 +80,9 @@ class Clumper:
     @classmethod
     def read_jsonl(cls, path: str, n=None):
         """
-        Reads in a jsonl file. You can also specify how many lines you want to read in.
+        Reads in a jsonl file. Can also read files from url.
+
+        ![](../img/read_jsonl.png)
 
         Arguments:
             path: filename or url
@@ -133,6 +135,8 @@ class Clumper:
         """
         Reads in a csv file. Can also read files from url.
 
+        ![](../img/read_csv.png)
+
         Arguments:
             path: Filename or url.
             delimiter: Delimiter used in the csv file. Must be a single character and `,` is the default.
@@ -158,10 +162,10 @@ class Clumper:
         clump = Clumper.read_csv("https://calmcode.io/datasets/monopoly.csv")
         assert len(clump) == 22
 
-        # By default, the first row of the csv is treated as the keys of the Clumper.
         # If the fieldnames argument is not None, then the first row becomes part of the data.
         fieldnames = ['date', 'currency', 'country', 'price', 'dollar_rate', 'cost']
         clump = Clumper.read_csv("https://calmcode.io/datasets/bigmac.csv", fieldnames=fieldnames)
+
         first_row = ['date', 'currency_code','name','local_price', 'dollar_ex', 'dollar_price']
         assert clump.head(1).equals([dict(zip(fieldnames, first_row))])
         ```
