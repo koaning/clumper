@@ -45,6 +45,10 @@ class Clumper:
 
         ![](../img/read_json.png)
 
+        Arguments:
+            path: filename or url
+            n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
+
         Usage:
 
         ```python
@@ -130,20 +134,15 @@ class Clumper:
         Reads in a csv file. Can also read files from url.
 
         Arguments:
-            path: filename or url
-            delimiter: must be a single character. `,` is the default.
+            path: Filename or url.
+            delimiter: Delimiter used in the csv file. Must be a single character and `,` is the default.
             n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
-            fieldnames: allows you to set the fieldnames if the header is missing.
-
-        You may prefer a different set of keys for the data, in which case,
-        you can supply new keys with the fieldnames. By default, the first row o
-        f the csv will provide the Clumper keys if fieldnames is `None`. If
-        fieldnames is provided, then the first row becomes part of the data.
-        You should ensure that the correct number of fieldnames is supplied,
-        as an incorrect number can lead to truncation of the clumper.
-
-        So, if you have seven columns and your fieldnames length is 3,
-        then every row will have only 3 values, the remaining four will be cut off.
+            fieldnames: Allows you to set the fieldnames if the header is missing. By default, the first
+                        row of the csv will provide the Clumper keys if fieldnames is `None`. If fieldnames
+                        is provided, then the first row becomes part of the data. You should ensure that
+                        the correct number of fieldnames is supplied, as an incorrect number can lead
+                        to truncation. If you have seven columns and your fieldnames length is 3,
+                        then every row will have only 3 values, the remaining four will be cut off.
 
         Usage:
 
@@ -160,12 +159,9 @@ class Clumper:
         assert len(clump) == 22
 
         # By default, the first row of the csv is treated as the keys of the Clumper.
-        # If the fieldnames argument is not None, then the first row stays as part of the data.
+        # If the fieldnames argument is not None, then the first row becomes part of the data.
         fieldnames = ['date', 'currency', 'country', 'price', 'dollar_rate', 'cost']
-        clump = Clumper.read_csv("https://calmcode.io/datasets/bigmac.csv",
-                                # supply new fieldnames
-                                 fieldnames=fieldnames)
-        # check first row :
+        clump = Clumper.read_csv("https://calmcode.io/datasets/bigmac.csv", fieldnames=fieldnames)
         first_row = ['date', 'currency_code','name','local_price', 'dollar_ex', 'dollar_price']
         assert clump.head(1).equals([dict(zip(fieldnames, first_row))])
         ```
