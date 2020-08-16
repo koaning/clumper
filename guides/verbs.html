@@ -649,6 +649,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="releases.html" title="Releases" class="md-nav__link">
+      Releases
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -963,7 +975,7 @@
 <p>The <strong>keep</strong> verb allows you to grab a subset from the original collection.</p>
 <p><img alt="" src="../img/keep.png" /></p>
 <h3 id="base-example">Base Example<a class="headerlink" href="#base-example" title="Permanent link">&para;</a></h3>
-<p>Here's a basic example of what <code>keep</code> and do.</p>
+<p>Here's a basic example of what <code>keep</code> does.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
 <span class="n">list_dicts</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
@@ -976,7 +988,7 @@
 <h3 id="dropping-missing-values">Dropping Missing Values<a class="headerlink" href="#dropping-missing-values" title="Permanent link">&para;</a></h3>
 <p>Libraries like pandas offer verbs like <code>.dropna()</code>.
 This library does not because we handle missing values
-different. If you've got a collection with a missing value
+differently. If you've got a collection with a missing value
 then you can simply remove it via <code>.keep()</code> though.</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
 
@@ -1023,7 +1035,7 @@ then you can simply remove it via <code>.keep()</code> though.</p>
 </code></pre></div>
 
 <h2 id="sort">Sort<a class="headerlink" href="#sort" title="Permanent link">&para;</a></h2>
-<p>The <strong>sort</strong> verb allows you to sort the collection based on values of items.</p>
+<p>The <strong>sort</strong> verb allows you to sort the collection based on the values of items.</p>
 <p><img alt="" src="../img/sort.png" /></p>
 <h3 id="base-example_2">Base Example<a class="headerlink" href="#base-example_2" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
@@ -1058,7 +1070,7 @@ then you can simply remove it via <code>.keep()</code> though.</p>
 </code></pre></div>
 
 <h2 id="drop">Drop<a class="headerlink" href="#drop" title="Permanent link">&para;</a></h2>
-<p>The <strong>select</strong> verb allows you to remove a subset of keys for each item.</p>
+<p>The <strong>drop</strong> verb allows you to remove a subset of keys for each item.</p>
 <p><img alt="" src="../img/drop.png" /></p>
 <h3 id="base-example_4">Base Example<a class="headerlink" href="#base-example_4" title="Permanent link">&para;</a></h3>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>

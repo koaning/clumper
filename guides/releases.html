@@ -13,7 +13,7 @@
         <meta name="description" content="A small python library that can clump lists of data together.">
       
       
-        <link rel="canonical" href="https://koaning.github.io/clumper/guides/useful-verbs.html">
+        <link rel="canonical" href="https://koaning.github.io/clumper/guides/releases.html">
       
       
         <meta name="author" content="Vincent D. Warmerdam">
@@ -42,7 +42,7 @@
     
     
       
-        <title>More Verbs - Clumper Docs</title>
+        <title>Releases - Clumper Docs</title>
       
     
     
@@ -93,7 +93,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#duplicates" tabindex="0" class="md-skip">
+      <a href="#releases" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -119,7 +119,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                More Verbs
+                Releases
               
             </span>
           
@@ -409,45 +409,11 @@
           
           
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        More Verbs
-      </label>
-    
-    <a href="useful-verbs.html" title="More Verbs" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="useful-verbs.html" title="More Verbs" class="md-nav__link">
       More Verbs
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#duplicates" class="md-nav__link">
-    Duplicates
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
         
@@ -479,11 +445,56 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="releases.html" title="Releases" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Releases
+      </label>
+    
+    <a href="releases.html" title="Releases" class="md-nav__link md-nav__link--active">
       Releases
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#version-024" class="md-nav__link">
+    Version 0.2.4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-025" class="md-nav__link">
+    Version 0.2.5
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -590,13 +601,22 @@
 <nav class="md-nav md-nav--secondary">
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#duplicates" class="md-nav__link">
-    Duplicates
+  <a href="#version-024" class="md-nav__link">
+    Version 0.2.4
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#version-025" class="md-nav__link">
+    Version 0.2.5
   </a>
   
 </li>
@@ -617,25 +637,15 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/koaning/clumper/edit/master/docs/guides/useful-verbs.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/koaning/clumper/edit/master/docs/guides/releases.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                  <h1>More Verbs</h1>
-                
-                <p>There are a few extra verbs and use-cases of verbs that
-are worth highlighting.</p>
-<h2 id="duplicates">Duplicates<a class="headerlink" href="#duplicates" title="Permanent link">&para;</a></h2>
-<p>Removing duplicates is tricky via <code>.keep()</code> so instead we've
-created a method for this usecase.</p>
-<p><img alt="" src="../img/drop_duplicates.png" /></p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}]</span>
-<span class="n">clump</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
-<span class="n">expected</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}]</span>
-
-<span class="k">assert</span> <span class="n">clump</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
-</code></pre></div>
+                <h1 id="releases">Releases<a class="headerlink" href="#releases" title="Permanent link">&para;</a></h1>
+<p>This page lists the releases as well as the features that were added.</p>
+<h2 id="version-024">Version 0.2.4<a class="headerlink" href="#version-024" title="Permanent link">&para;</a></h2>
+<p><code>Clumper</code> was announced to the public.</p>
+<h2 id="version-025">Version 0.2.5<a class="headerlink" href="#version-025" title="Permanent link">&para;</a></h2>
+<p>Added <code>read_json</code>, <code>read_jsonl</code> and <code>read_csv</code> methods to <code>Clumper</code> class.</p>
                 
                   
                 
@@ -657,7 +667,7 @@ created a method for this usecase.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="understanding-reshaping.html" title="Reshaping Verbs" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="faq.html" title="FAQ" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -666,19 +676,19 @@ created a method for this usecase.</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Reshaping Verbs
+                FAQ
               </span>
             </div>
           </a>
         
         
-          <a href="summary-methods.html" title="Useful Methods" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../api/clumper.html" title="Clumper" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Useful Methods
+                Clumper
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
