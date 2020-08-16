@@ -1,9 +1,7 @@
 from setuptools import setup, find_packages
 
 
-base_packages = []
-
-test_packages = base_packages + [
+test_packages = [
     "pytest>=5.4.3",
     "black>=19.10b0",
     "flake8>=3.8.3",
