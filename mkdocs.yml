@@ -26,7 +26,6 @@ plugins:
   - mkdocstrings:
       watch:
         - clumper
-  - mkdocs-jupyter
   - search
 copyright: Copyright &copy; 2020 Maintained by <a href="https://twitter.com/fishnets88">Vincent</a>.
 theme:

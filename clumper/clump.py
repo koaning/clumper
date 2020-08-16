@@ -39,7 +39,7 @@ class Clumper:
         return f"<Clumper groups={self.groups} len={len(self)} @{hex(id(self))}>"
 
     @classmethod
-    def read_json(cls, path):
+    def read_json(cls, path, n=None):
         """
         Reads in a json file. Can also read files from url.
 
@@ -50,47 +50,58 @@ class Clumper:
         ```python
         from clumper import Clumper
 
-        clump = Clumper.read_json("tests/pokemon.json")
+        clump = Clumper.read_json("tests/data/pokemon.json")
         assert len(clump) == 800
 
         clump = Clumper.read_json("https://calmcode.io/datasets/got.json")
         assert len(clump) == 30
+
+        clump = Clumper.read_json("https://calmcode.io/datasets/got.json", n=10)
+        assert len(clump) == 10
         ```
         """
+        if n is not None:
+            if n <= 0:
+                raise ValueError("Number of lines to read must be > 0.")
+
         if path.startswith("https:") or path.startswith("http:"):
             with urllib.request.urlopen(path) as resp:
                 data = json.loads(resp.read())
-            return Clumper(data)
-        return Clumper(json.loads(pathlib.Path(path).read_text()))
+        else:
+            data = json.loads(pathlib.Path(path).read_text())
+        if n:
+            return Clumper(list(it.islice(data, 0, n)))
+        return Clumper(data)
 
     @classmethod
-    def read_jsonl(cls, path: str, lines=None):
+    def read_jsonl(cls, path: str, n=None):
         """
         Reads in a jsonl file. You can also specify how many lines you want to read in.
+
+        Arguments:
+            path: filename or url
+            n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
 
         Usage:
 
         ```python
         from clumper import Clumper
 
-        clump = Clumper.read_jsonl("tests/cards.jsonl")
-        assert len(clump) == 5
-
+        clump = Clumper.read_jsonl("tests/data/cards.jsonl")
+        assert len(clump) == 4
 
         clump = Clumper.read_jsonl("https://calmcode.io/datasets/pokemon.jsonl")
         assert len(clump) == 800
 
+        clump = Clumper.read_jsonl("https://calmcode.io/datasets/pokemon.jsonl", n=10)
+        assert len(clump) == 10
+        ```
         """
-
-        assert path.lower().endswith(
-            ".jsonl"
-        ), "The file extension must be .jsonl or JSONL"
-
-        if lines is not None:
-            assert lines >= 0, "Number of lines to read must be non-negative"
+        if n is not None:
+            if n <= 0:
+                raise ValueError("Number of lines to read must be > 0.")
 
         try:
-
             # Case 1 : Open cloud file in stream
             if path.startswith("https:") or path.startswith("http:"):
                 f = urllib.request.urlopen(path)
@@ -103,7 +114,7 @@ class Clumper:
             # Read it, parse and close it
             with f:
                 for current_line_nr, json_string in enumerate(f):
-                    if lines is not None and current_line_nr == lines:
+                    if n is not None and current_line_nr == n:
                         break
                     json_object = json.loads(json_string)
                     data_array.append(json_object)
@@ -114,28 +125,40 @@ class Clumper:
             raise RuntimeError("Error occured during reading in JSONL file")
 
     @classmethod
-    def read_csv(cls, path, delimiter=",", fieldnames=None, nrows=None):
+    def read_csv(cls, path, delimiter=",", fieldnames=None, n=None):
         """
         Reads in a csv file. Can also read files from url.
-        Arguments
-        ---------
-        path : filename or url
-        delimiter: must be a single character. `,` is the default.
-        fieldnames: You may prefer a different set of keys for the data, in which case, you can supply new keys with the fieldnames.
-        By default, the first row of the csv will provide the Clumper keys if fieldnames is None. If fieldnames is provided,
-        then the first row stays as part of the data. You should ensure that the correct number of fieldnames is supplied,
-        as an incorrect number can lead to truncation of the clumper. So, if you have seven columns and your fieldnames length is 3,
+
+        Arguments:
+            path: filename or url
+            delimiter: must be a single character. `,` is the default.
+            n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
+            fieldnames: allows you to set the fieldnames if the header is missing.
+
+        You may prefer a different set of keys for the data, in which case,
+        you can supply new keys with the fieldnames. By default, the first row o
+        f the csv will provide the Clumper keys if fieldnames is `None`. If
+        fieldnames is provided, then the first row becomes part of the data.
+        You should ensure that the correct number of fieldnames is supplied,
+        as an incorrect number can lead to truncation of the clumper.
+
+        So, if you have seven columns and your fieldnames length is 3,
         then every row will have only 3 values, the remaining four will be cut off.
-        nrows: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
+
         Usage:
+
         ```python
         from clumper import Clumper
-        clump = Clumper.read_csv("tests/monopoly.csv")
+
+        clump = Clumper.read_csv("tests/data/monopoly.csv")
         assert len(clump) == 22
-        clump = Clumper.read_csv("tests/monopoly.csv", nrows = 10)
+
+        clump = Clumper.read_csv("tests/data/monopoly.csv", n = 10)
         assert len(clump) == 10
+
         clump = Clumper.read_csv("https://calmcode.io/datasets/monopoly.csv")
         assert len(clump) == 22
+
         # By default, the first row of the csv is treated as the keys of the Clumper.
         # If the fieldnames argument is not None, then the first row stays as part of the data.
         fieldnames = ['date', 'currency', 'country', 'price', 'dollar_rate', 'cost']
@@ -147,19 +170,23 @@ class Clumper:
         assert clump.head(1).equals([dict(zip(fieldnames, first_row))])
         ```
         """
+        if n is not None:
+            if n <= 0:
+                raise ValueError("Number of lines to read must be > 0.")
+
         if path.startswith("https:") or path.startswith("http:"):
             with urllib.request.urlopen(path) as resp:
                 if fieldnames is None:
                     fieldnames = resp.readline().decode().strip().split(",")
                 # this section allows us to chunk the rows, if nrows is supplied
-                body = it.islice(resp, 0, nrows)
+                body = it.islice(resp, 0, n)
                 body = (word.decode().strip().split(",") for word in body)
                 body = it.product([fieldnames], body)
                 return Clumper([dict(zip(key, values)) for key, values in body])
 
         with open(path, newline="") as csvfile:
             reader = csv.DictReader(csvfile, delimiter=delimiter, fieldnames=fieldnames)
-            return Clumper(list(it.islice(reader, 0, nrows)))
+            return Clumper(list(it.islice(reader, 0, n)))
 
     def _create_new(self, blob):
         """
