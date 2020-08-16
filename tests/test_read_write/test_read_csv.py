@@ -4,7 +4,7 @@ from clumper import Clumper
 
 
 paths = ["tests/monopoly.csv", "https://calmcode.io/datasets/monopoly.csv"]
-nrows = [(None, 22), (10, 10), (15, 15)]
+nrows = [(None, 22), (10, 10), (15, 15), [80, 22]]
 fields = [
     (
         None,
@@ -21,7 +21,6 @@ fields = [
             "color",
             "tile",
         ],
-        22,
     ),
     (
         [
@@ -50,14 +49,13 @@ fields = [
             "colour",
             "tille",
         ],
-        23,
     ),
 ]
 
 path_nrows = [(path, nrows, length) for path, (nrows, length) in product(paths, nrows)]
 path_fields = [
-    (path, fieldnames, fields_check, length)
-    for path, (fieldnames, fields_check, length) in product(paths, fields)
+    (path, fieldnames, fields_check)
+    for path, (fieldnames, fields_check) in product(paths, fields)
 ]
 
 
@@ -68,12 +66,11 @@ def test_read_csv(path, nrows, length):
     assert len(clump) == length
 
 
-@pytest.mark.parametrize("path,fieldnames,field_check,length", path_fields)
-def test_fieldnames(path, fieldnames, field_check, length):
-    "Test that fieldnames matches keys of Clumper. Also test number of rows returned."
+@pytest.mark.parametrize("path,fieldnames,field_check", path_fields)
+def test_fieldnames(path, fieldnames, field_check):
+    "Test that fieldnames matches keys of Clumper."
     clump = Clumper.read_csv(path=path, fieldnames=fieldnames)
     assert not set(field_check).difference(clump.keys())
-    assert len(clump) == length
 
 
 def test_wrong_delimiter():
@@ -86,10 +83,3 @@ def test_read_csv_negative_nrows():
     "Test that an error is raised if nrows is negative."
     with pytest.raises(ValueError):
         Clumper.read_csv("tests/monopoly.csv", nrows=-5)
-
-
-res = Clumper.read_csv(
-    "https://calmcode.io/datasets/bigmac.csv",
-    fieldnames=["date", "currency", "country", "price", "dollar_rate", "cost"],
-)
-print(res.keys())
