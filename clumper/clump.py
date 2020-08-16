@@ -63,40 +63,54 @@ class Clumper:
         return Clumper(json.loads(pathlib.Path(path).read_text()))
 
     @classmethod
-    def read_jsonl(cls, path, lines=None):
+    def read_jsonl(cls, path: str, lines=None):
         """
         Reads in a jsonl file. You can also specify how many lines you want to read in.
 
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        clump = Clumper.read_jsonl("tests/cards.jsonl")
+        assert len(clump) == 5
+
+
+        clump = Clumper.read_jsonl("https://calmcode.io/datasets/pokemon.jsonl")
+        assert len(clump) == 800
+
         """
-        data_array = []
+
+        assert path.lower().endswith(
+            ".jsonl"
+        ), "The file extension must be .jsonl or JSONL"
 
         if lines is not None:
             assert lines >= 0, "Number of lines to read must be non-negative"
 
-        def iterate_over_file(file_handler):
-            nonlocal data_array, lines
-
-            for current_line_nr, json_string in enumerate(file_handler):
-                if lines is not None and current_line_nr == lines:
-                    break
-                json_object = json.loads(json_string)
-                data_array.append(json_object)
-            return data_array
-
         try:
+
             # Case 1 : Open cloud file in stream
             if path.startswith("https:") or path.startswith("http:"):
-                with urllib.request.urlopen(path) as f:
-                    iterate_over_file(f)
-                    return Clumper(data_array)
+                f = urllib.request.urlopen(path)
             # Case 2 : Local file
-            with open(path) as f:
-                iterate_over_file(f)
-                return Clumper(data_array)
+            else:
+                f = open(path)
+
+            # Initalize a place to store the parsed data as list
+            data_array = []
+            # Read it, parse and close it
+            with f:
+                for current_line_nr, json_string in enumerate(f):
+                    if lines is not None and current_line_nr == lines:
+                        break
+                    json_object = json.loads(json_string)
+                    data_array.append(json_object)
+            # Return it
+            return Clumper(data_array)
 
         except Exception:
-            print("Error occured during parsing jsonl file")
-            raise
+            raise RuntimeError("Error occured during reading in JSONL file")
 
     def _create_new(self, blob):
         """
