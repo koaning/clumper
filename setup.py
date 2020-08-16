@@ -1,6 +1,5 @@
 from setuptools import setup, find_packages
 
-base_packages = []
 
 test_packages = [
     "pytest>=5.4.3",

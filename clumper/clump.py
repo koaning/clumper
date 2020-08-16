@@ -62,6 +62,56 @@ class Clumper:
             return Clumper(data)
         return Clumper(json.loads(pathlib.Path(path).read_text()))
 
+    @classmethod
+    def read_jsonl(cls, path: str, lines=None):
+        """
+        Reads in a jsonl file. You can also specify how many lines you want to read in.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        clump = Clumper.read_jsonl("tests/cards.jsonl")
+        assert len(clump) == 5
+
+
+        clump = Clumper.read_jsonl("https://calmcode.io/datasets/pokemon.jsonl")
+        assert len(clump) == 800
+
+        """
+
+        assert path.lower().endswith(
+            ".jsonl"
+        ), "The file extension must be .jsonl or JSONL"
+
+        if lines is not None:
+            assert lines >= 0, "Number of lines to read must be non-negative"
+
+        try:
+
+            # Case 1 : Open cloud file in stream
+            if path.startswith("https:") or path.startswith("http:"):
+                f = urllib.request.urlopen(path)
+            # Case 2 : Local file
+            else:
+                f = open(path)
+
+            # Initalize a place to store the parsed data as list
+            data_array = []
+            # Read it, parse and close it
+            with f:
+                for current_line_nr, json_string in enumerate(f):
+                    if lines is not None and current_line_nr == lines:
+                        break
+                    json_object = json.loads(json_string)
+                    data_array.append(json_object)
+            # Return it
+            return Clumper(data_array)
+
+        except Exception:
+            raise RuntimeError("Error occured during reading in JSONL file")
+
     def _create_new(self, blob):
         """
         Creates a new collection of data while preserving settings of the
