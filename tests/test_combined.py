@@ -8,7 +8,7 @@ from clumper import Clumper
 
 @pytest.fixture()
 def pokemon():
-    return json.loads(pathlib.Path("tests/pokemon.json").read_text())
+    return json.loads(pathlib.Path("tests/data/pokemon.json").read_text())
 
 
 def test_no_mutate_query(pokemon):

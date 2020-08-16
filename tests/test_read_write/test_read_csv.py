@@ -3,7 +3,7 @@ from itertools import product
 from clumper import Clumper
 
 
-paths = ["tests/monopoly.csv", "https://calmcode.io/datasets/monopoly.csv"]
+paths = ["tests/data/monopoly.csv", "https://calmcode.io/datasets/monopoly.csv"]
 nrows = [(None, 22), (10, 10), (15, 15), [80, 22]]
 fields = [
     (
@@ -61,25 +61,31 @@ path_fields = [
 
 @pytest.mark.parametrize("path,nrows,length", path_nrows)
 def test_read_csv(path, nrows, length):
-    "Test that the length of clumper matches the total number of rows in the csv."
-    clump = Clumper.read_csv(path=path, nrows=nrows)
+    """Test that the length of clumper matches the total number of rows in the csv."""
+    clump = Clumper.read_csv(path=path, n=nrows)
     assert len(clump) == length
 
 
 @pytest.mark.parametrize("path,fieldnames,field_check", path_fields)
 def test_fieldnames(path, fieldnames, field_check):
-    "Test that fieldnames matches keys of Clumper."
+    """Test that fieldnames matches keys of Clumper."""
     clump = Clumper.read_csv(path=path, fieldnames=fieldnames)
     assert not set(field_check).difference(clump.keys())
 
 
 def test_wrong_delimiter():
-    "Test that an error is raised if a wrong delimiter is supplied."
+    """Test that an error is raised if a wrong delimiter is supplied."""
     with pytest.raises(TypeError):
-        Clumper.read_csv("tests/monopoly.csv", delimiter=", ")
+        Clumper.read_csv("tests/data/monopoly.csv", delimiter=", ")
 
 
 def test_read_csv_negative_nrows():
-    "Test that an error is raised if nrows is negative."
+    """Test that an error is raised if nrows is negative."""
     with pytest.raises(ValueError):
-        Clumper.read_csv("tests/monopoly.csv", nrows=-5)
+        Clumper.read_csv("tests/data/monopoly.csv", n=-5)
+
+
+def test_read_csv_negative_zero():
+    """Test that an error is raised if nrows is zero."""
+    with pytest.raises(ValueError):
+        Clumper.read_csv("tests/data/monopoly.csv", n=0)

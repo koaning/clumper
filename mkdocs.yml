@@ -17,6 +17,7 @@ nav:
       - More Verbs: guides/useful-verbs.md
       - Useful Methods: guides/summary-methods.md
       - FAQ: guides/faq.md
+      - Releases: guides/releases.md
   - API:
       - Clumper: api/clumper.md
       - sequence: api/sequence.md
@@ -26,7 +27,6 @@ plugins:
   - mkdocstrings:
       watch:
         - clumper
-  - mkdocs-jupyter
   - search
 copyright: Copyright &copy; 2020 Maintained by <a href="https://twitter.com/fishnets88">Vincent</a>.
 theme:
