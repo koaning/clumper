@@ -9,3 +9,13 @@ def base_clumper():
         for i, c in enumerate("abcdefghijklmnopqrstuvwxyz")
     ]
     return Clumper(data)
+
+
+@pytest.fixture(scope="module")
+def single_local_jsonl_file_path():
+    return "tests/cards.jsonl"
+
+
+@pytest.fixture(scope="module")
+def single_cloud_jsonl_file_path():
+    return "https://calmcode.io/datasets/pokemon.jsonl"
