@@ -1,4 +1,5 @@
 import json
+import csv
 import pathlib
 import itertools as it
 import urllib.request
@@ -111,6 +112,54 @@ class Clumper:
 
         except Exception:
             raise RuntimeError("Error occured during reading in JSONL file")
+
+    @classmethod
+    def read_csv(cls, path, delimiter=",", fieldnames=None, nrows=None):
+        """
+        Reads in a csv file. Can also read files from url.
+        Arguments
+        ---------
+        path : filename or url
+        delimiter: must be a single character. `,` is the default.
+        fieldnames: You may prefer a different set of keys for the data, in which case, you can supply new keys with the fieldnames.
+        By default, the first row of the csv will provide the Clumper keys if fieldnames is None. If fieldnames is provided,
+        then the first row stays as part of the data. You should ensure that the correct number of fieldnames is supplied,
+        as an incorrect number can lead to truncation of the clumper. So, if you have seven columns and your fieldnames length is 3,
+        then every row will have only 3 values, the remaining four will be cut off.
+        nrows: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
+        Usage:
+        ```python
+        from clumper import Clumper
+        clump = Clumper.read_csv("tests/monopoly.csv")
+        assert len(clump) == 22
+        clump = Clumper.read_csv("tests/monopoly.csv", nrows = 10)
+        assert len(clump) == 10
+        clump = Clumper.read_csv("https://calmcode.io/datasets/monopoly.csv")
+        assert len(clump) == 22
+        # By default, the first row of the csv is treated as the keys of the Clumper.
+        # If the fieldnames argument is not None, then the first row stays as part of the data.
+        fieldnames = ['date', 'currency', 'country', 'price', 'dollar_rate', 'cost']
+        clump = Clumper.read_csv("https://calmcode.io/datasets/bigmac.csv",
+                                # supply new fieldnames
+                                 fieldnames=fieldnames)
+        # check first row :
+        first_row = ['date', 'currency_code','name','local_price', 'dollar_ex', 'dollar_price']
+        assert clump.head(1).equals([dict(zip(fieldnames, first_row))])
+        ```
+        """
+        if path.startswith("https:") or path.startswith("http:"):
+            with urllib.request.urlopen(path) as resp:
+                if fieldnames is None:
+                    fieldnames = resp.readline().decode().strip().split(",")
+                # this section allows us to chunk the rows, if nrows is supplied
+                body = it.islice(resp, 0, nrows)
+                body = (word.decode().strip().split(",") for word in body)
+                body = it.product([fieldnames], body)
+                return Clumper([dict(zip(key, values)) for key, values in body])
+
+        with open(path, newline="") as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=delimiter, fieldnames=fieldnames)
+            return Clumper(list(it.islice(reader, 0, nrows)))
 
     def _create_new(self, blob):
         """
