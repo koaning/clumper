@@ -130,6 +130,41 @@ class Clumper:
         except Exception:
             raise RuntimeError("Error occured during reading in JSONL file")
 
+    def write_jsonl(self, path: str, n=None):
+        """
+        Writes to a jsonl file.
+
+        Arguments:
+            path: filename
+            n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+        clump_one = Clumper.read_jsonl("tests/data/cards.jsonl")
+        clump_one.write_jsonl("tests/data/cards_copy.jsonl")
+
+        clump_two = Clumper.read_jsonl("tests/data/cards_copy.jsonl")
+
+        assert clump_two.collect() == clump_one.collect()
+        """
+
+        if n is not None:
+            if n <= 0:
+                raise ValueError("Number of lines to read must be > 0.")
+
+        try:
+            # Create a new file and open it for writing
+            with open(path, "x") as f:
+                for current_line_nr, json_dict in enumerate(self.collect()):
+                    if n is not None and current_line_nr == n:
+                        break
+                    f.write(json.dumps(json_dict) + "\n")
+
+        except Exception:
+            raise RuntimeError("Error occured during writing JSONL file")
+
     @classmethod
     def read_csv(cls, path, delimiter=",", fieldnames=None, n=None):
         """
