@@ -4,7 +4,7 @@ from clumper import Clumper
 
 
 def test_local_write_exists(tmp_path):
-    """Test that an error is raised if the written file JSON doesn't exists."""
+    """Test that an error is raised if the written file JSONL doesn't exists."""
     path = str(tmp_path / "cards_copy.jsonl")
     clump = Clumper.read_jsonl("tests/data/cards.jsonl")
     clump.write_jsonl(path)
@@ -12,7 +12,7 @@ def test_local_write_exists(tmp_path):
 
 
 def test_local_read_write_content_same(tmp_path):
-    """Test that an error is raised if the written JSON file is not the same as what is read locally"""
+    """Test that an error is raised if the written JSONL file is not the same as what is read locally"""
     path = str(tmp_path / "cards_copy.jsonl")
     writer = Clumper.read_jsonl("tests/data/cards.jsonl")
     writer.write_jsonl(path)
@@ -21,7 +21,7 @@ def test_local_read_write_content_same(tmp_path):
 
 
 def test_cloud_read_write_content_same(tmp_path):
-    """Test that an error is raised if the written JSON file is not the same as what is read from the cloud"""
+    """Test that an error is raised if the written JSONL file is not the same as what is read from the cloud"""
     path = str(tmp_path / "pokemon_copy.jsonl")
     writer = Clumper.read_jsonl("https://calmcode.io/datasets/pokemon.jsonl")
     writer.write_jsonl(path)

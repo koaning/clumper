@@ -130,13 +130,43 @@ class Clumper:
         except Exception:
             raise RuntimeError("Error occured during reading in JSONL file")
 
+    def write_json(self, path: str, n=None):
+        """
+        Writes to a json file.
+
+        Arguments:
+            path: filename
+            n: Number of rows to write out. Useful when reading large files. If `None`, all rows are written.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+        clump_one = Clumper.read_json("tests/data/pokemon.json")
+        clump_one.write_jsonl("tests/data/pokemon_copy.json")
+
+        clump_two = Clumper.read_json("tests/data/pokemon_copy.json")
+
+        assert clump_two.collect() == clump_one.collect()
+        """
+
+        if n is not None:
+            if n <= 0:
+                raise ValueError("Number of lines to write must be > 0.")
+        try:
+            # Create a new file and open it for writing
+            with open(path, "w") as f:
+                json.dump(self.collect()[0:n], f)
+        except Exception:
+            raise RuntimeError("Error occured during writing JSON file")
+
     def write_jsonl(self, path: str, n=None):
         """
         Writes to a jsonl file.
 
         Arguments:
             path: filename
-            n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
+            n: Number of rows to write out. Useful when reading large files. If `None`, all rows are written.
 
         Usage:
 
@@ -152,10 +182,11 @@ class Clumper:
 
         if n is not None:
             if n <= 0:
-                raise ValueError("Number of lines to read must be > 0.")
+                raise ValueError("Number of lines to write must be > 0.")
 
         try:
             # Create a new file and open it for writing
+
             with open(path, "x") as f:
                 for current_line_nr, json_dict in enumerate(self.collect()):
                     if n is not None and current_line_nr == n:
