@@ -130,68 +130,55 @@ class Clumper:
         except Exception:
             raise RuntimeError("Error occured during reading in JSONL file")
 
-    def write_json(self, path: str, n=None):
+    def write_json(self, path, **options):
         """
         Writes to a json file.
 
         Arguments:
             path: filename
-            n: Number of rows to write out. Useful when writing large files. If `None`, all rows are written.
 
         Usage:
 
         ```python
         from clumper import Clumper
-        clump_one = Clumper.read_json("tests/data/pokemon.json")
-        clump_one.write_jsonl("tests/data/pokemon_copy.json")
+        clump_orig = Clumper.read_json("tests/data/pokemon.json")
+        clump_orig.write_jsonl("tests/data/pokemon_copy.json")
 
-        clump_two = Clumper.read_json("tests/data/pokemon_copy.json")
-        assert clump_two.collect() == clump_one.collect()
+        clump_copy = Clumper.read_json("tests/data/pokemon_copy.json")
+        assert clump_copy.collect() == clump_orig.collect()
         """
-        to_dump = self.collect()
-        if n is not None:
-            if n <= 0:
-                raise ValueError("Number of lines to write must be > 0.")
-            to_dump = self.head(n).collect()
 
         try:
             # Create a new file and open it for writing
             with open(path, "w") as f:
-                json.dump(to_dump, f)
+                json.dump(self.collect(), f, **options)
         except Exception:
             raise RuntimeError("Error occured during writing JSON file")
 
-    def write_jsonl(self, path: str, n=None):
+    def write_jsonl(self, path, **options):
         """
         Writes to a jsonl file.
 
         Arguments:
             path: filename
-            n: Number of rows to write out. Useful when writing large files. If `None`, all rows are written.
 
         Usage:
 
         ```python
         from clumper import Clumper
-        clump_one = Clumper.read_jsonl("tests/data/cards.jsonl")
-        clump_one.write_jsonl("tests/data/cards_copy.jsonl")
+        clump_orig = Clumper.read_jsonl("tests/data/cards.jsonl")
+        clump_orig.write_jsonl("tests/data/cards_copy.jsonl")
 
-        clump_two = Clumper.read_jsonl("tests/data/cards_copy.jsonl")
+        clump_copy = Clumper.read_jsonl("tests/data/cards_copy.jsonl")
 
-        assert clump_two.collect() == clump_one.collect()
+        assert clump_copy.collect() == clump_orig.collect()
         """
-
-        to_dump = self.collect()
-        if n is not None:
-            if n <= 0:
-                raise ValueError("Number of lines to write must be > 0.")
-            to_dump = self.head(n).collect()
 
         try:
             # Create a new file and open it for writing
             with open(path, "x") as f:
-                for current_line_nr, json_dict in enumerate(to_dump):
-                    f.write(json.dumps(json_dict) + "\n")
+                for current_line_nr, json_dict in enumerate(self.collect()):
+                    f.write(json.dumps(json_dict, **options) + "\n")
 
         except Exception:
             raise RuntimeError("Error occured during writing JSONL file")
