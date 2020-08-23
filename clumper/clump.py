@@ -6,6 +6,7 @@ import urllib.request
 from functools import reduce
 from statistics import mean, variance, stdev, median
 
+
 from clumper.decorators import return_value_if_empty, grouped, dict_collection_only
 
 
@@ -179,6 +180,9 @@ class Clumper:
                 if fieldnames is None:
                     fieldnames = resp.readline().decode().strip().split(",")
                 # this section allows us to chunk the rows, if nrows is supplied
+                # one feature that should be added is null values representation
+                # not complex though, if it is an empty string or NA, then it should
+                # read as None. I'll try to do that in a future PR. Baby steps.
                 body = it.islice(resp, 0, n)
                 body = (word.decode().strip().split(",") for word in body)
                 body = it.product([fieldnames], body)
@@ -186,7 +190,46 @@ class Clumper:
 
         with open(path, newline="") as csvfile:
             reader = csv.DictReader(csvfile, delimiter=delimiter, fieldnames=fieldnames)
-            return Clumper(list(it.islice(reader, 0, n)))
+            # python version less than 3.8 returns an OrderedDict
+            reader = [dict(mapping) for mapping in reader]
+            return Clumper(reader[:n])
+
+    def write_csv(self, path: str, mode="w", n=None):
+        """
+        Write to a csv file.
+
+        Arguments:
+        path: filename
+        mode: `w` writes to a file if it does not exist, or overwrites if it already exists,
+               while `a`: - append to file if it already exists. The default is `w`.
+        n: Number of rows to write out. Useful when writing large files. If `None`, all rows are written.
+
+        Note that null values will be exported as empty strings; this is the convention chosen by Python.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        from tempfile import TemporaryDirectory
+        from pathlib import Path
+        with TemporaryDirectory() as temporary_dir:
+            Path(temporary_dir).touch('monopoly_copy.csv')
+            path = Path(temporary_dir)/'monopoly.csv'
+            Clumper.read_csv("tests/data/monopoly.csv").write_csv(str(path))
+            reader = Clumper.read_csv(str(path))
+            assert Clumper.read_csv("tests/data/monopoly.csv").collect() == reader.collect()
+        ```
+        """
+
+        with open(path, mode=mode, newline="") as csvfile:
+            fieldnames = self.keys()
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            writer.writeheader()
+
+            for row in self:
+                writer.writerow(row)
 
     def _create_new(self, blob):
         """
