@@ -136,7 +136,7 @@ class Clumper:
 
         Arguments:
             path: filename
-            n: Number of rows to write out. Useful when reading large files. If `None`, all rows are written.
+            n: Number of rows to write out. Useful when writing large files. If `None`, all rows are written.
 
         Usage:
 
@@ -146,17 +146,18 @@ class Clumper:
         clump_one.write_jsonl("tests/data/pokemon_copy.json")
 
         clump_two = Clumper.read_json("tests/data/pokemon_copy.json")
-
         assert clump_two.collect() == clump_one.collect()
         """
-
+        to_dump = self.collect()
         if n is not None:
             if n <= 0:
                 raise ValueError("Number of lines to write must be > 0.")
+            to_dump = self.head(n).collect()
+
         try:
             # Create a new file and open it for writing
             with open(path, "w") as f:
-                json.dump(self.collect()[0:n], f)
+                json.dump(to_dump, f)
         except Exception:
             raise RuntimeError("Error occured during writing JSON file")
 
@@ -166,7 +167,7 @@ class Clumper:
 
         Arguments:
             path: filename
-            n: Number of rows to write out. Useful when reading large files. If `None`, all rows are written.
+            n: Number of rows to write out. Useful when writing large files. If `None`, all rows are written.
 
         Usage:
 
@@ -180,17 +181,16 @@ class Clumper:
         assert clump_two.collect() == clump_one.collect()
         """
 
+        to_dump = self.collect()
         if n is not None:
             if n <= 0:
                 raise ValueError("Number of lines to write must be > 0.")
+            to_dump = self.head(n).collect()
 
         try:
             # Create a new file and open it for writing
-
             with open(path, "x") as f:
-                for current_line_nr, json_dict in enumerate(self.collect()):
-                    if n is not None and current_line_nr == n:
-                        break
+                for current_line_nr, json_dict in enumerate(to_dump):
                     f.write(json.dumps(json_dict) + "\n")
 
         except Exception:
