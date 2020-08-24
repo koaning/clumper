@@ -132,7 +132,9 @@ class Clumper:
             raise RuntimeError("Error occured during reading in JSONL file")
 
     @classmethod
-    def read_csv(cls, path, delimiter=",", fieldnames=None, n=None):
+    def read_csv(
+        cls, path, delimiter=",", na_values=None, dtype=None, fieldnames=None, n=None
+    ):
         """
         Reads in a csv file. Can also read files from url.
 
@@ -175,7 +177,9 @@ class Clumper:
             if n <= 0:
                 raise ValueError("Number of lines to read must be > 0.")
 
-        if path.startswith("https:") or path.startswith("http:"):
+        # conveniently excludes pathlib files here
+        # and removes need to write code to check pathlib files in other places
+        if isinstance(path, str) and path.startswith(("https:", "http:")):
             with urllib.request.urlopen(path) as resp:
                 if fieldnames is None:
                     fieldnames = resp.readline().decode().strip().split(",")
@@ -186,15 +190,64 @@ class Clumper:
                 body = it.islice(resp, 0, n)
                 body = (word.decode().strip().split(",") for word in body)
                 body = it.product([fieldnames], body)
-                return Clumper([dict(zip(key, values)) for key, values in body])
+                result = [dict(zip(key, values)) for key, values in body]
+        else:
+            with open(path, newline="") as csvfile:
+                reader = csv.DictReader(
+                    csvfile, delimiter=delimiter, fieldnames=fieldnames
+                )
+                reader = csv.DictReader(
+                    csvfile, delimiter=delimiter, fieldnames=fieldnames
+                )
+                # python version less than 3.8 returns an OrderedDict
+                result = [dict(entry) for entry in it.islice(reader, 0, n)]
 
-        with open(path, newline="") as csvfile:
-            reader = csv.DictReader(csvfile, delimiter=delimiter, fieldnames=fieldnames)
-            # python version less than 3.8 returns an OrderedDict
-            reader = [dict(mapping) for mapping in reader]
-            return Clumper(reader[:n])
+        # null values, same as missing keys.
+        # if there are null values/missing keys, they will be truncated from the dictionary
+        # python's csv module treats null values as empty strings when writing to a csv -
+        # https://docs.python.org/3.8/library/csv.html#csv.DictWriter
+        # the user can choose to explicitly show missing keys/null values in the dictionary
+        # by assigning `ignore` to the na_values argument. At the moment, the default for
+        # null values are empty string ("") and "NA".
 
-    def write_csv(self, path: str, mode="w", n=None):
+        if na_values == "ignore":
+            result = result
+        else:
+            na_values = ["", "NA"]
+            result = [
+                {key: value for key, value in entry.items() if value not in na_values}
+                for entry in result
+            ]
+
+        # The csv module reads every row as a string, there are no data type assumptions.
+        # This function attempts to solve this. The user can pass a string of either
+        # ('int', 'str', 'float') or if the user knows the keys/fieldnames, can pass a
+        # dictionary mapping the key to the data type.
+
+        if not (isinstance(dtype, (dict, str)) or dtype is None):
+            raise TypeError(
+                """dtype should be a dictionary pair of key and data type, or a single string data type"""
+            )
+
+        dtype_mapping = {"int": int, "float": float, "str": str}
+        if dtype:
+            if isinstance(dtype, str) and dtype in ("int", "float", "str"):
+                result = [
+                    {key: dtype_mapping[dtype](value) for key, value in entry.items()}
+                    for entry in result
+                ]
+            else:
+                result = [
+                    {
+                        key: dtype_mapping(dtype[key])(value)
+                        for key, value in entry.items()
+                    }
+                    for entry in result
+                ]
+
+        return Clumper(result)
+
+    def write_csv(self, path, mode="w", n=None):
         """
         Write to a csv file.
 
