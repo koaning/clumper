@@ -1,5 +1,6 @@
 import pytest
 from clumper import Clumper
+from itertools import product
 
 
 def test_write_csv(tmp_path):
@@ -77,12 +78,21 @@ def test_write_missing_keys(tmp_path):
     assert Clumper(data2).equals(reader)
 
 
-def test_write_dtype(tmp_path):
+data_type = [
+    [{"a": 1, "b": 2}, {"a": 2, "b": 3, "c": 4}, {"a": 1, "b": 6}],
+    [{"a": 1, "b": 2}, {"c": 3}],
+    [{"a": 1, "b": 2}, {"a": 3, "b": 3}, {"a": 2, "b": 1}],
+]
+
+data_type = tuple(product(data_type, ["int"]))
+
+
+@pytest.mark.parametrize("dtype_data,dtype", data_type)
+def test_read_csv(dtype_data, dtype, tmp_path):
     """Test that the correct dtype is returned when dtype argument is not None."""
-    data2 = [{"a": 1, "b": 2}, {"c": 3}]
     d = tmp_path / "sub"
     d.mkdir()
     path = d / "nulls.csv"
-    Clumper(data2).write_csv(path)
+    Clumper(dtype_data).write_csv(path)
     reader = Clumper.read_csv(path, dtype="int")
-    assert Clumper(data2).equals(reader)
+    assert Clumper(dtype_data).equals(reader)

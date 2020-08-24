@@ -178,7 +178,7 @@ class Clumper:
                 raise ValueError("Number of lines to read must be > 0.")
 
         # conveniently excludes pathlib files here
-        # and removes need to write code to check pathlib files in other places
+        # and removes the need to write code to check pathlib files in other places
         if isinstance(path, str) and path.startswith(("https:", "http:")):
             with urllib.request.urlopen(path) as resp:
                 if fieldnames is None:
