@@ -89,9 +89,22 @@ data_type = [
         {"Name": "Ragnar", "Age": 33, "City": "Reykjavik"},
         {"Name": "Zeus", "Age": 35, "City": "Athens"},
     ],
+    [
+        {"V4": "A", "V1": 0, "V2": 3},
+        {"V4": "A", "V1": 0, "V2": 4},
+        {"V4": "A", "V1": 0, "V2": 7},
+        {"V4": "B", "V1": 4, "V2": 0},
+        {"V4": "B", "V1": 4, "V2": 8},
+        {"V4": "B", "V1": 1, "V2": 5},
+        {"V4": "C", "V1": 4, "V2": 5},
+        {"V4": "C", "V1": 1, "V2": 0},
+        {"V4": "C", "V1": 1, "V2": 9},
+    ],
 ]
 
-data_type = tuple(zip(data_type, ["int", "int", "int", {"Age": "int"}]))
+data_type = tuple(
+    zip(data_type, ["int", "int", "int", {"Age": "int"}, {"V1": "int", "V2": "int"}])
+)
 
 
 @pytest.mark.parametrize("dtype_data,dtype", data_type)
