@@ -223,6 +223,7 @@ class Clumper:
         # This function attempts to solve this. The user can pass a string of either
         # ('int', 'str', 'float') or if the user knows the keys/fieldnames, can pass a
         # dictionary mapping the key to the data type.
+        # Technically 'str' data type is not needed, since data is read in as strings anyway.
 
         if not (isinstance(dtype, (dict, str)) or dtype is None):
             raise TypeError(
@@ -239,7 +240,7 @@ class Clumper:
             else:
                 result = [
                     {
-                        key: dtype_mapping(dtype[key])(value)
+                        key: dtype_mapping[dtype[key]](value) if key in dtype else value
                         for key, value in entry.items()
                     }
                     for entry in result
@@ -247,7 +248,7 @@ class Clumper:
 
         return Clumper(result)
 
-    def write_csv(self, path, mode="w", n=None):
+    def write_csv(self, path, mode="w"):
         """
         Write to a csv file.
 
@@ -255,7 +256,6 @@ class Clumper:
         path: filename
         mode: `w` writes to a file if it does not exist, or overwrites if it already exists,
                while `a`: - append to file if it already exists. The default is `w`.
-        n: Number of rows to write out. Useful when writing large files. If `None`, all rows are written.
 
         Note that null values will be exported as empty strings; this is the convention chosen by Python.
 
