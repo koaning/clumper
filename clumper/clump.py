@@ -150,6 +150,13 @@ class Clumper:
                         the correct number of fieldnames is supplied, as an incorrect number can lead
                         to truncation. If you have seven columns and your fieldnames length is 3,
                         then every row will have only 3 values, the remaining four will be cut off.
+            na_values:  Null values. If `ignore`, null values are passed as is. If None, then the null values
+                        will be truncated from the row. Default na_values are empty strings("") and "NA".
+            dtype: Data type for each value in a key:value pair. If `None`, then values will be read in as strings.
+                   Available dtypes are (int, float, str). If a single dtype is passed, then all values will be
+                   converted to the data type and raise an error, if not applicable. For different data types for different
+                   key:value pairs, a dictionary of {key: data_type} passed to dtype argument will change the value for
+                   every key with the data type, and raise an error if not applicable.
 
         Usage:
 
@@ -183,7 +190,7 @@ class Clumper:
             with urllib.request.urlopen(path) as resp:
                 if fieldnames is None:
                     fieldnames = resp.readline().decode().strip().split(",")
-                # this section allows us to chunk the rows, if nrows is supplied
+                # This section allows us to chunk the rows, if nrows is supplied
                 # one feature that should be added is null values representation
                 # not complex though, if it is an empty string or NA, then it should
                 # read as None. I'll try to do that in a future PR. Baby steps.
