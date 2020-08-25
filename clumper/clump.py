@@ -150,12 +150,13 @@ class Clumper:
                         the correct number of fieldnames is supplied, as an incorrect number can lead
                         to truncation. If you have seven columns and your fieldnames length is 3,
                         then every row will have only 3 values, the remaining four will be cut off.
-            na_values:  Null values. If `ignore`, null values are passed as is. If None, then the null values
-                        will be truncated from the row. The only values treated as null are empty strings("") and "NA".
+            na_values:  Null values. If `ignore`, null values are passed as is. If `None`, then for each row,
+                        the key,value pair with the null values  will be truncated from the row. The only values
+                        treated as null are empty strings("") and "NA".
             dtype: Data type for each value in a key:value pair. If `None`, then values will be read in as strings.
                    Available dtypes are (int, float, str). If a single dtype is passed, then all values will be
                    converted to the data type and raise an error, if not applicable. For different data types for different
-                   key:value pairs, a dictionary of {key: data_type} passed to dtype argument will change the value for
+                   key, value pairs, a dictionary of {key: data_type} passed to dtype argument will change the value for
                    every key with the data type, and raise an error if not applicable.
 
         Usage:
