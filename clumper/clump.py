@@ -151,7 +151,7 @@ class Clumper:
                         to truncation. If you have seven columns and your fieldnames length is 3,
                         then every row will have only 3 values, the remaining four will be cut off.
             na_values:  Null values. If `ignore`, null values are passed as is. If None, then the null values
-                        will be truncated from the row. Default na_values are empty strings("") and "NA".
+                        will be truncated from the row. The only values treated as null are empty strings("") and "NA".
             dtype: Data type for each value in a key:value pair. If `None`, then values will be read in as strings.
                    Available dtypes are (int, float, str). If a single dtype is passed, then all values will be
                    converted to the data type and raise an error, if not applicable. For different data types for different
