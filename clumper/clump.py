@@ -150,7 +150,7 @@ class Clumper:
                         the correct number of fieldnames is supplied, as an incorrect number can lead
                         to truncation. If you have seven columns and your fieldnames length is 3,
                         then every row will have only 3 values, the remaining four will be cut off.
-            na_values:  Null values. If `ignore`, null values are returned as empty strings (""). If `None`,
+            na_values:  This provides an option for treating null values. If `ignore`, null values are returned as empty strings (""). If `None`,
                         then for each row, the key,value pair with the null values  will be truncated from the row.
                         The only values treated as null are empty strings("") and "NA".
             dtype: Data type for each value in a key:value pair. If `None`, then values will be read in as strings.
