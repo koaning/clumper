@@ -2,10 +2,16 @@ import pytest
 from clumper import Clumper
 
 
-def test_write_csv(tmp_path):
+def temp_file(tmp_path):
+    """helper function to create temporary file."""
     d = tmp_path / "sub"
     d.mkdir()
-    path = d / "monopoly_copy.csv"
+    path = d / "nulls.csv"
+    return path
+
+
+def test_write_csv(tmp_path):
+    path = temp_file(tmp_path)
     Clumper.read_csv("tests/data/monopoly.csv").write_csv(path)
     reader = Clumper.read_csv(path)
     assert Clumper.read_csv("tests/data/monopoly.csv").collect() == reader.collect()
@@ -13,9 +19,7 @@ def test_write_csv(tmp_path):
 
 def test_write_csv_append_mode(tmp_path):
     """Test that the append mode works."""
-    d = tmp_path / "sub"
-    d.mkdir()
-    path = d / "monopoly_copy.csv"
+    path = temp_file(tmp_path)
     Clumper.read_csv("tests/data/monopoly.csv").write_csv(path)
     Clumper.read_csv("tests/data/monopoly.csv").write_csv(path, mode="a")
     reader = Clumper.read_csv(path)
@@ -38,9 +42,7 @@ def data():
 
 def test_write_empty_csv(data, tmp_path):
     """Test that null cells are exported correctly as empty strings"""
-    d = tmp_path / "sub"
-    d.mkdir()
-    path = d / "nulls.csv"
+    path = temp_file(tmp_path)
     Clumper(data).write_csv(path)
     reader = Clumper.read_csv(path, na_values="ignore")
     assert Clumper(data).collect() == reader.collect()
@@ -48,9 +50,7 @@ def test_write_empty_csv(data, tmp_path):
 
 def test_write_csv_fieldnames(data, tmp_path):
     """Test that fieldnames of Clumper match the headers in the exported csv file"""
-    d = tmp_path / "sub"
-    d.mkdir()
-    path = d / "nulls.csv"
+    path = temp_file(tmp_path)
     Clumper(data).write_csv(path)
     reader = Clumper.read_csv(path)
     assert not set(Clumper(data).keys()).difference(reader.keys())
@@ -58,9 +58,7 @@ def test_write_csv_fieldnames(data, tmp_path):
 
 def test_write_csv_n_positive(data, tmp_path):
     """Test that the correct number of rows is exported"""
-    d = tmp_path / "sub"
-    d.mkdir()
-    path = d / "nulls.csv"
+    path = temp_file(tmp_path)
     Clumper(data).head(n=10).write_csv(path)
     reader = Clumper.read_csv(path, na_values="ignore")
     assert Clumper(data).head(n=10).collect() == reader.collect()
@@ -69,9 +67,7 @@ def test_write_csv_n_positive(data, tmp_path):
 def test_write_missing_keys(tmp_path):
     """Test that function works with missing keys."""
     data2 = [{"a": "1", "b": "2"}, {"c": "3"}]
-    d = tmp_path / "sub"
-    d.mkdir()
-    path = d / "nulls.csv"
+    path = temp_file(tmp_path)
     Clumper(data2).write_csv(path)
     reader = Clumper.read_csv(path)
     assert Clumper(data2).equals(reader)
@@ -110,9 +106,7 @@ data_type = tuple(
 @pytest.mark.parametrize("dtype_data,dtype", data_type)
 def test_read_csv(dtype_data, dtype, tmp_path):
     """Test that the correct dtype is returned when dtype argument is not None."""
-    d = tmp_path / "sub"
-    d.mkdir()
-    path = d / "nulls.csv"
+    path = temp_file(tmp_path)
     Clumper(dtype_data).write_csv(path)
     reader = Clumper.read_csv(path, dtype=dtype)
     assert Clumper(dtype_data).equals(reader)

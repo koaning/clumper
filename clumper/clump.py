@@ -150,9 +150,9 @@ class Clumper:
                         the correct number of fieldnames is supplied, as an incorrect number can lead
                         to truncation. If you have seven columns and your fieldnames length is 3,
                         then every row will have only 3 values, the remaining four will be cut off.
-            na_values:  Null values. If `ignore`, null values are passed as is. If `None`, then for each row,
-                        the key,value pair with the null values  will be truncated from the row. The only values
-                        treated as null are empty strings("") and "NA".
+            na_values:  Null values. If `ignore`, null values are returned as empty strings (""). If `None`,
+                        then for each row, the key,value pair with the null values  will be truncated from the row.
+                        The only values treated as null are empty strings("") and "NA".
             dtype: Data type for each value in a key:value pair. If `None`, then values will be read in as strings.
                    Available dtypes are (int, float, str). If a single dtype is passed, then all values will be
                    converted to the data type and raise an error, if not applicable. For different data types for different
@@ -185,16 +185,13 @@ class Clumper:
             if n <= 0:
                 raise ValueError("Number of lines to read must be > 0.")
 
-        # conveniently excludes pathlib files here
-        # and removes the need to write code to check pathlib files in other places
+        # conveniently excludes pathlib files here and removes
+        # the need to write code to check pathlib files in other places.
         if isinstance(path, str) and path.startswith(("https:", "http:")):
             with urllib.request.urlopen(path) as resp:
                 if fieldnames is None:
                     fieldnames = resp.readline().decode().strip().split(",")
-                # This section allows us to chunk the rows, if nrows is supplied
-                # one feature that should be added is null values representation
-                # not complex though, if it is an empty string or NA, then it should
-                # read as None. I'll try to do that in a future PR. Baby steps.
+                # This section allows us to chunk the rows, if nrows is supplied.
                 body = it.islice(resp, 0, n)
                 body = (word.decode().strip().split(",") for word in body)
                 body = it.product([fieldnames], body)
@@ -204,17 +201,14 @@ class Clumper:
                 reader = csv.DictReader(
                     csvfile, delimiter=delimiter, fieldnames=fieldnames
                 )
-                reader = csv.DictReader(
-                    csvfile, delimiter=delimiter, fieldnames=fieldnames
-                )
                 # python version less than 3.8 returns an OrderedDict
                 result = [dict(entry) for entry in it.islice(reader, 0, n)]
 
         # null values, same as missing keys.
-        # if there are null values/missing keys, they will be truncated from the dictionary
-        # python's csv module treats null values as empty strings when writing to a csv -
-        # https://docs.python.org/3.8/library/csv.html#csv.DictWriter
-        # the user can choose to explicitly show missing keys/null values in the dictionary
+        # if there are null values/missing keys, they will be truncated from the dictionary.
+        # Python's csv module treats null values as empty strings when writing to a csv -
+        # https://docs.python.org/3.8/library/csv.html#csv.DictWriter.
+        # The user can choose to explicitly show missing keys/null values in the dictionary,
         # by assigning `ignore` to the na_values argument. At the moment, the default for
         # null values are empty string ("") and "NA".
 
@@ -271,15 +265,11 @@ class Clumper:
 
         ```python
         from clumper import Clumper
-
-        from tempfile import TemporaryDirectory
         from pathlib import Path
-        with TemporaryDirectory() as temporary_dir:
-            Path(temporary_dir).touch('monopoly_copy.csv')
-            path = Path(temporary_dir)/'monopoly.csv'
-            Clumper.read_csv("tests/data/monopoly.csv").write_csv(str(path))
-            reader = Clumper.read_csv(str(path))
-            assert Clumper.read_csv("tests/data/monopoly.csv").collect() == reader.collect()
+        path = '/tmp/monopoly.csv'
+        Clumper.read_csv("tests/data/monopoly.csv").write_csv(path)
+        reader = Clumper.read_csv(path)
+        assert Clumper.read_csv("tests/data/monopoly.csv").collect() == reader.collect()
         ```
         """
 
