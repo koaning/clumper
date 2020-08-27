@@ -66,11 +66,11 @@ def test_write_csv_n_positive(data, tmp_path):
 
 def test_write_missing_keys(tmp_path):
     """Test that function works with missing keys."""
-    data2 = [{"a": "1", "b": "2"}, {"c": "3"}]
+    missing_key = [{"a": "1", "b": "2"}, {"c": "3"}]
     path = temp_file(tmp_path)
-    Clumper(data2).write_csv(path)
+    Clumper(missing_key).write_csv(path)
     reader = Clumper.read_csv(path)
-    assert Clumper(data2).equals(reader)
+    assert Clumper(missing_key).equals(reader)
 
 
 data_type = [

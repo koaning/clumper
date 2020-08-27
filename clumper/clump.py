@@ -148,11 +148,14 @@ class Clumper:
                         row of the csv will provide the Clumper keys if fieldnames is `None`. If fieldnames
                         is provided, then the first row becomes part of the data. You should ensure that
                         the correct number of fieldnames is supplied, as an incorrect number can lead
-                        to truncation. If you have seven columns and your fieldnames length is 3,
-                        then every row will have only 3 values, the remaining four will be cut off.
-            na_values:  This provides an option for treating null values. If `ignore`, null values are returned as empty strings (""). If `None`,
-                        then for each row, the key,value pair with the null values  will be truncated from the row.
-                        The only values treated as null are empty strings("") and "NA".
+                        to an irregular outcome. If the row has seven fields and the number of fields in
+                        fieldnames length is 3, then every row will have only 3 values, the remaining four
+                        will be lumped into a list, and assigned key `None`. If the rows have fewer fields
+                        than fieldnames, then the missing values are filled in with `None`.
+            na_values:  This provides an option for treating null values. If `ignore`, null values are
+                        returned as empty strings (""). If `None`, then for each row, the key,value pair
+                        with the null values  will be truncated from the row. The only values treated as
+                        null are empty strings("") and "NA".
             dtype: Data type for each value in a key:value pair. If `None`, then values will be read in as strings.
                    Available dtypes are (int, float, str). If a single dtype is passed, then all values will be
                    converted to the data type and raise an error, if not applicable. For different data types for different
