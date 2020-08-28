@@ -20,17 +20,6 @@ def test_local_read_write_content_same(tmp_path):
     assert reader.collect() == writer.collect()
 
 
-def test_cloud_read_write_content_same(tmp_path):
-    """Test that the written JSONL file is the same as what is read from the cloud"""
-    path = tmp_path / "pokemon_copy.jsonl"
-
-    writer = Clumper.read_jsonl("https://calmcode.io/datasets/pokemon.jsonl")
-    writer.write_jsonl(path)
-
-    reader = Clumper.read_jsonl(str(path))
-    assert reader.collect() == writer.collect()
-
-
 @pytest.mark.parametrize("lines, expected", [(1, 1), (2, 2), (5, 4)])
 def test_local_read_write_same_lines(tmp_path, lines, expected):
     """Test that the locally written files has the same number of lines as expected"""
