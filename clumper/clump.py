@@ -207,8 +207,8 @@ class Clumper:
                 # python version less than 3.8 returns an OrderedDict
                 result = [dict(entry) for entry in it.islice(reader, 0, n)]
 
-        # null values, same as missing keys.
-        # if there are null values/missing keys, they will be truncated from the dictionary.
+        # Null values, same as missing keys.
+        # If there are null values/missing keys, they will be truncated from the dictionary.
         # Python's csv module treats null values as empty strings when writing to a csv -
         # https://docs.python.org/3.8/library/csv.html#csv.DictWriter.
         # The user can choose to explicitly show missing keys/null values in the dictionary,
