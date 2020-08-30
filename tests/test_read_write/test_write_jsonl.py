@@ -11,15 +11,6 @@ def test_local_write_exists(tmp_path):
     assert os.path.exists(path)
 
 
-def test_local_read_write_content_same(tmp_path):
-    """Test that the written JSONL file is the same as what is read locally"""
-    path = str(tmp_path / "cards_copy.jsonl")
-    writer = Clumper.read_jsonl("tests/data/cards.jsonl")
-    writer.write_jsonl(path)
-    reader = Clumper.read_jsonl(path)
-    assert reader.collect() == writer.collect()
-
-
 @pytest.mark.parametrize("lines, expected", [(1, 1), (2, 2), (5, 4)])
 def test_local_read_write_same_lines(tmp_path, lines, expected):
     """Test that the locally written files has the same number of lines as expected"""
