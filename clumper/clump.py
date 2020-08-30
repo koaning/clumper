@@ -131,6 +131,64 @@ class Clumper:
         except Exception:
             raise RuntimeError("Error occured during reading in JSONL file")
 
+    def write_json(self, path, sort_keys=False, indent=None):
+        """
+        Writes to a json file.
+
+        Arguments:
+            path: filename
+            sort_keys: If sort_keys is true (default: False), then the output of dictionaries will be sorted by key.
+            indent: If indent is a non-negative integer (default: None), then JSON array elements members will be pretty-printed with that indent level.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+        clump_orig = Clumper.read_json("tests/data/pokemon.json")
+        clump_orig.write_jsonl("tests/data/pokemon_copy.json")
+
+        clump_copy = Clumper.read_json("tests/data/pokemon_copy.json")
+        assert clump_copy.collect() == clump_orig.collect()
+        """
+
+        try:
+            # Create a new file and open it for writing
+            with open(path, "w") as f:
+                json.dump(self.collect(), f, sort_keys=sort_keys, indent=indent)
+        except Exception:
+            raise RuntimeError("Error occured during writing JSON file")
+
+    def write_jsonl(self, path, sort_keys=False, indent=None):
+        """
+        Writes to a jsonl file.
+
+        Arguments:
+            path: filename
+            sort_keys: If sort_keys is true (default: False), then the output of dictionaries will be sorted by key.
+            indent: If indent is a non-negative integer (default: None), then JSON array elements members will be pretty-printed with that indent level.
+        Usage:
+
+        ```python
+        from clumper import Clumper
+        clump_orig = Clumper.read_jsonl("tests/data/cards.jsonl")
+        clump_orig.write_jsonl("tests/data/cards_copy.jsonl")
+
+        clump_copy = Clumper.read_jsonl("tests/data/cards_copy.jsonl")
+
+        assert clump_copy.collect() == clump_orig.collect()
+        """
+
+        try:
+            # Create a new file and open it for writing
+            with open(path, "x") as f:
+                for current_line_nr, json_dict in enumerate(self.collect()):
+                    f.write(
+                        json.dumps(json_dict, sort_keys=sort_keys, indent=indent) + "\n"
+                    )
+
+        except Exception:
+            raise RuntimeError("Error occured during writing JSONL file")
+
     @classmethod
     def read_csv(
         cls, path, delimiter=",", na_values=None, dtype=None, fieldnames=None, n=None
