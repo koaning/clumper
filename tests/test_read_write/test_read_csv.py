@@ -1,6 +1,7 @@
 import pytest
 from itertools import product
 from clumper import Clumper
+from string import ascii_uppercase
 
 
 paths = ["tests/data/monopoly.csv", "https://calmcode.io/datasets/monopoly.csv"]
@@ -89,3 +90,24 @@ def test_read_csv_negative_zero():
     """Test that an error is raised if nrows is zero."""
     with pytest.raises(ValueError):
         Clumper.read_csv("tests/data/monopoly.csv", n=0)
+
+
+def test_read_csv_nulls():
+    """Test that null rows are discarded."""
+    assert Clumper.read_csv("tests/data/null.csv").equals(
+        Clumper([{"a": "1", "b": "2"}, {"a": "2", "c": "4"}])
+    )
+
+
+def test_fieldnames_less_than():
+    """Test number of keys returned when an incomplete number of fields is supplied."""
+    reader = Clumper.read_csv("tests/data/monopoly.csv", fieldnames=["A", "B", "C"])
+    assert set(reader.keys()) == {"A", "B", "C", None}
+    assert len(reader.keys()) == len(["A", "B", "C"]) + 1
+
+
+def test_fieldnames_greater_than():
+    """Test value of last key in row is None when an excess number of fields is supplied."""
+    fieldnames = list(ascii_uppercase)[:12]
+    reader = Clumper.read_csv("tests/data/monopoly.csv", fieldnames=fieldnames)
+    assert reader.select(fieldnames[-1]).head(1).equals([{"L": None}])

@@ -6,6 +6,7 @@ import urllib.request
 from functools import reduce
 from statistics import mean, variance, stdev, median
 
+
 from clumper.decorators import return_value_if_empty, grouped, dict_collection_only
 
 
@@ -131,7 +132,9 @@ class Clumper:
             raise RuntimeError("Error occured during reading in JSONL file")
 
     @classmethod
-    def read_csv(cls, path, delimiter=",", fieldnames=None, n=None):
+    def read_csv(
+        cls, path, delimiter=",", na_values=None, dtype=None, fieldnames=None, n=None
+    ):
         """
         Reads in a csv file. Can also read files from url.
 
@@ -145,8 +148,19 @@ class Clumper:
                         row of the csv will provide the Clumper keys if fieldnames is `None`. If fieldnames
                         is provided, then the first row becomes part of the data. You should ensure that
                         the correct number of fieldnames is supplied, as an incorrect number can lead
-                        to truncation. If you have seven columns and your fieldnames length is 3,
-                        then every row will have only 3 values, the remaining four will be cut off.
+                        to an irregular outcome. If the row has seven fields and the number of fields in
+                        fieldnames length is 3, then every row will have only 3 values, the remaining four
+                        will be lumped into a list, and assigned key `None`. If the rows have fewer fields
+                        than fieldnames, then the missing values are filled in with `None`.
+            na_values:  This provides an option for treating null values. If `ignore`, null values are
+                        returned as empty strings (""). If `None`, then for each row, the key,value pair
+                        with the null values  will be truncated from the row. The only values treated as
+                        null are empty strings("") and "NA".
+            dtype: Data type for each value in a key:value pair. If `None`, then values will be read in as strings.
+                   Available dtypes are (int, float, str). If a single dtype is passed, then all values will be
+                   converted to the data type and raise an error, if not applicable. For different data types for different
+                   key, value pairs, a dictionary of {key: data_type} passed to dtype argument will change the value for
+                   every key with the data type, and raise an error if not applicable.
 
         Usage:
 
@@ -174,19 +188,102 @@ class Clumper:
             if n <= 0:
                 raise ValueError("Number of lines to read must be > 0.")
 
-        if path.startswith("https:") or path.startswith("http:"):
+        # conveniently excludes pathlib files here and removes
+        # the need to write code to check pathlib files in other places.
+        if isinstance(path, str) and path.startswith(("https:", "http:")):
             with urllib.request.urlopen(path) as resp:
                 if fieldnames is None:
                     fieldnames = resp.readline().decode().strip().split(",")
-                # this section allows us to chunk the rows, if nrows is supplied
+                # This section allows us to chunk the rows, if nrows is supplied.
                 body = it.islice(resp, 0, n)
                 body = (word.decode().strip().split(",") for word in body)
                 body = it.product([fieldnames], body)
-                return Clumper([dict(zip(key, values)) for key, values in body])
+                result = [dict(zip(key, values)) for key, values in body]
+        else:
+            with open(path, newline="") as csvfile:
+                reader = csv.DictReader(
+                    csvfile, delimiter=delimiter, fieldnames=fieldnames
+                )
+                # python version less than 3.8 returns an OrderedDict
+                result = [dict(entry) for entry in it.islice(reader, 0, n)]
 
-        with open(path, newline="") as csvfile:
-            reader = csv.DictReader(csvfile, delimiter=delimiter, fieldnames=fieldnames)
-            return Clumper(list(it.islice(reader, 0, n)))
+        # Null values, same as missing keys.
+        # If there are null values/missing keys, they will be truncated from the dictionary.
+        # Python's csv module treats null values as empty strings when writing to a csv -
+        # https://docs.python.org/3.8/library/csv.html#csv.DictWriter.
+        # The user can choose to explicitly show missing keys/null values in the dictionary,
+        # by assigning `ignore` to the na_values argument. At the moment, the default for
+        # null values are empty string ("") and "NA".
+
+        if na_values == "ignore":
+            result = result
+        else:
+            na_values = ["", "NA"]
+            result = [
+                {key: value for key, value in entry.items() if value not in na_values}
+                for entry in result
+            ]
+
+        # The csv module reads every row as a string, there are no data type assumptions.
+        # This function attempts to solve this. The user can pass a string of either
+        # ('int', 'str', 'float') or if the user knows the keys/fieldnames, can pass a
+        # dictionary mapping the key to the data type.
+        # Technically 'str' data type is not needed, since data is read in as strings anyway.
+
+        if not (isinstance(dtype, (dict, str)) or dtype is None):
+            raise TypeError(
+                """dtype should be a dictionary pair of key and data type, or a single string data type"""
+            )
+
+        dtype_mapping = {"int": int, "float": float, "str": str}
+        if dtype:
+            if isinstance(dtype, str) and dtype in ("int", "float", "str"):
+                result = [
+                    {key: dtype_mapping[dtype](value) for key, value in entry.items()}
+                    for entry in result
+                ]
+            else:
+                result = [
+                    {
+                        key: dtype_mapping[dtype[key]](value) if key in dtype else value
+                        for key, value in entry.items()
+                    }
+                    for entry in result
+                ]
+
+        return Clumper(result)
+
+    def write_csv(self, path, mode="w"):
+        """
+        Write to a csv file.
+
+        Arguments:
+        path: filename
+        mode: `w` writes to a file if it does not exist, or overwrites if it already exists,
+               while `a`: - append to file if it already exists. The default is `w`.
+
+        Note that null values will be exported as empty strings; this is the convention chosen by Python.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+        from pathlib import Path
+        path = '/tmp/monopoly.csv'
+        Clumper.read_csv("tests/data/monopoly.csv").write_csv(path)
+        reader = Clumper.read_csv(path)
+        assert Clumper.read_csv("tests/data/monopoly.csv").collect() == reader.collect()
+        ```
+        """
+
+        with open(path, mode=mode, newline="") as csvfile:
+            fieldnames = self.keys()
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            writer.writeheader()
+
+            for row in self:
+                writer.writerow(row)
 
     def _create_new(self, blob):
         """
