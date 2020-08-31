@@ -6,7 +6,12 @@ import urllib.request
 from functools import reduce
 from statistics import mean, variance, stdev, median
 
-from clumper.decorators import return_value_if_empty, grouped, dict_collection_only
+from clumper.decorators import (
+    return_value_if_empty,
+    grouped,
+    dict_collection_only,
+    multifile,
+)
 
 
 class Clumper:
@@ -39,6 +44,7 @@ class Clumper:
         return f"<Clumper groups={self.groups} len={len(self)} @{hex(id(self))}>"
 
     @classmethod
+    @multifile()
     def read_json(cls, path, n=None):
         """
         Reads in a json file. Can also read files from url.
@@ -78,6 +84,7 @@ class Clumper:
         return Clumper(data)
 
     @classmethod
+    @multifile()
     def read_jsonl(cls, path: str, n=None):
         """
         Reads in a jsonl file. Can also read files from url.
@@ -128,7 +135,9 @@ class Clumper:
             return Clumper(data_array)
 
         except Exception:
-            raise RuntimeError("Error occured during reading in JSONL file")
+            raise RuntimeError(
+                f"Error occured during reading in JSONL file with path {path}"
+            )
 
     def write_json(self, path, sort_keys=False, indent=None):
         """
@@ -189,6 +198,7 @@ class Clumper:
             raise RuntimeError("Error occured during writing JSONL file")
 
     @classmethod
+    @multifile()
     def read_csv(cls, path, delimiter=",", fieldnames=None, n=None):
         """
         Reads in a csv file. Can also read files from url.
