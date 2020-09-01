@@ -83,6 +83,9 @@ def multifile(param_name="path"):
             if isinstance(path, str):
                 if path.startswith("https:") or path.startswith("http:"):
                     return f(*args, **kwargs)
+
+                if "*" not in path:
+                    return f(*args, **kwargs)
                 else:
                     path = pathlib.Path().glob(path)
 
@@ -90,20 +93,21 @@ def multifile(param_name="path"):
                 # Set the path variable to p
                 bound_arguments.arguments[param_name] = str(p)
                 # Call the reader function and create the Clumper object
-                collected_clumpers.append(
-                    f(*bound_arguments.args, *bound_arguments.kwargs)
+                clumper = f(*bound_arguments.args, **deepcopy(bound_arguments.kwargs))
+                collected_clumpers.append(clumper)
+
+            if len(collected_clumpers) == 1:  # Only one object found
+                return collected_clumpers[0]
+
+            elif len(collected_clumpers) > 1:  # More than one object found
+                # Combine them by concating their dict
+                blob = reduce(
+                    lambda a, b: a + b, [c.collect() for c in collected_clumpers]
                 )
 
-            # Combine them by concating their dict
-            blob = reduce(
-                lambda a, b: a + b,
-                [c.collect() for c in collected_clumpers if len(c) > 0],
-            )
-
-            # Create a new object Clumper object based on the first element
-            clumper_object = collected_clumpers[0]._create_new(blob)
-
-            return clumper_object
+                # Create a new object Clumper object based on the first element
+                clumper_object = collected_clumpers[0]._create_new(blob)
+                return clumper_object
 
         return wrapper
 
