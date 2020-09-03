@@ -1,7 +1,7 @@
 from functools import wraps, reduce
 from copy import deepcopy
-import pathlib
 import inspect
+from glob import glob
 
 
 def return_value_if_empty(value=None):
@@ -63,6 +63,10 @@ def dict_collection_only(method):
 
 
 def multifile(param_name="path"):
+    """
+        Creates a wrapper around read function to read multiple file given a pattern with at least one *
+    """
+
     def decorator(f):
         sig = inspect.signature(f)
 
@@ -77,23 +81,21 @@ def multifile(param_name="path"):
 
             path = bound_arguments.arguments[param_name]
 
-            # Using this path.Glob, extract all the files if any
-            collected_clumpers = []
-            # If path is provided as string
-            if isinstance(path, str):
-                if path.startswith("https:") or path.startswith("http:"):
-                    return f(*args, **kwargs)
+            # If path is not provided as string or the path parameter is not path
 
-                if "*" not in path:
-                    return f(*args, **kwargs)
-                else:
-                    path = pathlib.Path().glob(path)
-            # If path is provided as PosixPath
-            if isinstance(path, pathlib.PosixPath):
+            if "*" not in str(path):
                 return f(*args, **kwargs)
 
+            path_list = glob(path)
+
+            if len(path_list) == 0:  # Found nothing, then raise Error
+                raise ValueError(f"Found no files given pattern : {path}")
+
+            # Store all files found u
+            collected_clumpers = []
+
             # Else path must be a iterable i.e glob or array
-            for p in path:
+            for p in path_list:
                 # Set the path variable to p
                 bound_arguments.arguments[param_name] = str(p)
                 # Call the reader function and create the Clumper object
@@ -105,13 +107,7 @@ def multifile(param_name="path"):
 
             elif len(collected_clumpers) > 1:  # More than one object found
                 # Combine them by concating their dict
-                blob = reduce(
-                    lambda a, b: a + b, [c.collect() for c in collected_clumpers]
-                )
-
-                # Create a new object Clumper object based on the first element
-                clumper_object = collected_clumpers[0]._create_new(blob)
-                return clumper_object
+                return reduce(lambda a, b: a.concat(b), collected_clumpers)
 
         return wrapper
 

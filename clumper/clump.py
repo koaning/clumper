@@ -85,7 +85,7 @@ class Clumper:
 
     @classmethod
     @multifile()
-    def read_jsonl(cls, path: str, n=None):
+    def read_jsonl(cls, path, n=None):
         """
         Reads in a jsonl file. Can also read files from url.
 
