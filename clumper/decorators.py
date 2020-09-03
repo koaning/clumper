@@ -79,7 +79,7 @@ def multifile(param_name="path"):
 
             # Using this path.Glob, extract all the files if any
             collected_clumpers = []
-
+            # If path is provided as string
             if isinstance(path, str):
                 if path.startswith("https:") or path.startswith("http:"):
                     return f(*args, **kwargs)
@@ -88,7 +88,11 @@ def multifile(param_name="path"):
                     return f(*args, **kwargs)
                 else:
                     path = pathlib.Path().glob(path)
+            # If path is provided as PosixPath
+            if isinstance(path, pathlib.PosixPath):
+                return f(*args, **kwargs)
 
+            # Else path must be a iterable i.e glob or array
             for p in path:
                 # Set the path variable to p
                 bound_arguments.arguments[param_name] = str(p)
@@ -112,25 +116,3 @@ def multifile(param_name="path"):
         return wrapper
 
     return decorator
-
-
-def print_callback(val):
-    print(f"Value is {val}")
-
-
-def read_glob(method, path, *args, **kwargs):
-
-    collected_clumpers = []
-
-    # If arg is string then convert it to Path.glob
-    if isinstance(path, str):
-        path = pathlib.Path().glob(path)
-
-    # Assuming that all file path fits in the memory
-    path_list = list(path)
-    assert len(path_list) > 0, f"There are no file(s) given pattern"
-    for p in path_list:
-        collected_clumpers.append(method(str(p), *args, **kwargs))
-    blob = reduce(lambda a, b: a + b, [c.collect() for c in collected_clumpers])
-    clumper_object = collected_clumpers[0]._create_new(blob)
-    return clumper_object

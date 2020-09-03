@@ -13,7 +13,7 @@ This package might solve some problems for you if:
 This package might not be the best choice if:
 
 - You're dealing with very large datasets.
-- You're dealing with data that strictly
+- You're dealing with data thats like a table. For unnested tables, pandas is probably better. 
 
 ### Library Assumptions
 
