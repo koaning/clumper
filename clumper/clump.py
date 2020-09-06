@@ -7,7 +7,12 @@ from functools import reduce
 from statistics import mean, variance, stdev, median
 
 
-from clumper.decorators import return_value_if_empty, grouped, dict_collection_only
+from clumper.decorators import (
+    return_value_if_empty,
+    grouped,
+    dict_collection_only,
+    multifile,
+)
 
 
 class Clumper:
@@ -40,6 +45,7 @@ class Clumper:
         return f"<Clumper groups={self.groups} len={len(self)} @{hex(id(self))}>"
 
     @classmethod
+    @multifile()
     def read_json(cls, path, n=None):
         """
         Reads in a json file. Can also read files from url.
@@ -79,7 +85,8 @@ class Clumper:
         return Clumper(data)
 
     @classmethod
-    def read_jsonl(cls, path: str, n=None):
+    @multifile()
+    def read_jsonl(cls, path, n=None):
         """
         Reads in a jsonl file. Can also read files from url.
 
@@ -190,6 +197,7 @@ class Clumper:
             raise RuntimeError("Error occured during writing JSONL file")
 
     @classmethod
+    @multifile()
     def read_csv(
         cls, path, delimiter=",", na_values=None, dtype=None, fieldnames=None, n=None
     ):
