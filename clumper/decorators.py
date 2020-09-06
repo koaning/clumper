@@ -64,7 +64,7 @@ def dict_collection_only(method):
 
 def multifile(param_name="path"):
     """
-        Creates a wrapper around read function to read multiple file given a pattern with at least one * in the path.
+    Creates a wrapper around read function to read multiple file given a pattern with at least one * in the path.
     """
 
     def decorator(f):
