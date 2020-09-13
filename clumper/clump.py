@@ -200,7 +200,7 @@ class Clumper:
         ```python
         from clumper import Clumper
         clump_orig = Clumper.read_yaml("tests/data/demo-flat.yaml")
-        clump_orig.write_jsonl("tests/data/demo-flat-copy.json")
+        clump_orig.write_json("tests/data/demo-flat-copy.json")
 
         clump_copy = Clumper.read_json("tests/data/demo-flat-copy.json")
         assert clump_copy.collect() == clump_orig.collect()
