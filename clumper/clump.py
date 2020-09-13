@@ -229,7 +229,7 @@ class Clumper:
         ```python
         from clumper import Clumper
         clump_orig = Clumper.read_json("tests/data/pokemon.json")
-        clump_orig.write_jsonl("tests/data/pokemon_copy.json")
+        clump_orig.write_json("tests/data/pokemon_copy.json")
 
         clump_copy = Clumper.read_json("tests/data/pokemon_copy.json")
         assert clump_copy.collect() == clump_orig.collect()
@@ -263,17 +263,12 @@ class Clumper:
         assert clump_copy.collect() == clump_orig.collect()
         ```
         """
-
-        try:
-            # Create a new file and open it for writing
-            with open(path, "x") as f:
-                for current_line_nr, json_dict in enumerate(self.collect()):
-                    f.write(
-                        json.dumps(json_dict, sort_keys=sort_keys, indent=indent) + "\n"
-                    )
-
-        except Exception:
-            raise RuntimeError("Error occured during writing JSONL file")
+        # Create a new file and open it for writing
+        with open(path, "x") as f:
+            for current_line_nr, json_dict in enumerate(self.collect()):
+                f.write(
+                    json.dumps(json_dict, sort_keys=sort_keys, indent=indent) + "\n"
+                )
 
     @classmethod
     def read_csv(
