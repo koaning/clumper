@@ -31,7 +31,7 @@ class Clumper:
         self.groups = groups
 
     def __len__(self):
-        return len(self.blob)
+        return 1 if isinstance(self.blob, dict) else len(self.blob)
 
     def __iter__(self):
         return self.blob.__iter__()
@@ -1182,6 +1182,35 @@ class Clumper:
         ```
         """
         return self._create_new([d for d in self.blob])
+
+    def flatten_keys(self, keyname="key"):
+        """
+        Flattens the keys in the data. Useful when `Clumper` is created with a single large dictionary.
+
+        Arguments:
+            new_key: the name of the new key
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = {
+          'feature_1': {'propery_1': 1, 'property_2': 2},
+          'feature_2': {'propery_1': 3, 'property_2': 4},
+          'feature_3': {'propery_1': 5, 'property_2': 6},
+        }
+
+        expected = [
+            {'propery_1': 1, 'property_2': 2, 'key': 'feature_1'},
+            {'propery_1': 3, 'property_2': 4, 'key': 'feature_2'},
+            {'propery_1': 5, 'property_2': 6, 'key': 'feature_3'}
+        ]
+
+        assert Clumper(data).flatten_keys().collect() == expected
+        ```
+        """
+        return self._create_new([{**v, keyname: k} for k, v in self.blob.items()])
 
     def summarise_col(self, func, key):
         """
