@@ -7,6 +7,7 @@ from functools import reduce
 from statistics import mean, variance, stdev, median
 
 
+from clumper.error import raise_yaml_dep_error
 from clumper.decorators import return_value_if_empty, grouped, dict_collection_only
 
 
@@ -130,6 +131,38 @@ class Clumper:
 
         except Exception:
             raise RuntimeError("Error occured during reading in JSONL file")
+
+    @classmethod
+    def read_yaml(cls, path: str):
+        """
+        Reads in a yaml file.
+
+        Arguments:
+            path: filename or url
+
+        Usage:
+
+        ```
+        from clumper import Clumper
+
+        clump = Clumper.read_yaml("tests/data/demo-flat.yml")
+        assert len(clump) == 3
+        ```
+        """
+        # Case 1 : Open cloud file in stream
+        if path.startswith("https:") or path.startswith("http:"):
+            f = urllib.request.urlopen(path)
+        # Case 2 : Local file
+        else:
+            f = open(path)
+
+        # Try to load it but tell the user to install if not there.
+        try:
+            import yaml
+
+            return Clumper(yaml.load(f.read(), Loader=yaml.FullLoader))
+        except ImportError:
+            raise_yaml_dep_error()
 
     def write_json(self, path, sort_keys=False, indent=None):
         """
