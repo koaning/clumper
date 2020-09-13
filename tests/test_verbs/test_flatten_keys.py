@@ -5,6 +5,7 @@ from clumper import Clumper
 
 @pytest.mark.parametrize("keyname", ["foo", "bar", "buz"])
 def test_can_rename_key(keyname):
+    """We should be able to change the keyname"""
     data = {
         "f1": {"p1": 1, "p2": 2},
         "f2": {"p1": 3, "p2": 4},
