@@ -133,16 +133,28 @@ class Clumper:
             raise RuntimeError("Error occured during reading in JSONL file")
 
     @classmethod
-    def read_yaml(cls, path: str):
+    def read_yaml(cls, path: str, n=None):
         """
         Reads in a yaml file.
 
         Arguments:
             path: filename or url
+            n: number of lines to read in, if `None` will read all
+
+        Important:
+            This method requires the `PyYAML` dependency which is not installed automatically.
+            To install it you can run;
+
+            ```
+            # This will only install the yaml dependencies.
+            pip install clumper[yaml]
+            # This will install all optional dependencies.
+            pip install clumper[all]
+            ```
 
         Usage:
 
-        ```
+        ```python
         from clumper import Clumper
 
         clump = Clumper.read_yaml("tests/data/demo-flat.yml")
@@ -160,7 +172,46 @@ class Clumper:
         try:
             import yaml
 
-            return Clumper(yaml.load(f.read(), Loader=yaml.FullLoader))
+            data = yaml.load(f.read(), Loader=yaml.FullLoader)
+            return Clumper(list(it.islice(data, 0, n)))
+        except ImportError:
+            raise_yaml_dep_error()
+
+    def write_yaml(self, path):
+        """
+        Write the collection of data as a yaml file.
+
+        Arguments:
+            path: path to write the file to
+
+        Important:
+            This method requires the `PyYAML` dependency which is not installed automatically.
+            To install it you can run;
+
+            ```
+            # This will only install the yaml dependencies.
+            pip install clumper[yaml]
+            # This will install all optional dependencies.
+            pip install clumper[all]
+            ```
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+        clump_orig = Clumper.read_yaml("tests/data/demo-flat.yaml")
+        clump_orig.write_jsonl("tests/data/demo-flat-copy.json")
+
+        clump_copy = Clumper.read_json("tests/data/demo-flat-copy.json")
+        assert clump_copy.collect() == clump_orig.collect()
+        ```
+        """
+        try:
+            import yaml
+
+            with open(path, "x") as f:
+                txt = yaml.dump(self.collect())
+                f.write(txt)
         except ImportError:
             raise_yaml_dep_error()
 
@@ -182,6 +233,7 @@ class Clumper:
 
         clump_copy = Clumper.read_json("tests/data/pokemon_copy.json")
         assert clump_copy.collect() == clump_orig.collect()
+        ```
         """
 
         try:
@@ -209,6 +261,7 @@ class Clumper:
         clump_copy = Clumper.read_jsonl("tests/data/cards_copy.jsonl")
 
         assert clump_copy.collect() == clump_orig.collect()
+        ```
         """
 
         try:
