@@ -28,4 +28,4 @@ jobs:
     - name: Install All Optional Deps Base Package
       run: python -m pip install ".[all]"
     - name: Check All Optional Deps Base Package
-      run: python tests/scripts/check_pip.py installed PyYaml
+      run: python tests/scripts/check_pip.py installed PyYAML
