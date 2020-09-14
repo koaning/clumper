@@ -6,11 +6,6 @@
 
 Part of a video series on [calmcode.io](https://calmcode.io).
 
-# Alpha Notice
-
-This package is really new and not a whole lot of users have
-been able to find *all* the edge cases yet.
-
 ## Base Example
 
 Clumper allows you to quickly parse through a list of json-like data.
@@ -96,6 +91,11 @@ python -m pip install clumper
 
 For details on why, check out [this resource](https://calmcode.io/virtualenv/intro.html).
 
+# Early Notice
+
+This package is new and not a whole lot of users have
+been able to find *all* the edge cases yet. We unit test
+every method but feel free to notify us of edge cases.
 
 ## Contributing
 
