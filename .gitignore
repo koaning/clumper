@@ -142,3 +142,4 @@ dmypy.json
 
 # Datasets in Root
 *.json
+tests/data/cards_copy.jsonl
