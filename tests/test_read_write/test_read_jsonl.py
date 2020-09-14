@@ -29,5 +29,5 @@ def test_read_csv_negative_zero():
 
 
 def test_non_existing_file():
-    with pytest.raises(RuntimeError):
+    with pytest.raises(FileNotFoundError):
         Clumper.read_jsonl("tests/cards.jsonl")
