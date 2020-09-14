@@ -116,28 +116,24 @@ class Clumper:
             if n <= 0:
                 raise ValueError("Number of lines to read must be > 0.")
 
-        try:
-            # Case 1 : Open cloud file in stream
-            if path.startswith("https:") or path.startswith("http:"):
-                f = urllib.request.urlopen(path)
-            # Case 2 : Local file
-            else:
-                f = open(path)
+        # Case 1 : Open cloud file in stream
+        if path.startswith("https:") or path.startswith("http:"):
+            f = urllib.request.urlopen(path)
+        # Case 2 : Local file
+        else:
+            f = open(path)
 
-            # Initalize a place to store the parsed data as list
-            data_array = []
-            # Read it, parse and close it
-            with f:
-                for current_line_nr, json_string in enumerate(f):
-                    if n is not None and current_line_nr == n:
-                        break
-                    json_object = json.loads(json_string)
-                    data_array.append(json_object)
-            # Return it
-            return Clumper(data_array)
-
-        except Exception:
-            raise RuntimeError("Error occured during reading in JSONL file")
+        # Initialize a place to store the parsed data as list
+        data_array = []
+        # Read it, parse and close it
+        with f:
+            for current_line_nr, json_string in enumerate(f):
+                if n is not None and current_line_nr == n:
+                    break
+                json_object = json.loads(json_string)
+                data_array.append(json_object)
+        # Return it
+        return Clumper(data_array)
 
     @classmethod
     def read_yaml(cls, path: str, n=None):
@@ -242,13 +238,9 @@ class Clumper:
         assert clump_copy.collect() == clump_orig.collect()
         ```
         """
-
-        try:
-            # Create a new file and open it for writing
-            with open(path, "w") as f:
-                json.dump(self.collect(), f, sort_keys=sort_keys, indent=indent)
-        except Exception:
-            raise RuntimeError("Error occured during writing JSON file")
+        # Create a new file and open it for writing
+        with open(path, "w") as f:
+            json.dump(self.collect(), f, sort_keys=sort_keys, indent=indent)
 
     def write_jsonl(self, path, sort_keys=False, indent=None):
         """
