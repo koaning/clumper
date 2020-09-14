@@ -7,6 +7,7 @@ from functools import reduce
 from statistics import mean, variance, stdev, median
 
 
+from clumper.error import raise_yaml_dep_error
 from clumper.decorators import (
     return_value_if_empty,
     grouped,
@@ -138,6 +139,89 @@ class Clumper:
         except Exception:
             raise RuntimeError("Error occured during reading in JSONL file")
 
+    @classmethod
+    def read_yaml(cls, path: str, n=None):
+        """
+        Reads in a yaml file.
+
+        Arguments:
+            path: filename or url
+            n: number of lines to read in, if `None` will read all
+
+        Important:
+            This method requires the `PyYAML` dependency which is not installed automatically.
+            To install it you can run;
+
+            ```
+            # This will only install the yaml dependencies.
+            pip install clumper[yaml]
+            # This will install all optional dependencies.
+            pip install clumper[all]
+            ```
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        clump = Clumper.read_yaml("tests/data/demo-flat.yml")
+        assert len(clump) == 3
+        ```
+        """
+        # Case 1 : Open cloud file in stream
+        if path.startswith(("https:", "http:")):
+            f = urllib.request.urlopen(path)
+        # Case 2 : Local file
+        else:
+            f = open(path)
+
+        # Try to load it but tell the user to install if not there.
+        try:
+            import yaml
+
+            data = yaml.load(f.read(), Loader=yaml.FullLoader)
+            return Clumper(list(it.islice(data, 0, n)))
+        except ImportError:
+            raise_yaml_dep_error()
+
+    def write_yaml(self, path):
+        """
+        Write the collection of data as a yaml file.
+
+        Arguments:
+            path: path to write the file to
+
+        Important:
+            This method requires the `PyYAML` dependency which is not installed automatically.
+            To install it you can run;
+
+            ```
+            # This will only install the yaml dependencies.
+            pip install clumper[yaml]
+            # This will install all optional dependencies.
+            pip install clumper[all]
+            ```
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+        clump_orig = Clumper.read_yaml("tests/data/demo-flat-1.yaml")
+        clump_orig.write_json("tests/data/demo-flat-copy.json")
+
+        clump_copy = Clumper.read_json("tests/data/demo-flat-copy.json")
+        assert clump_copy.collect() == clump_orig.collect()
+        ```
+        """
+        try:
+            import yaml
+
+            with open(path, "x") as f:
+                txt = yaml.dump(self.collect())
+                f.write(txt)
+        except ImportError:
+            raise_yaml_dep_error()
+
     def write_json(self, path, sort_keys=False, indent=None):
         """
         Writes to a json file.
@@ -152,10 +236,11 @@ class Clumper:
         ```python
         from clumper import Clumper
         clump_orig = Clumper.read_json("tests/data/pokemon.json")
-        clump_orig.write_jsonl("tests/data/pokemon_copy.json")
+        clump_orig.write_json("tests/data/pokemon_copy.json")
 
         clump_copy = Clumper.read_json("tests/data/pokemon_copy.json")
         assert clump_copy.collect() == clump_orig.collect()
+        ```
         """
 
         try:
@@ -173,28 +258,13 @@ class Clumper:
             path: filename
             sort_keys: If sort_keys is true (default: False), then the output of dictionaries will be sorted by key.
             indent: If indent is a non-negative integer (default: None), then JSON array elements members will be pretty-printed with that indent level.
-        Usage:
-
-        ```python
-        from clumper import Clumper
-        clump_orig = Clumper.read_jsonl("tests/data/cards.jsonl")
-        clump_orig.write_jsonl("tests/data/cards_copy.jsonl")
-
-        clump_copy = Clumper.read_jsonl("tests/data/cards_copy.jsonl")
-
-        assert clump_copy.collect() == clump_orig.collect()
         """
-
-        try:
-            # Create a new file and open it for writing
-            with open(path, "x") as f:
-                for current_line_nr, json_dict in enumerate(self.collect()):
-                    f.write(
-                        json.dumps(json_dict, sort_keys=sort_keys, indent=indent) + "\n"
-                    )
-
-        except Exception:
-            raise RuntimeError("Error occured during writing JSONL file")
+        # Create a new file and open it for writing
+        with open(path, "x") as f:
+            for current_line_nr, json_dict in enumerate(self.collect()):
+                f.write(
+                    json.dumps(json_dict, sort_keys=sort_keys, indent=indent) + "\n"
+                )
 
     @classmethod
     @multifile()

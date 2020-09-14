@@ -7,6 +7,8 @@ test_packages = [
     "flake8>=3.8.3",
 ]
 
+yaml_packages = ["PyYAML>=5.3.1"]
+
 util_packages = ["jupyterlab>=2.2.0", "pre-commit>=2.6.0"]
 
 docs_packages = [
@@ -15,11 +17,18 @@ docs_packages = [
     "mkdocstrings>=0.8.0",
 ]
 
-dev_packages = test_packages + util_packages + docs_packages
+dev_packages = test_packages + util_packages + docs_packages + yaml_packages
+
+all_deps = yaml_packages
 
 setup(
     name="clumper",
     version="0.2.5",
     packages=find_packages(include=["clumper", "clumper.*"]),
-    extras_require={"dev": dev_packages, "test": test_packages},
+    extras_require={
+        "dev": dev_packages,
+        "test": test_packages,
+        "all": all_deps,
+        "yaml": yaml_packages,
+    },
 )
