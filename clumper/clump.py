@@ -162,7 +162,7 @@ class Clumper:
         ```
         """
         # Case 1 : Open cloud file in stream
-        if path.startswith("https:") or path.startswith("http:"):
+        if path.startswith(("https:", "http:")):
             f = urllib.request.urlopen(path)
         # Case 2 : Local file
         else:
@@ -199,7 +199,7 @@ class Clumper:
 
         ```python
         from clumper import Clumper
-        clump_orig = Clumper.read_yaml("tests/data/demo-flat.yaml")
+        clump_orig = Clumper.read_yaml("tests/data/demo-flat-1.yaml")
         clump_orig.write_json("tests/data/demo-flat-copy.json")
 
         clump_copy = Clumper.read_json("tests/data/demo-flat-copy.json")
@@ -251,17 +251,6 @@ class Clumper:
             path: filename
             sort_keys: If sort_keys is true (default: False), then the output of dictionaries will be sorted by key.
             indent: If indent is a non-negative integer (default: None), then JSON array elements members will be pretty-printed with that indent level.
-        Usage:
-
-        ```python
-        from clumper import Clumper
-        clump_orig = Clumper.read_jsonl("tests/data/cards.jsonl")
-        clump_orig.write_jsonl("tests/data/cards_copy.jsonl")
-
-        clump_copy = Clumper.read_jsonl("tests/data/cards_copy.jsonl")
-
-        assert clump_copy.collect() == clump_orig.collect()
-        ```
         """
         # Create a new file and open it for writing
         with open(path, "x") as f:
