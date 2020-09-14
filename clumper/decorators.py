@@ -71,7 +71,9 @@ def multifile(param_name="path"):
         sig = inspect.signature(f)
 
         if param_name not in sig.parameters:
-            raise ValueError(f"Wrapped function has no parameter '{param_name}'")
+            raise ValueError(
+                f"Reader function {f.__name__} has no parameter '{param_name}'"
+            )
 
         @wraps(f)
         def wrapper(*args, **kwargs):
@@ -81,31 +83,36 @@ def multifile(param_name="path"):
 
             path = bound_arguments.arguments[param_name]
 
-            # If path is not provided as string or the path parameter is not path
+            # If * not in path then let the default function handle it.
+            # We are only interested if the path has * in it
 
             if "*" not in str(path):
                 return f(*args, **kwargs)
 
+            # Else, create a glob out of it
             path_list = glob(path)
 
-            if len(path_list) == 0:  # Found nothing, then raise Error
-                raise ValueError(f"Found no files given pattern : {path}")
+            # No files found given the pattern so raise error
+            if len(path_list) == 0:
+                raise ValueError(f"No files files given pattern : {path}")
 
-            # Store all files found u
+            # Store the parsed clumpers here
             collected_clumpers = []
 
-            # Else path must be a iterable i.e glob or array
+            # Iterate each path in the glob
             for p in path_list:
-                # Set the path variable to p
+                # Set the path variable
                 bound_arguments.arguments[param_name] = str(p)
-                # Call the reader function and create the Clumper object
+                # Call the underlying reader function
                 clumper = f(*bound_arguments.args, **deepcopy(bound_arguments.kwargs))
+                # Collect the clumper
                 collected_clumpers.append(clumper)
 
-            if len(collected_clumpers) == 1:  # Only one object found
+            # Only one object found
+            if len(collected_clumpers) == 1:
                 return collected_clumpers[0]
-
-            elif len(collected_clumpers) > 1:  # More than one object found
+            # More than one object found
+            elif len(collected_clumpers) > 1:
                 # Combine them by concating their dict
                 return reduce(lambda a, b: a.concat(b), collected_clumpers)
 
