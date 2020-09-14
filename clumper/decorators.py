@@ -1,5 +1,7 @@
 from functools import wraps, reduce
 from copy import deepcopy
+import inspect
+from glob import glob
 
 
 def return_value_if_empty(value=None):
@@ -58,3 +60,62 @@ def dict_collection_only(method):
         return method(clumper, *args, **kwargs)
 
     return wrapped
+
+
+def multifile(param_name="path"):
+    """
+    Creates a wrapper around read function to read multiple file given a pattern with at least one * in the path.
+    """
+
+    def decorator(f):
+        sig = inspect.signature(f)
+
+        if param_name not in sig.parameters:
+            raise ValueError(
+                f"Reader function {f.__name__} has no parameter '{param_name}'"
+            )
+
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            bound_arguments = sig.bind(*args, **kwargs)
+
+            bound_arguments.apply_defaults()
+
+            path = bound_arguments.arguments[param_name]
+
+            # If * not in path then let the default function handle it.
+            # We are only interested if the path has * in it
+
+            if "*" not in str(path):
+                return f(*args, **kwargs)
+
+            # Else, create a glob out of it
+            path_list = glob(path)
+
+            # No files found given the pattern so raise error
+            if len(path_list) == 0:
+                raise ValueError(f"No files files given pattern : {path}")
+
+            # Store the parsed clumpers here
+            collected_clumpers = []
+
+            # Iterate each path in the glob
+            for p in path_list:
+                # Set the path variable
+                bound_arguments.arguments[param_name] = str(p)
+                # Call the underlying reader function
+                clumper = f(*bound_arguments.args, **deepcopy(bound_arguments.kwargs))
+                # Collect the clumper
+                collected_clumpers.append(clumper)
+
+            # Only one object found
+            if len(collected_clumpers) == 1:
+                return collected_clumpers[0]
+            # More than one object found
+            elif len(collected_clumpers) > 1:
+                # Combine them by concating their dict
+                return reduce(lambda a, b: a.concat(b), collected_clumpers)
+
+        return wrapper
+
+    return decorator
