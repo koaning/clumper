@@ -89,7 +89,13 @@ It may be safer however to install via;
 python -m pip install clumper
 ```
 
-For details on why, check out [this resource](https://calmcode.io/virtualenv/intro.html).
+For details on why, check out [this resource](https://calmcode.io/virtualenv/intro.html). 
+
+There are some extra dependencies that you might want to install as well. 
+
+```
+python -m pip install clumper[yaml]
+```
 
 # Early Notice
 
