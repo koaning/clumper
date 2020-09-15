@@ -54,7 +54,7 @@ class Clumper:
         ![](../img/read_json.png)
 
         Arguments:
-            path: filename or url
+            path: filename or url. Filenames can include a wildcard `*`.
             n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
 
         Usage:
@@ -94,7 +94,7 @@ class Clumper:
         ![](../img/read_jsonl.png)
 
         Arguments:
-            path: filename or url
+            path: filename or url. Filenames can include a wildcard `*`.
             n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
 
         Usage:
@@ -136,12 +136,15 @@ class Clumper:
         return Clumper(data_array)
 
     @classmethod
+    @multifile()
     def read_yaml(cls, path: str, n=None):
         """
         Reads in a yaml file.
 
+        ![](../img/read_yaml.png)
+
         Arguments:
-            path: filename or url
+            path: filename or url. Filenames can include a wildcard `*`.
             n: number of lines to read in, if `None` will read all
 
         Important:
@@ -160,8 +163,11 @@ class Clumper:
         ```python
         from clumper import Clumper
 
-        clump = Clumper.read_yaml("tests/data/demo-flat.yml")
+        clump = Clumper.read_yaml("tests/data/demo-flat-1.yaml")
         assert len(clump) == 3
+
+        clump = Clumper.read_yaml("tests/data/*.yaml")
+        assert len(clump) == 6
         ```
         """
         # Case 1 : Open cloud file in stream
@@ -1257,8 +1263,10 @@ class Clumper:
         """
         Flattens the keys in the data. Useful when `Clumper` is created with a single large dictionary.
 
+        ![](../img/flatten_keys.png)
+
         Arguments:
-            new_key: the name of the new key
+            keyname: the name of the new key
 
         Usage:
 
