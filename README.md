@@ -73,6 +73,7 @@ We've got a lovely [documentation page](https://koaning.github.io/clumper/) that
 - This library has no dependencies besides a modern version of python.
 - The library offers a pattern of verbs that are very expressive.
 - You can write code from top to bottom, left to right.
+- You can read in many `json`/`yaml`/`csv` files by using a wildcard `*`.
 - MIT License
 
 ## Installation
@@ -89,9 +90,9 @@ It may be safer however to install via;
 python -m pip install clumper
 ```
 
-For details on why, check out [this resource](https://calmcode.io/virtualenv/intro.html). 
+For details on why, check out [this resource](https://calmcode.io/virtualenv/intro.html).
 
-There are some optional dependencies that you might want to install as well. 
+There are some optional dependencies that you might want to install as well.
 
 ```
 python -m pip install clumper[yaml]

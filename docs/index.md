@@ -17,6 +17,7 @@ library has at least one test, but there may be edges.
 - This library has no dependencies besides a modern version of python.
 - The library offers a pattern of verbs that are very expressive.
 - You can write code from top to bottom, left to right.
+- You can read in many `json`/`yaml`/`csv` files by using a wildcard `*`.
 - MIT License
 
 ## Installation
