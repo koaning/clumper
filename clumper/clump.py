@@ -925,6 +925,40 @@ class Clumper:
         return self._create_new(self.blob[len(self) - n : len(self)])
 
     @dict_collection_only
+    def unpack(self, name):
+        """
+        Unpacks a nested list of dictionaries.
+
+        Arguments:
+            name: the name of the column to unpack
+
+        ```python
+        from clumper import Clumper
+
+        list_dicts = {
+            'a': 1,
+            'rows': [{'b': 2, 'c': 3}, {'b': 3}, {'b': 4}]
+        }
+
+        result = Clumper(list_dicts).unpack('rows').collect()
+
+        expected = [
+            {'a': 1, 'b': 2, 'c': 3},
+            {'a': 1, 'b': 3},
+            {'a': 1, 'b': 4}
+        ]
+
+        assert result == expected
+        ```
+        """
+        new_blob = []
+        for row in self:
+            for d in row[name]:
+                new = {k: v for k, v in row.items() if k != name}
+                new_blob.append({**new, **d})
+        return self._create_new(new_blob)
+
+    @dict_collection_only
     def select(self, *keys):
         """
         Selects a subset of the keys in each item in the collection.
