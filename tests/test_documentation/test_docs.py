@@ -4,7 +4,7 @@ import pytest
 from mktestdocs import check_md_file
 
 
-paths = ["docs/index.md", "readme.md"] + list(
+paths = ["docs/index.md", "README.md"] + list(
     pathlib.Path("docs/examples").glob("*.md")
 )
 
