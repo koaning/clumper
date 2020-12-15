@@ -5,6 +5,7 @@ test_packages = [
     "pytest>=5.4.3",
     "black>=19.10b0",
     "flake8>=3.8.3",
+    "mktestdocs>=0.1.0",
 ]
 
 yaml_packages = ["PyYAML>=5.3.1"]
