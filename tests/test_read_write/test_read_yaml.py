@@ -32,3 +32,10 @@ def test_can_read_lines(size, exp):
 def test_fetch_url(url):
     """Test that the url can be read both for http/https"""
     assert len(Clumper.read_yaml(url)) != 0
+
+
+def test_big_file_explodes_properly():
+    c = Clumper.read_yaml("tests/data/test-case-big.yaml").explode("videos")
+    print(c.collect())
+    assert False
+    assert len(c) == 8

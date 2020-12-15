@@ -18,7 +18,9 @@ def test_can_rename_key(keyname):
         {"p1": 5, "p2": 6, keyname: "f3"},
     ]
 
-    assert Clumper(data).flatten_keys(keyname=keyname).collect() == expected
+    assert (
+        Clumper(data, listify=False).flatten_keys(keyname=keyname).collect() == expected
+    )
 
 
 def test_len_appropriate_dict_input():
