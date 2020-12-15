@@ -50,3 +50,18 @@ def test_read_multiple_csv(tmp_path, copies):
 
     reader = Clumper.read_csv(str(tmp_path / "*.csv"))
     assert len(reader) == copies * len(writer)
+
+
+@pytest.mark.parametrize("copies", [1, 5, 10])
+def test_read_multiple_yaml(tmp_path, copies):
+    """
+    Test that csv files can be read given a pattern
+    """
+
+    writer = Clumper.read_yaml("tests/data/demo-nested.yml")
+
+    for i in range(copies):
+        writer.write_yaml(tmp_path / f"demo-nested-{i}.yml")
+
+    reader = Clumper.read_yaml(str(tmp_path / "*.yml"))
+    assert len(reader) == copies * len(writer)
