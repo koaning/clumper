@@ -170,7 +170,7 @@ class Clumper:
         clump = Clumper.read_yaml("tests/data/demo-flat-1.yaml")
         assert len(clump) == 3
 
-        clump = Clumper.read_yaml("tests/data/*.yaml")
+        clump = Clumper.read_yaml("tests/data/demo-flat-*.yaml")
         assert len(clump) == 6
         ```
         """
@@ -766,7 +766,7 @@ class Clumper:
         from clumper import Clumper
 
         data = [
-            {"a": 6, "grp": "a"},
+            {"a": 7, "grp": "a"},
             {"a": 2, "grp": "b"},
             {"a": 7, "grp": "a"},
             {"a": 9, "grp": "b"},
@@ -774,16 +774,16 @@ class Clumper:
         ]
 
         tfm_clump = (Clumper(data)
-                      .group_by("grp")
-                      .transform(s=("a", sum),
-                                 u=("a", lambda x: len(set(x)))
+                        .group_by("grp")
+                        .transform(s=("a", sum),
+                                    u=("a", lambda x: set(x))))
 
         expected = [
-            {'a': 6, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
-            {'a': 7, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
-            {'a': 5, 'grp': 'a', 's': 18, 'u': [5, 6, 7]},
-            {'a': 2, 'grp': 'b', 's': 11, 'u': [9, 2]},
-            {'a': 9, 'grp': 'b', 's': 11, 'u': [9, 2]}
+            {'a': 7, 'grp': 'a', 's': 19, 'u': {5, 7}},
+            {'a': 7, 'grp': 'a', 's': 19, 'u': {5, 7}},
+            {'a': 5, 'grp': 'a', 's': 19, 'u': {5, 7}},
+            {'a': 2, 'grp': 'b', 's': 11, 'u': {2, 9}},
+            {'a': 9, 'grp': 'b', 's': 11, 'u': {2, 9}}
         ]
 
         assert tfm_clump.equals(expected)
