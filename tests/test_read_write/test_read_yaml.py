@@ -32,3 +32,10 @@ def test_can_read_lines(size, exp):
 def test_fetch_url(url):
     """Test that the url can be read both for http/https"""
     assert len(Clumper.read_yaml(url)) != 0
+
+
+def test_multi_file_single_dict():
+    """We should be able to read in files that contain only a single dict."""
+    c = Clumper.read_yaml("tests/data/single-files/*.yml", listify=True)
+    assert len(c) == 2
+    assert len(c.explode("stuff")) == 6

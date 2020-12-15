@@ -1,4 +1,11 @@
-nested:
+nested1:
+  - item: 1
+    value: a
+  - item: 2
+    value: b
+  - item: 3
+    value: c
+nested2:
   - item: 1
     value: a
   - item: 2

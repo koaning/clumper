@@ -1,0 +1,23 @@
+name: name
+image: img.img
+short: something short
+tags:
+  - science
+  - entertainment
+videos:
+  - name: Intro
+    url: https://player.vimeo.com/video/414517859
+  - name: Code
+    url: https://player.vimeo.com/video/414517885
+  - name: Plotting
+    url: https://player.vimeo.com/video/414517957
+  - name: How it Works 1
+    url: https://player.vimeo.com/video/414518015
+  - name: How it Works 2
+    url: https://player.vimeo.com/video/414518059
+  - name: Accuracy
+    url: https://player.vimeo.com/video/414518106
+  - name: Benchmark
+    url: https://player.vimeo.com/video/414518141
+  - name: Final Features
+    url: https://player.vimeo.com/video/414518199

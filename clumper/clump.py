@@ -29,11 +29,15 @@ class Clumper:
     list_dicts = [{'a': 1}, {'a': 2}, {'a': 3}, {'a': 4}]
 
     c = Clumper(list_dicts)
+    assert len(c) == 4
     ```
     """
 
-    def __init__(self, blob, groups=tuple()):
+    def __init__(self, blob, groups=tuple(), listify=True):
         self.blob = blob.copy()
+        if listify:
+            if isinstance(blob, dict):
+                self.blob = [blob.copy()]
         self.groups = groups
 
     def __len__(self):
@@ -47,7 +51,7 @@ class Clumper:
 
     @classmethod
     @multifile()
-    def read_json(cls, path, n=None):
+    def read_json(cls, path, n=None, listify=True):
         """
         Reads in a json file. Can also read files from url.
 
@@ -83,11 +87,11 @@ class Clumper:
             data = json.loads(pathlib.Path(path).read_text())
         if n:
             return Clumper(list(it.islice(data, 0, n)))
-        return Clumper(data)
+        return Clumper(data, listify=listify)
 
     @classmethod
     @multifile()
-    def read_jsonl(cls, path, n=None):
+    def read_jsonl(cls, path, n=None, listify=True):
         """
         Reads in a jsonl file. Can also read files from url.
 
@@ -133,11 +137,11 @@ class Clumper:
                 json_object = json.loads(json_string)
                 data_array.append(json_object)
         # Return it
-        return Clumper(data_array)
+        return Clumper(data_array, listify=listify)
 
     @classmethod
     @multifile()
-    def read_yaml(cls, path: str, n=None):
+    def read_yaml(cls, path: str, n=None, listify=True):
         """
         Reads in a yaml file.
 
@@ -182,7 +186,11 @@ class Clumper:
             import yaml
 
             data = yaml.load(f.read(), Loader=yaml.FullLoader)
-            return Clumper(list(it.islice(data, 0, n)))
+            if isinstance(data, dict):
+                return Clumper(data, listify=listify)
+            if n:
+                return Clumper(list(it.islice(data, 0, n)), listify=listify)
+            return Clumper(data, listify=listify)
         except ImportError:
             raise_yaml_dep_error()
 
@@ -1285,7 +1293,7 @@ class Clumper:
             {'propery_1': 5, 'property_2': 6, 'key': 'feature_3'}
         ]
 
-        assert Clumper(data).flatten_keys().collect() == expected
+        assert Clumper(data, listify=False).flatten_keys().collect() == expected
         ```
         """
         return self._create_new([{**v, keyname: k} for k, v in self.blob.items()])
