@@ -51,3 +51,8 @@ def test_correct_keys_kept():
     assert set(Clumper(data).explode(items="items").keys()) == {"items", "a", "b"}
     assert set(Clumper(data).explode(item="items").keys()) == {"item", "a", "b"}
     assert set(Clumper(data).explode(a="items").keys()) == {"a", "b"}
+
+
+def test_big_file_explodes_properly():
+    c = Clumper.read_yaml("tests/data/test-case-big.yaml").explode("videos")
+    assert len(c) == 8

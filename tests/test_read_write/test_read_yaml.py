@@ -34,8 +34,8 @@ def test_fetch_url(url):
     assert len(Clumper.read_yaml(url)) != 0
 
 
-def test_big_file_explodes_properly():
-    c = Clumper.read_yaml("tests/data/test-case-big.yaml").explode("videos")
-    print(c.collect())
-    assert False
-    assert len(c) == 8
+def test_multi_file_single_dict():
+    """We should be able to read in files that contain only a single dict."""
+    c = Clumper.read_yaml("tests/data/single-files/*.yml", listify=True)
+    assert len(c) == 2
+    assert len(c.explode("stuff")) == 6

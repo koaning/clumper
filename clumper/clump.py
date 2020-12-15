@@ -187,7 +187,7 @@ class Clumper:
 
             data = yaml.load(f.read(), Loader=yaml.FullLoader)
             if isinstance(data, dict):
-                return Clumper(data)
+                return Clumper(data, listify=listify)
             if n:
                 return Clumper(list(it.islice(data, 0, n)), listify=listify)
             return Clumper(data, listify=listify)
