@@ -38,7 +38,7 @@ theme:
     text: Ubuntu
     code: Ubuntu Mono
   favicon: logo.png
-  logo: logo.png
+  logo: logo-white.png
   feature:
     tabs: true
   palette:
