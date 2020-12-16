@@ -25,4 +25,4 @@ d = [
 
 
 def test_unpack_dict():
-    assert len(Clumper(d).unpack("data")) == 2
+    assert len(Clumper(d).unpack("data")) == 10
