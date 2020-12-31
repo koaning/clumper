@@ -98,12 +98,6 @@ There are some optional dependencies that you might want to install as well.
 python -m pip install clumper[yaml]
 ```
 
-# Early Notice
-
-This package is new and not a whole lot of users have
-been able to find *all* the edge cases yet. We unit test
-every method but feel free to notify us of edge cases.
-
 ## Contributing
 
 Make sure you check out the [issue list](https://github.com/koaning/clumper/issues) beforehand in order
