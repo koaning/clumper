@@ -1,10 +1,15 @@
+import pathlib
 import pytest
 from itertools import product
 from clumper import Clumper
 from string import ascii_uppercase
 
 
-paths = ["tests/data/monopoly.csv", "https://calmcode.io/datasets/monopoly.csv"]
+paths = [
+    "tests/data/monopoly.csv",
+    "https://calmcode.io/datasets/monopoly.csv",
+    pathlib.Path("tests/data/monopoly.csv"),
+]
 nrows = [(None, 22), (10, 10), (15, 15), [80, 22]]
 fields = [
     (
