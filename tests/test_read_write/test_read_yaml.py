@@ -1,3 +1,5 @@
+import pathlib
+
 import pytest
 
 from clumper import Clumper
@@ -14,6 +16,7 @@ from clumper import Clumper
 def test_can_read_yaml_yml(path, size):
     """Test we can read in the basic files."""
     assert len(Clumper.read_yaml(path)) == size
+    assert len(Clumper.read_yaml(pathlib.Path(path))) == size
 
 
 @pytest.mark.parametrize("size,exp", [(10, 3), (3, 3), (2, 2), (1, 1)])

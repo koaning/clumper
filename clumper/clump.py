@@ -51,6 +51,131 @@ class Clumper:
 
     @classmethod
     @multifile()
+    def read_csv(
+        cls, path, delimiter=",", na_values=None, dtype=None, fieldnames=None, n=None
+    ):
+        """
+        Reads in a csv file. Can also read files from url.
+
+        ![](../img/read_csv.png)
+
+        Arguments:
+            path: filename, url, `pathlib.Path` or list of `pathlib.Path`. Filenames can include a wildcard `*`.
+            delimiter: Delimiter used in the csv file. Must be a single character and `,` is the default.
+            n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
+            fieldnames: Allows you to set the fieldnames if the header is missing. By default, the first
+                        row of the csv will provide the Clumper keys if fieldnames is `None`. If fieldnames
+                        is provided, then the first row becomes part of the data. You should ensure that
+                        the correct number of fieldnames is supplied, as an incorrect number can lead
+                        to an irregular outcome. If the row has seven fields and the number of fields in
+                        fieldnames length is 3, then every row will have only 3 values, the remaining four
+                        will be lumped into a list, and assigned key `None`. If the rows have fewer fields
+                        than fieldnames, then the missing values are filled in with `None`.
+            na_values:  This provides an option for treating null values. If `ignore`, null values are
+                        returned as empty strings (""). If `None`, then for each row, the key,value pair
+                        with the null values  will be truncated from the row. The only values treated as
+                        null are empty strings("") and "NA".
+            dtype: Data type for each value in a key:value pair. If `None`, then values will be read in as strings.
+                   Available dtypes are (int, float, str). If a single dtype is passed, then all values will be
+                   converted to the data type and raise an error, if not applicable. For different data types for different
+                   key, value pairs, a dictionary of {key: data_type} passed to dtype argument will change the value for
+                   every key with the data type, and raise an error if not applicable.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        clump = Clumper.read_csv("tests/data/monopoly.csv")
+        assert len(clump) == 22
+
+        clump = Clumper.read_csv("tests/data/monopoly.csv", n = 10)
+        assert len(clump) == 10
+
+        clump = Clumper.read_csv("https://calmcode.io/datasets/monopoly.csv")
+        assert len(clump) == 22
+
+        # If the fieldnames argument is not None, then the first row becomes part of the data.
+        fieldnames = ['date', 'currency', 'country', 'price', 'dollar_rate', 'cost']
+        clump = Clumper.read_csv("https://calmcode.io/datasets/bigmac.csv", fieldnames=fieldnames)
+
+        first_row = ['date', 'currency_code','name','local_price', 'dollar_ex', 'dollar_price']
+        assert clump.head(1).equals([dict(zip(fieldnames, first_row))])
+        ```
+        """
+        if n is not None:
+            if n <= 0:
+                raise ValueError("Number of lines to read must be > 0.")
+
+        # conveniently excludes pathlib files here and removes
+        # the need to write code to check pathlib files in other places.
+        # Quick conversion in case of Path object
+        path = str(path)
+        if path.startswith(("https:", "http:")):
+            with urllib.request.urlopen(path) as resp:
+                if fieldnames is None:
+                    fieldnames = resp.readline().decode().strip().split(",")
+                # This section allows us to chunk the rows, if nrows is supplied.
+                body = it.islice(resp, 0, n)
+                body = (word.decode().strip().split(",") for word in body)
+                body = it.product([fieldnames], body)
+                result = [dict(zip(key, values)) for key, values in body]
+        else:
+            with open(path, newline="") as csvfile:
+                reader = csv.DictReader(
+                    csvfile, delimiter=delimiter, fieldnames=fieldnames
+                )
+                # python version less than 3.8 returns an OrderedDict
+                result = [dict(entry) for entry in it.islice(reader, 0, n)]
+
+        # Null values, same as missing keys.
+        # If there are null values/missing keys, they will be truncated from the dictionary.
+        # Python's csv module treats null values as empty strings when writing to a csv -
+        # https://docs.python.org/3.8/library/csv.html#csv.DictWriter.
+        # The user can choose to explicitly show missing keys/null values in the dictionary,
+        # by assigning `ignore` to the na_values argument. At the moment, the default for
+        # null values are empty string ("") and "NA".
+
+        if na_values == "ignore":
+            result = result
+        else:
+            na_values = ["", "NA"]
+            result = [
+                {key: value for key, value in entry.items() if value not in na_values}
+                for entry in result
+            ]
+
+        # The csv module reads every row as a string, there are no data type assumptions.
+        # This function attempts to solve this. The user can pass a string of either
+        # ('int', 'str', 'float') or if the user knows the keys/fieldnames, can pass a
+        # dictionary mapping the key to the data type.
+        # Technically 'str' data type is not needed, since data is read in as strings anyway.
+
+        if not (isinstance(dtype, (dict, str)) or dtype is None):
+            raise TypeError(
+                """dtype should be a dictionary pair of key and data type, or a single string data type"""
+            )
+
+        dtype_mapping = {"int": int, "float": float, "str": str}
+        if dtype:
+            if isinstance(dtype, str) and dtype in ("int", "float", "str"):
+                result = [
+                    {key: dtype_mapping[dtype](value) for key, value in entry.items()}
+                    for entry in result
+                ]
+            else:
+                result = [
+                    {
+                        key: dtype_mapping[dtype[key]](value) if key in dtype else value
+                        for key, value in entry.items()
+                    }
+                    for entry in result
+                ]
+
+        return Clumper(result)
+
+    @classmethod
+    @multifile()
     def read_json(cls, path, n=None, listify=True):
         """
         Reads in a json file. Can also read files from url.
@@ -58,7 +183,7 @@ class Clumper:
         ![](../img/read_json.png)
 
         Arguments:
-            path: filename or url. Filenames can include a wildcard `*`.
+            path: filename, url, `pathlib.Path` or list of `pathlib.Path`. Filenames can include a wildcard `*`.
             n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
 
         Usage:
@@ -101,7 +226,7 @@ class Clumper:
         ![](../img/read_jsonl.png)
 
         Arguments:
-            path: filename or url. Filenames can include a wildcard `*`.
+            path: filename, url, `pathlib.Path` or list of `pathlib.Path`. Filenames can include a wildcard `*`.
             n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
 
         Usage:
@@ -154,7 +279,7 @@ class Clumper:
         ![](../img/read_yaml.png)
 
         Arguments:
-            path: filename or url. Filenames can include a wildcard `*`.
+            path: filename, url, `pathlib.Path` or list of `pathlib.Path`. Filenames can include a wildcard `*`.
             n: number of lines to read in, if `None` will read all
 
         Important:
@@ -281,131 +406,6 @@ class Clumper:
                 f.write(
                     json.dumps(json_dict, sort_keys=sort_keys, indent=indent) + "\n"
                 )
-
-    @classmethod
-    @multifile()
-    def read_csv(
-        cls, path, delimiter=",", na_values=None, dtype=None, fieldnames=None, n=None
-    ):
-        """
-        Reads in a csv file. Can also read files from url.
-
-        ![](../img/read_csv.png)
-
-        Arguments:
-            path: Filename or url.
-            delimiter: Delimiter used in the csv file. Must be a single character and `,` is the default.
-            n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
-            fieldnames: Allows you to set the fieldnames if the header is missing. By default, the first
-                        row of the csv will provide the Clumper keys if fieldnames is `None`. If fieldnames
-                        is provided, then the first row becomes part of the data. You should ensure that
-                        the correct number of fieldnames is supplied, as an incorrect number can lead
-                        to an irregular outcome. If the row has seven fields and the number of fields in
-                        fieldnames length is 3, then every row will have only 3 values, the remaining four
-                        will be lumped into a list, and assigned key `None`. If the rows have fewer fields
-                        than fieldnames, then the missing values are filled in with `None`.
-            na_values:  This provides an option for treating null values. If `ignore`, null values are
-                        returned as empty strings (""). If `None`, then for each row, the key,value pair
-                        with the null values  will be truncated from the row. The only values treated as
-                        null are empty strings("") and "NA".
-            dtype: Data type for each value in a key:value pair. If `None`, then values will be read in as strings.
-                   Available dtypes are (int, float, str). If a single dtype is passed, then all values will be
-                   converted to the data type and raise an error, if not applicable. For different data types for different
-                   key, value pairs, a dictionary of {key: data_type} passed to dtype argument will change the value for
-                   every key with the data type, and raise an error if not applicable.
-
-        Usage:
-
-        ```python
-        from clumper import Clumper
-
-        clump = Clumper.read_csv("tests/data/monopoly.csv")
-        assert len(clump) == 22
-
-        clump = Clumper.read_csv("tests/data/monopoly.csv", n = 10)
-        assert len(clump) == 10
-
-        clump = Clumper.read_csv("https://calmcode.io/datasets/monopoly.csv")
-        assert len(clump) == 22
-
-        # If the fieldnames argument is not None, then the first row becomes part of the data.
-        fieldnames = ['date', 'currency', 'country', 'price', 'dollar_rate', 'cost']
-        clump = Clumper.read_csv("https://calmcode.io/datasets/bigmac.csv", fieldnames=fieldnames)
-
-        first_row = ['date', 'currency_code','name','local_price', 'dollar_ex', 'dollar_price']
-        assert clump.head(1).equals([dict(zip(fieldnames, first_row))])
-        ```
-        """
-        if n is not None:
-            if n <= 0:
-                raise ValueError("Number of lines to read must be > 0.")
-
-        # conveniently excludes pathlib files here and removes
-        # the need to write code to check pathlib files in other places.
-        # Quick conversion in case of Path object
-        path = str(path)
-        if path.startswith(("https:", "http:")):
-            with urllib.request.urlopen(path) as resp:
-                if fieldnames is None:
-                    fieldnames = resp.readline().decode().strip().split(",")
-                # This section allows us to chunk the rows, if nrows is supplied.
-                body = it.islice(resp, 0, n)
-                body = (word.decode().strip().split(",") for word in body)
-                body = it.product([fieldnames], body)
-                result = [dict(zip(key, values)) for key, values in body]
-        else:
-            with open(path, newline="") as csvfile:
-                reader = csv.DictReader(
-                    csvfile, delimiter=delimiter, fieldnames=fieldnames
-                )
-                # python version less than 3.8 returns an OrderedDict
-                result = [dict(entry) for entry in it.islice(reader, 0, n)]
-
-        # Null values, same as missing keys.
-        # If there are null values/missing keys, they will be truncated from the dictionary.
-        # Python's csv module treats null values as empty strings when writing to a csv -
-        # https://docs.python.org/3.8/library/csv.html#csv.DictWriter.
-        # The user can choose to explicitly show missing keys/null values in the dictionary,
-        # by assigning `ignore` to the na_values argument. At the moment, the default for
-        # null values are empty string ("") and "NA".
-
-        if na_values == "ignore":
-            result = result
-        else:
-            na_values = ["", "NA"]
-            result = [
-                {key: value for key, value in entry.items() if value not in na_values}
-                for entry in result
-            ]
-
-        # The csv module reads every row as a string, there are no data type assumptions.
-        # This function attempts to solve this. The user can pass a string of either
-        # ('int', 'str', 'float') or if the user knows the keys/fieldnames, can pass a
-        # dictionary mapping the key to the data type.
-        # Technically 'str' data type is not needed, since data is read in as strings anyway.
-
-        if not (isinstance(dtype, (dict, str)) or dtype is None):
-            raise TypeError(
-                """dtype should be a dictionary pair of key and data type, or a single string data type"""
-            )
-
-        dtype_mapping = {"int": int, "float": float, "str": str}
-        if dtype:
-            if isinstance(dtype, str) and dtype in ("int", "float", "str"):
-                result = [
-                    {key: dtype_mapping[dtype](value) for key, value in entry.items()}
-                    for entry in result
-                ]
-            else:
-                result = [
-                    {
-                        key: dtype_mapping[dtype[key]](value) if key in dtype else value
-                        for key, value in entry.items()
-                    }
-                    for entry in result
-                ]
-
-        return Clumper(result)
 
     def write_csv(self, path, mode="w"):
         """

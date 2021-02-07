@@ -1,3 +1,4 @@
+import pathlib
 import pytest
 from clumper import Clumper
 
@@ -6,6 +7,8 @@ from clumper import Clumper
 def test_local_read_jsonl_expected(lines, expected):
     """The number of lines read is not equal to expected number of lines"""
     clump = Clumper.read_jsonl("tests/data/cards.jsonl", lines)
+    assert len(clump) == expected
+    clump = Clumper.read_jsonl(pathlib.Path("tests/data/cards.jsonl"), lines)
     assert len(clump) == expected
 
 

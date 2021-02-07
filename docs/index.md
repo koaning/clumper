@@ -6,12 +6,6 @@
 
 Part of a video series on [calmcode.io](https://calmcode.io).
 
-## Early Notice
-
-This package is quite new and not a whole lot of users have
-been able to find *all the edge cases* yet. Each verb in our
-library has at least one test, but there may be edges.
-
 ## Features
 
 - This library has no dependencies besides a modern version of python.
