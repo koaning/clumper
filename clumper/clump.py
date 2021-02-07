@@ -80,6 +80,9 @@ class Clumper:
             if n <= 0:
                 raise ValueError("Number of lines to read must be > 0.")
 
+        # Quick conversion in case of Path object
+        path = str(path)
+
         if path.startswith("https:") or path.startswith("http:"):
             with urllib.request.urlopen(path) as resp:
                 data = json.loads(resp.read())
@@ -120,6 +123,9 @@ class Clumper:
             if n <= 0:
                 raise ValueError("Number of lines to read must be > 0.")
 
+        # Quick conversion in case of Path object
+        path = str(path)
+
         # Case 1 : Open cloud file in stream
         if path.startswith("https:") or path.startswith("http:"):
             f = urllib.request.urlopen(path)
@@ -141,7 +147,7 @@ class Clumper:
 
     @classmethod
     @multifile()
-    def read_yaml(cls, path: str, n=None, listify=True):
+    def read_yaml(cls, path, n=None, listify=True):
         """
         Reads in a yaml file.
 
@@ -174,6 +180,10 @@ class Clumper:
         assert len(clump) == 6
         ```
         """
+
+        # Quick conversion in case of Path object
+        path = str(path)
+
         # Case 1 : Open cloud file in stream
         if path.startswith(("https:", "http:")):
             f = urllib.request.urlopen(path)
@@ -332,7 +342,9 @@ class Clumper:
 
         # conveniently excludes pathlib files here and removes
         # the need to write code to check pathlib files in other places.
-        if isinstance(path, str) and path.startswith(("https:", "http:")):
+        # Quick conversion in case of Path object
+        path = str(path)
+        if path.startswith(("https:", "http:")):
             with urllib.request.urlopen(path) as resp:
                 if fieldnames is None:
                     fieldnames = resp.readline().decode().strip().split(",")

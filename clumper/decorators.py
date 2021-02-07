@@ -2,6 +2,7 @@ from functools import wraps, reduce
 from copy import deepcopy
 import inspect
 from glob import glob
+from pathlib import Path
 
 
 def return_value_if_empty(value=None):
@@ -85,16 +86,33 @@ def multifile(param_name="path"):
 
             # If * not in path then let the default function handle it.
             # We are only interested if the path has * in it
+            if isinstance(path, str):
+                if "*" not in path:
+                    return f(*args, **kwargs)
+                else:
+                    # Else, create a glob out of it
+                    path_list = glob(path)
 
-            if "*" not in str(path):
+            # Let default function handle single Path objects
+            elif isinstance(path, Path):
                 return f(*args, **kwargs)
 
-            # Else, create a glob out of it
-            path_list = glob(path)
+            # Handle a list of Path objects
+            elif isinstance(path, (list)):
+                path_list = []
+                for p in path:
+                    if isinstance(p, Path):
+                        path_list.append(p)
+                    else:
+                        raise ValueError(f"Invalid path: {p}")
+            else:
+                raise ValueError(
+                    f"{path} is not a valid string, Path, or list of Paths"
+                )
 
             # No files found given the pattern so raise error
             if len(path_list) == 0:
-                raise ValueError(f"No files files given pattern : {path}")
+                raise ValueError(f"No files found given pattern : {path}")
 
             # Store the parsed clumpers here
             collected_clumpers = []
