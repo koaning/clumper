@@ -2,7 +2,7 @@
 
 # **Clumper**
 
-**A small python library that can clump lists of data together.**
+**A small python library that can clump lists of nested data together.**
 
 Part of a video series on [calmcode.io](https://calmcode.io).
 
