@@ -13,11 +13,11 @@ install:
 	pip install rich
 	python -m pip install -e .
 
-install-dev:
+install-dev: install
 	python -m pip install -e ".[dev]"
 	pre-commit install
 
-install-test:
+install-test: install
 	python -m pip install -e ".[test]"
 	python -m pip install -e ".[all]"
 
