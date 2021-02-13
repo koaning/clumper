@@ -266,3 +266,20 @@ there might give extra flexibility.
 When you're done with your data-wrangling you may want
 to get a basic python list back. That's what `.collect()`
 will do for you.
+
+## Remove Duplicates
+
+Removing duplicates is tricky via `.keep()` so instead we've
+created a method for this usecase.
+
+![](../img/drop_duplicates.png)
+
+```python
+from clumper import Clumper
+
+data = [{"a": 1}, {"a": 2}, {"a": 2}]
+clump = Clumper(data).drop_duplicates()
+expected = [{"a": 1}, {"a": 2}]
+
+assert clump.equals(expected)
+```
