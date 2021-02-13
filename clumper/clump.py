@@ -941,6 +941,8 @@ class Clumper:
         """
         Unpacks a nested list of dictionaries.
 
+        ![](../img/unpack.png)
+
         Arguments:
             name: the name of the column to unpack
 
@@ -1346,9 +1348,18 @@ class Clumper:
 
     def show(self, name=None, n=1):
         """
-        Prints the first `n` items in the clumper as an example.
+        Prints the first `n` items in the clumper as an example. Very useful for debugging!
 
         This method requires [rich](https://github.com/willmcgugan/rich) to be installed manually.
+
+        ```python
+        from clumper import Clumper
+
+        data = [{"n": 123, "data": [1, 2, 3], "maintainer": "Vincent"}]
+        Clumper(data).show("Before", n=1).explode("data").show("After", n=3)
+        ```
+
+        ![](../img/show.png)
         """
         from rich import print as rich_print
         from rich.panel import Panel

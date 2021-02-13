@@ -51,8 +51,31 @@ expected = [
 assert clumper.equals(expected)
 ```
 
-There are a few extra verbs and use-cases of verbs that
-are worth highlighting.
+## Unpack
+
+The `unpack` verb is very similar to `explode` but here we expect a list of
+dictionaries as opposed to a list of values.
+
+![](../img/unpack.png)
+
+```python
+from clumper import Clumper
+
+list_dicts = {
+    'a': 1,
+    'rows': [{'b': 2, 'c': 3}, {'b': 3}, {'b': 4}]
+}
+
+result = Clumper(list_dicts).unpack('rows').collect()
+
+expected = [
+    {'a': 1, 'b': 2, 'c': 3},
+    {'a': 1, 'b': 3},
+    {'a': 1, 'b': 4}
+]
+
+assert result == expected
+```
 
 ## Single Dictionaries
 
@@ -129,43 +152,16 @@ expected = [
 assert Clumper(data, listify=False).flatten_keys().collect() == expected
 ```
 
-## Unpack
+## Show
 
-The `unpack` verb is very similar to `explode` but here we expect a list of
-dictionaries as opposed to a list of values.
-
-```python
-from clumper import Clumper
-
-list_dicts = {
-    'a': 1,
-    'rows': [{'b': 2, 'c': 3}, {'b': 3}, {'b': 4}]
-}
-
-result = Clumper(list_dicts).unpack('rows').collect()
-
-expected = [
-    {'a': 1, 'b': 2, 'c': 3},
-    {'a': 1, 'b': 3},
-    {'a': 1, 'b': 4}
-]
-
-assert result == expected
-```
-
-## Remove Duplicates
-
-Removing duplicates is tricky via `.keep()` so instead we've
-created a method for this usecase.
-
-![](../img/drop_duplicates.png)
+Getting the verbs right can be trick. So we've also added a `show` verb which
+can be useful while debugging. It requires `rich` to be manually installed beforehand.
 
 ```python
 from clumper import Clumper
 
-data = [{"a": 1}, {"a": 2}, {"a": 2}]
-clump = Clumper(data).drop_duplicates()
-expected = [{"a": 1}, {"a": 2}]
-
-assert clump.equals(expected)
+data = [{"n": 123, "data": [1, 2, 3], "maintainer": "Vincent"}]
+Clumper(data).show("Before", n=1).explode("data").show("After", n=3)
 ```
+
+![](../img/show.png)
