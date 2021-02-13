@@ -16,6 +16,7 @@ docs_packages = [
     "mkdocs>=1.1",
     "mkdocs-material>=4.6.3",
     "mkdocstrings>=0.8.0",
+    "mktestdocs>=0.1.0",
 ]
 
 dev_packages = test_packages + util_packages + docs_packages + yaml_packages
@@ -24,7 +25,7 @@ all_deps = yaml_packages
 
 setup(
     name="clumper",
-    version="0.2.8",
+    version="0.2.9",
     packages=find_packages(include=["clumper", "clumper.*"]),
     extras_require={
         "dev": dev_packages,
