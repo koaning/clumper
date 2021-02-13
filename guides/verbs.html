@@ -566,6 +566,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#remove-duplicates" class="md-nav__link">
+    Remove Duplicates
+  </a>
+  
+</li>
+      
       
       
       
@@ -607,8 +614,8 @@
 
 
   <li class="md-nav__item">
-    <a href="understanding-reshaping.html" title="Reshaping Verbs" class="md-nav__link">
-      Reshaping Verbs
+    <a href="understanding-reshaping.html" title="Nested Data" class="md-nav__link">
+      Nested Data
     </a>
   </li>
 
@@ -619,20 +626,8 @@
 
 
   <li class="md-nav__item">
-    <a href="useful-verbs.html" title="More Verbs" class="md-nav__link">
-      More Verbs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="summary-methods.html" title="Useful Methods" class="md-nav__link">
-      Useful Methods
+    <a href="summary-methods.html" title="Summary Methods" class="md-nav__link">
+      Summary Methods
     </a>
   </li>
 
@@ -949,6 +944,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#remove-duplicates" class="md-nav__link">
+    Remove Duplicates
+  </a>
+  
+</li>
+      
       
       
       
@@ -1184,6 +1186,18 @@ there might give extra flexibility.</p>
 <p>When you're done with your data-wrangling you may want
 to get a basic python list back. That's what <code>.collect()</code>
 will do for you.</p>
+<h2 id="remove-duplicates">Remove Duplicates<a class="headerlink" href="#remove-duplicates" title="Permanent link">&para;</a></h2>
+<p>Removing duplicates is tricky via <code>.keep()</code> so instead we've
+created a method for this usecase.</p>
+<p><img alt="" src="../img/drop_duplicates.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}]</span>
+<span class="n">clump</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}]</span>
+
+<span class="k">assert</span> <span class="n">clump</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+</code></pre></div>
                 
                   
                 

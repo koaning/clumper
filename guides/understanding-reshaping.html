@@ -42,7 +42,7 @@
     
     
       
-        <title>Reshaping Verbs - Clumper Docs</title>
+        <title>Nested Data - Clumper Docs</title>
       
     
     
@@ -119,7 +119,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Reshaping Verbs
+                Nested Data
               
             </span>
           
@@ -406,11 +406,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        Reshaping Verbs
+        Nested Data
       </label>
     
-    <a href="understanding-reshaping.html" title="Reshaping Verbs" class="md-nav__link md-nav__link--active">
-      Reshaping Verbs
+    <a href="understanding-reshaping.html" title="Nested Data" class="md-nav__link md-nav__link--active">
+      Nested Data
     </a>
     
       
@@ -424,6 +424,54 @@
         <li class="md-nav__item">
   <a href="#explode" class="md-nav__link">
     Explode
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unpack" class="md-nav__link">
+    Unpack
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#single-dictionaries" class="md-nav__link">
+    Single Dictionaries
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#listify-true" class="md-nav__link">
+    Listify = True
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listify-false" class="md-nav__link">
+    Listify = False
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flatten-keys" class="md-nav__link">
+    Flatten Keys
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show" class="md-nav__link">
+    Show
   </a>
   
 </li>
@@ -445,20 +493,8 @@
 
 
   <li class="md-nav__item">
-    <a href="useful-verbs.html" title="More Verbs" class="md-nav__link">
-      More Verbs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="summary-methods.html" title="Useful Methods" class="md-nav__link">
-      Useful Methods
+    <a href="summary-methods.html" title="Summary Methods" class="md-nav__link">
+      Summary Methods
     </a>
   </li>
 
@@ -601,6 +637,54 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#unpack" class="md-nav__link">
+    Unpack
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#single-dictionaries" class="md-nav__link">
+    Single Dictionaries
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#listify-true" class="md-nav__link">
+    Listify = True
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#listify-false" class="md-nav__link">
+    Listify = False
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flatten-keys" class="md-nav__link">
+    Flatten Keys
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#show" class="md-nav__link">
+    Show
+  </a>
+  
+</li>
+      
       
       
       
@@ -620,7 +704,7 @@
                   <a href="https://github.com/koaning/clumper/edit/master/docs/guides/understanding-reshaping.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
-                  <h1>Reshaping Verbs</h1>
+                  <h1>Nested Data</h1>
                 
                 <p>Because sequences of nested data really come in all sorts
 of shapes and sizes this library offers verbs to help you
@@ -667,6 +751,104 @@ this field. You can also pass multiple keys in a single command.</p>
 <span class="p">]</span>
 <span class="k">assert</span> <span class="n">clumper</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
 </code></pre></div>
+
+<h2 id="unpack">Unpack<a class="headerlink" href="#unpack" title="Permanent link">&para;</a></h2>
+<p>The <code>unpack</code> verb is very similar to <code>explode</code> but here we expect a list of
+dictionaries as opposed to a list of values.</p>
+<p><img alt="" src="../img/unpack.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">list_dicts</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">&#39;rows&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}]</span>
+<span class="p">}</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">list_dicts</span><span class="p">)</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s1">&#39;rows&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+
+<span class="n">expected</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">expected</span>
+</code></pre></div>
+
+<h2 id="single-dictionaries">Single Dictionaries<a class="headerlink" href="#single-dictionaries" title="Permanent link">&para;</a></h2>
+<p>Sometimes you're dealing with json data that isn't a list of dictionaries. You
+should be aware that you may want to read in the data differently. You can keep
+the data as a dictionary or automatically wrap it as a list by tweaking the <code>listify</code>
+parameter. This is available on every <code>.read_&lt;format&gt;</code>-method.</p>
+<h3 id="listify-true">Listify = True<a class="headerlink" href="#listify-true" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">example1</span> <span class="o">=</span> <span class="n">Clumper</span><span class="o">.</span><span class="n">read_yaml</span><span class="p">(</span><span class="s2">&quot;tests/data/demo-nested.yml&quot;</span><span class="p">)</span>
+<span class="n">expected1</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s1">&#39;nested1&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;c&#39;</span><span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s1">&#39;nested2&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;c&#39;</span><span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+<span class="k">assert</span> <span class="n">example1</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">expected1</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="listify-false">Listify = False<a class="headerlink" href="#listify-false" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+<span class="n">example2</span> <span class="o">=</span> <span class="n">Clumper</span><span class="o">.</span><span class="n">read_yaml</span><span class="p">(</span><span class="s2">&quot;tests/data/demo-nested.yml&quot;</span><span class="p">,</span> <span class="n">listify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">expected2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;nested1&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;c&#39;</span><span class="p">}</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;nested2&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;a&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;b&#39;</span><span class="p">},</span>
+        <span class="p">{</span><span class="s1">&#39;item&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="s1">&#39;c&#39;</span><span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="k">assert</span> <span class="n">example2</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">expected2</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="flatten-keys">Flatten Keys<a class="headerlink" href="#flatten-keys" title="Permanent link">&para;</a></h2>
+<p>In the "list-like dictionary" scenarios you might want to use <code>.flatten_keys</code>.
+This method flattens the keys in the data.</p>
+<p><img alt="" src="../img/flatten_keys.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;feature_1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;propery_1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;property_2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+  <span class="s1">&#39;feature_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;propery_1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;property_2&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+  <span class="s1">&#39;feature_3&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;propery_1&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;property_2&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">expected</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;propery_1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;property_2&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;feature_1&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;propery_1&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;property_2&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;feature_2&#39;</span><span class="p">},</span>
+    <span class="p">{</span><span class="s1">&#39;propery_1&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;property_2&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;feature_3&#39;</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="k">assert</span> <span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">listify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">flatten_keys</span><span class="p">()</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span> <span class="o">==</span> <span class="n">expected</span>
+</code></pre></div>
+
+<h2 id="show">Show<a class="headerlink" href="#show" title="Permanent link">&para;</a></h2>
+<p>Getting the verbs right can be trick. So we've also added a <code>show</code> verb which
+can be useful while debugging. It requires <code>rich</code> to be manually installed beforehand.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">clumper</span> <span class="kn">import</span> <span class="n">Clumper</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;maintainer&quot;</span><span class="p">:</span> <span class="s2">&quot;Vincent&quot;</span><span class="p">}]</span>
+<span class="n">Clumper</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="s2">&quot;Before&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="s2">&quot;After&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+
+<p><img alt="" src="../img/show.png" /></p>
                 
                   
                 
@@ -703,13 +885,13 @@ this field. You can also pass multiple keys in a single command.</p>
           </a>
         
         
-          <a href="useful-verbs.html" title="More Verbs" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="summary-methods.html" title="Summary Methods" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                More Verbs
+                Summary Methods
               </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink">
