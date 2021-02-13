@@ -10,6 +10,7 @@ test:
 check: black flake test
 
 install:
+	pip install rich
 	python -m pip install -e .
 
 install-dev:
