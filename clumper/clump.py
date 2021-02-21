@@ -1392,7 +1392,7 @@ class Clumper:
         """
         Prints the first `n` items in the clumper as an example. Very useful for debugging!
 
-        This method requires [rich](https://github.com/willmcgugan/rich) to be installed manually.
+        This method requires [rich](https://github.com/willmcgugan/rich) if you want the pretty output.
 
         ```python
         from clumper import Clumper
@@ -1403,15 +1403,21 @@ class Clumper:
 
         ![](../img/show.png)
         """
-        from rich import print as rich_print
-        from rich.panel import Panel
-        from rich.pretty import Pretty
+        try:
+            from rich import print as rich_print
+            from rich.panel import Panel
+            from rich.pretty import Pretty
 
-        item = self.head(n).collect()
-        title = f"Clumper len={len(self)}"
-        if len(self.groups) > 0:
-            title = f"Clumper groups={self.groups} len={len(self)}"
-        rich_print(Panel(Pretty(item), title=f"{name}: {title}"))
+            item = self.head(n).collect()
+            title = f"Clumper len={len(self)}"
+            if len(self.groups) > 0:
+                title = f"Clumper groups={self.groups} len={len(self)}"
+            rich_print(Panel(Pretty(item), title=f"{name}: {title}"))
+        except ImportError:
+            import pprint
+
+            pp = pprint.PrettyPrinter(indent=4)
+            pp.pprint(self.head(n).collect())
         return self
 
     def summarise_col(self, func, key):

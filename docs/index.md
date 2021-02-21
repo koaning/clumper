@@ -8,10 +8,11 @@ Part of a video series on [calmcode.io](https://calmcode.io).
 
 ## Features
 
-- This library has no dependencies besides a modern version of python.
+- This library only has optional dependencies. Just a modern version of python gives you 99% of the features.
 - The library offers a pattern of verbs that are very expressive.
 - You can write code from top to bottom, left to right.
-- You can read in many `json`/`yaml`/`csv` files by using a wildcard `*`.
+- You can read in many `json`/`yaml`/`csv` files at once by using a wildcard `*`.
+- You can directly read data from a web-endpoint.
 - MIT License
 
 ## Installation
