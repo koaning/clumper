@@ -21,6 +21,11 @@ class Clumper:
     This object adds methods to a list of dictionaries that make
     it nicer to explore.
 
+    Arguments:
+        blob: the list of data to turn into a Clumper
+        groups: specify any groups you'd like to attach to the Clumper
+        listify: if the input is a dictionary, turn it into a list with one dictionary inside beforehand.
+
     Usage:
 
     ```python
@@ -52,7 +57,14 @@ class Clumper:
     @classmethod
     @multifile()
     def read_csv(
-        cls, path, delimiter=",", na_values=None, dtype=None, fieldnames=None, n=None
+        cls,
+        path,
+        delimiter=",",
+        na_values=None,
+        dtype=None,
+        fieldnames=None,
+        n=None,
+        add_path=False,
     ):
         """
         Reads in a csv file. Can also read files from url.
@@ -71,10 +83,12 @@ class Clumper:
                         fieldnames length is 3, then every row will have only 3 values, the remaining four
                         will be lumped into a list, and assigned key `None`. If the rows have fewer fields
                         than fieldnames, then the missing values are filled in with `None`.
-            na_values:  This provides an option for treating null values. If `ignore`, null values are
-                        returned as empty strings (""). If `None`, then for each row, the key,value pair
-                        with the null values  will be truncated from the row. The only values treated as
-                        null are empty strings("") and "NA".
+            na_values: This provides an option for treating null values. If `ignore`, null values are
+                       returned as empty strings (""). If `None`, then for each row, the key,value pair
+                       with the null values  will be truncated from the row. The only values treated as
+                       null are empty strings("") and "NA".
+            add_path: Adds the name of the read path to each item in the Clumper. Is useful when using wildcards to
+                      read in multiple files at once.
             dtype: Data type for each value in a key:value pair. If `None`, then values will be read in as strings.
                    Available dtypes are (int, float, str). If a single dtype is passed, then all values will be
                    converted to the data type and raise an error, if not applicable. For different data types for different
@@ -172,11 +186,13 @@ class Clumper:
                     for entry in result
                 ]
 
+        if add_path:
+            return Clumper(result).mutate(read_path=lambda d: path)
         return Clumper(result)
 
     @classmethod
     @multifile()
-    def read_json(cls, path, n=None, listify=True):
+    def read_json(cls, path, n=None, listify=True, add_path=False):
         """
         Reads in a json file. Can also read files from url.
 
@@ -185,6 +201,10 @@ class Clumper:
         Arguments:
             path: filename, url, `pathlib.Path` or list of `pathlib.Path`. Filenames can include a wildcard `*`.
             n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
+            listify: if the input is a single json dictionary, turn it into a list with that dictionary inside of it
+                     before passing it along to the Clumper.
+            add_path: Adds the name of the read path to each item in the Clumper. Is useful when using wildcards to
+                      read in multiple files at once.
 
         Usage:
 
@@ -213,13 +233,19 @@ class Clumper:
                 data = json.loads(resp.read())
         else:
             data = json.loads(pathlib.Path(path).read_text())
+        if add_path:
+            if isinstance(data, dict):
+                data["read_path"] = path
+            if isinstance(data, list):
+                for d in data:
+                    d["read_path"] = path
         if n:
             return Clumper(list(it.islice(data, 0, n)))
         return Clumper(data, listify=listify)
 
     @classmethod
     @multifile()
-    def read_jsonl(cls, path, n=None, listify=True):
+    def read_jsonl(cls, path, n=None, listify=True, add_path=False):
         """
         Reads in a jsonl file. Can also read files from url.
 
@@ -228,6 +254,10 @@ class Clumper:
         Arguments:
             path: filename, url, `pathlib.Path` or list of `pathlib.Path`. Filenames can include a wildcard `*`.
             n: Number of rows to read in. Useful when reading large files. If `None`, all rows are read.
+            listify: if the input is a single json dictionary, turn it into a list with that dictionary inside of it
+                     before passing it along to the Clumper.
+            add_path: Adds the name of the filepath to each item in the Clumper. Is useful when using wildcards to
+                      read in multiple files at once.
 
         Usage:
 
@@ -267,12 +297,15 @@ class Clumper:
                     break
                 json_object = json.loads(json_string)
                 data_array.append(json_object)
+        if add_path:
+            for d in data_array:
+                d["read_path"] = path
         # Return it
         return Clumper(data_array, listify=listify)
 
     @classmethod
     @multifile()
-    def read_yaml(cls, path, n=None, listify=True):
+    def read_yaml(cls, path, n=None, listify=True, add_path=False):
         """
         Reads in a yaml file.
 
@@ -281,6 +314,10 @@ class Clumper:
         Arguments:
             path: filename, url, `pathlib.Path` or list of `pathlib.Path`. Filenames can include a wildcard `*`.
             n: number of lines to read in, if `None` will read all
+            listify: if the input is a single json dictionary, turn it into a list with that dictionary inside of it
+                     before passing it along to the Clumper.
+            add_path: Adds the name of the filepath to each item in the Clumper. Is useful when using wildcards to
+                      read in multiple files at once.
 
         Important:
             This method requires the `PyYAML` dependency which is not installed automatically.
@@ -322,7 +359,12 @@ class Clumper:
 
             data = yaml.load(f.read(), Loader=yaml.FullLoader)
             if isinstance(data, dict):
+                if add_path:
+                    data["read_path"] = path
                 return Clumper(data, listify=listify)
+            if add_path:
+                for d in data:
+                    d["read_path"] = path
             if n:
                 return Clumper(list(it.islice(data, 0, n)), listify=listify)
             return Clumper(data, listify=listify)
@@ -1350,7 +1392,7 @@ class Clumper:
         """
         Prints the first `n` items in the clumper as an example. Very useful for debugging!
 
-        This method requires [rich](https://github.com/willmcgugan/rich) to be installed manually.
+        This method requires [rich](https://github.com/willmcgugan/rich) if you want the pretty output.
 
         ```python
         from clumper import Clumper
@@ -1361,15 +1403,21 @@ class Clumper:
 
         ![](../img/show.png)
         """
-        from rich import print as rich_print
-        from rich.panel import Panel
-        from rich.pretty import Pretty
+        try:
+            from rich import print as rich_print
+            from rich.panel import Panel
+            from rich.pretty import Pretty
 
-        item = self.head(n).collect()
-        title = f"Clumper len={len(self)}"
-        if len(self.groups) > 0:
-            title = f"Clumper groups={self.groups} len={len(self)}"
-        rich_print(Panel(Pretty(item), title=f"{name}: {title}"))
+            item = self.head(n).collect()
+            title = f"Clumper len={len(self)}"
+            if len(self.groups) > 0:
+                title = f"Clumper groups={self.groups} len={len(self)}"
+            rich_print(Panel(Pretty(item), title=f"{name}: {title}"))
+        except ImportError:
+            import pprint
+
+            pp = pprint.PrettyPrinter(indent=4)
+            pp.pprint(self.head(n).collect())
         return self
 
     def summarise_col(self, func, key):

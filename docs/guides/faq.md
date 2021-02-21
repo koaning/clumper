@@ -7,13 +7,14 @@ This package might solve some problems for you if:
 - You're dealing with nested data.
 - You're dealing with data that's not super big.
 - You enjoy using a functional-style of exploring data.
+- You're on a lightweight machine (like a Raspberry Pi) and don't want dependencies that need to compile first.
 
 #### When should I not use `Clumper`?
 
 This package might not be the best choice if:
 
 - You're dealing with very large datasets.
-- You're dealing with data thats like a table. For unnested tables, pandas is probably better. 
+- You're dealing with data thats like a table. For unnested tables, pandas is probably better.
 
 ### Library Assumptions
 

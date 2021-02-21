@@ -24,7 +24,7 @@ all_deps = yaml_packages
 
 setup(
     name="clumper",
-    version="0.2.9",
+    version="0.2.10",
     packages=find_packages(include=["clumper", "clumper.*"]),
     extras_require={
         "dev": dev_packages,

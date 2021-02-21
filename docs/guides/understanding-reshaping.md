@@ -155,7 +155,8 @@ assert Clumper(data, listify=False).flatten_keys().collect() == expected
 ## Show
 
 Getting the verbs right can be trick. So we've also added a `show` verb which
-can be useful while debugging. It requires `rich` to be manually installed beforehand.
+can be useful while debugging. It requires `rich` to be manually installed beforehand
+if you want to see the pretty colors in the output.
 
 ```python
 from clumper import Clumper
