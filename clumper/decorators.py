@@ -48,7 +48,7 @@ def grouped(method):
 
 def dict_collection_only(method):
     """
-    Handles the behavior when a group is present on a clumper object.
+    Throws an error if the first element in the Clumper is not a dictionary.
     """
 
     @wraps(method)

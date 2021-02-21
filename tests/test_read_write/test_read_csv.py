@@ -111,6 +111,12 @@ def test_fieldnames_less_than():
     assert len(reader.keys()) == len(["A", "B", "C"]) + 1
 
 
+def test_add_filepath():
+    """Test number of keys returned when an incomplete number of fields is supplied."""
+    data = Clumper.read_csv("tests/data/monopoly.csv", add_path=True).collect()
+    assert all([d["read_path"] == "tests/data/monopoly.csv" for d in data])
+
+
 def test_fieldnames_greater_than():
     """Test value of last key in row is None when an excess number of fields is supplied."""
     fieldnames = list(ascii_uppercase)[:12]

@@ -42,3 +42,28 @@ def test_multi_file_single_dict():
     c = Clumper.read_yaml("tests/data/single-files/*.yml", listify=True)
     assert len(c) == 2
     assert len(c.explode("stuff")) == 6
+
+
+def test_multi_file_single_dict_filepath():
+    """We should be able to read in files that contain only a single dict and add a filepath."""
+    c = Clumper.read_yaml("tests/data/single-files/*.yml", listify=True, add_path=True)
+    paths = c.map(lambda d: d["read_path"]).collect()
+    assert set(paths) == {
+        "tests/data/single-files/single1.yml",
+        "tests/data/single-files/single2.yml",
+    }
+
+
+def test_multi_file_single_file_filepath():
+    """We should be able to read in non listified data with adding a path"""
+    c = Clumper.read_yaml(
+        "tests/data/single-files/single1.yml", listify=False, add_path=True
+    ).collect()
+    assert c["read_path"] == "tests/data/single-files/single1.yml"
+
+
+def test_multi_file_add_path_many():
+    """We check the path again, but now for data that is flat."""
+    c = Clumper.read_yaml("tests/data/demo-flat-*.yaml", add_path=True)
+    paths = c.map(lambda d: d["read_path"]).collect()
+    assert set(paths) == {"tests/data/demo-flat-1.yaml", "tests/data/demo-flat-2.yaml"}

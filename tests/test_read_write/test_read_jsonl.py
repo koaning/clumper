@@ -22,15 +22,26 @@ def test_cloud_read_jsonl_expected(lines, expected):
 def test_read_csv_negative_nrows():
     """Test that an error is raised if nrows is negative."""
     with pytest.raises(ValueError):
-        Clumper.read_jsonl("tests/cards.jsonl", n=-5)
+        Clumper.read_jsonl("tests/data/cards.jsonl", n=-5)
 
 
 def test_read_csv_negative_zero():
     """Test that an error is raised if nrows is zero."""
     with pytest.raises(ValueError):
-        Clumper.read_jsonl("tests/cards.jsonl", n=0)
+        Clumper.read_jsonl("tests/data/cards.jsonl", n=0)
 
 
 def test_non_existing_file():
+    """A path needs to exist for sure."""
     with pytest.raises(FileNotFoundError):
-        Clumper.read_jsonl("tests/cards.jsonl")
+        Clumper.read_jsonl("tests/data/dinosaurhead.jsonl")
+
+
+def test_paths_are_added():
+    """When add_path=True we need to add the path information."""
+    paths = (
+        Clumper.read_jsonl("tests/data/*.jsonl", add_path=True)
+        .map(lambda d: d["read_path"])
+        .collect()
+    )
+    assert set(paths) == {"tests/data/cards.jsonl", "tests/data/cards-more.jsonl"}
