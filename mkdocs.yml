@@ -21,6 +21,7 @@ nav:
       - Clumper: api/clumper.md
       - sequence: api/sequence.md
   - Examples:
+      - Pytest Reports: examples/pytest.md
       - Game of Thrones: examples/got.md
 plugins:
   - mkdocstrings:
