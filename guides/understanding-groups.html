@@ -237,7 +237,7 @@
   
     <li class="md-tabs__item">
       
-        <a href="../examples/got.html" class="md-tabs__link">
+        <a href="../examples/pytest.html" class="md-tabs__link">
           Examples
         </a>
       
@@ -423,6 +423,13 @@
           <li class="md-nav__item">
   <a href="#with-groups" class="md-nav__link">
     With Groups
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggergators" class="md-nav__link">
+    Aggergators
   </a>
   
 </li>
@@ -674,6 +681,18 @@
 
 
   <li class="md-nav__item">
+    <a href="../examples/pytest.html" title="Pytest Reports" class="md-nav__link">
+      Pytest Reports
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
     <a href="../examples/got.html" title="Game of Thrones" class="md-nav__link">
       Game of Thrones
     </a>
@@ -729,6 +748,13 @@
           <li class="md-nav__item">
   <a href="#with-groups" class="md-nav__link">
     With Groups
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aggergators" class="md-nav__link">
+    Aggergators
   </a>
   
 </li>
@@ -919,6 +945,26 @@ groups are made available in the new collection.</p>
   <span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">),</span>
        <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">))</span>
   <span class="o">.</span><span class="n">collect</span><span class="p">())</span>
+</code></pre></div>
+
+<h4 id="aggergators">Aggergators<a class="headerlink" href="#aggergators" title="Permanent link">&para;</a></h4>
+<p>You can use your own functions if you want to do aggregation but we offer a
+few standard ones. Here's the standard mapping.</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+  <span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">mean</span><span class="p">,</span>
+  <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">),</span>
+  <span class="s2">&quot;unique&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">d</span><span class="p">)),</span>
+  <span class="s2">&quot;n_unique&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">d</span><span class="p">)),</span>
+  <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">,</span>
+  <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="nb">min</span><span class="p">,</span>
+  <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="nb">max</span><span class="p">,</span>
+  <span class="s2">&quot;median&quot;</span><span class="p">:</span> <span class="n">median</span><span class="p">,</span>
+  <span class="s2">&quot;var&quot;</span><span class="p">:</span> <span class="n">variance</span><span class="p">,</span>
+  <span class="s2">&quot;std&quot;</span><span class="p">:</span> <span class="n">stdev</span><span class="p">,</span>
+  <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">,</span>
+  <span class="s2">&quot;first&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+  <span class="s2">&quot;last&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <h3 id="transform">Transform<a class="headerlink" href="#transform" title="Permanent link">&para;</a></h3>
