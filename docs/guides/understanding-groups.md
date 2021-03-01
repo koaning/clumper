@@ -85,6 +85,30 @@ list_dicts = [
   .collect())
 ```
 
+#### Aggergators
+
+You can use your own functions if you want to do aggregation but we offer a
+few standard ones. Here's the standard mapping.
+
+```python
+{
+  "mean": mean,
+  "count": lambda d: len(d),
+  "unique": lambda d: list(set(d)),
+  "n_unique": lambda d: len(set(d)),
+  "sum": sum,
+  "min": min,
+  "max": max,
+  "median": median,
+  "var": variance,
+  "std": stdev,
+  "values": lambda d: d,
+  "first": lambda d: d[0],
+  "last": lambda d: d[-1],
+}
+```
+
+
 ### Transform
 
 The `.transform()` verb is similar to the `.agg()` verb. The main difference is

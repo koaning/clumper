@@ -1388,7 +1388,7 @@ class Clumper:
         """
         return self._create_new([{**v, keyname: k} for k, v in self.blob.items()])
 
-    def show(self, name=None, n=1):
+    def show(self, n=1, name=None):
         """
         Prints the first `n` items in the clumper as an example. Very useful for debugging!
 
@@ -1398,7 +1398,7 @@ class Clumper:
         from clumper import Clumper
 
         data = [{"n": 123, "data": [1, 2, 3], "maintainer": "Vincent"}]
-        Clumper(data).show("Before", n=1).explode("data").show("After", n=3)
+        Clumper(data).show(n=1, name="Before").explode("data").show(n=3, name="After")
         ```
 
         ![](../img/show.png)
@@ -1412,7 +1412,7 @@ class Clumper:
             title = f"Clumper len={len(self)}"
             if len(self.groups) > 0:
                 title = f"Clumper groups={self.groups} len={len(self)}"
-            rich_print(Panel(Pretty(item), title=f"{name}: {title}"))
+            rich_print(Panel(Pretty(item), title=f"{name}: {title}" if name else ""))
         except ImportError:
             import pprint
 
