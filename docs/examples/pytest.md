@@ -13,7 +13,7 @@ Once the `sklego-log.jsonl` file has been created we can explore it with clumper
 
 ```python
 from clumper import Clumper
-clump = Clumper.read_jsonl("sklego-log.jsonl")
+clump = Clumper.read_jsonl("tests/data/docs/sklego-log.jsonl")
 ```
 
 ## Cleanup
@@ -24,6 +24,9 @@ have a `"duration"` as a key then we'll remove it from the collection. The query
 does this but also demonstrates the effect.
 
 ```python
+from clumper import Clumper
+clump = Clumper.read_jsonl("tests/data/docs/sklego-log.jsonl")
+
 clump.keep(lambda d: 'duration' in d.keys())
 ```
 
@@ -31,6 +34,9 @@ To get a picture of what items we have before/after the operation it helps to
 also add some `show()`-verbs in the chain as well.
 
 ```python
+from clumper import Clumper
+clump = Clumper.read_jsonl("tests/data/docs/sklego-log.jsonl")
+
 (clump
   .show(name="before", n=1)
   .keep(lambda d: 'duration' in d.keys())
@@ -46,6 +52,9 @@ If you've got [rich](https://github.com/willmcgugan/rich) installed in your virt
 Given these `"after"`-dictionaries we can create a utility function that will help us aggregate data in interesting ways.
 
 ```python
+from clumper import Clumper
+clump = Clumper.read_jsonl("tests/data/docs/sklego-log.jsonl")
+
 (clump
  .keep(lambda d: 'duration' in d.keys())
  .mutate(file=lambda d: d['location'][0],
@@ -88,6 +97,9 @@ We could take our script a step further if we wanted it to show
 the hierarchy. Let's nest the names of the tests in here as well.
 
 ```python
+from clumper import Clumper
+clump = Clumper.read_jsonl("tests/data/docs/sklego-log.jsonl")
+
 (clump
  .keep(lambda d: 'duration' in d.keys())
  .mutate(file=lambda d: d['location'][0],

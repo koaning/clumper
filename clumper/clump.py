@@ -1398,7 +1398,7 @@ class Clumper:
         from clumper import Clumper
 
         data = [{"n": 123, "data": [1, 2, 3], "maintainer": "Vincent"}]
-        Clumper(data).show("Before", n=1).explode("data").show("After", n=3)
+        Clumper(data).show(n=1, name="Before").explode("data").show(n=3, name="After")
         ```
 
         ![](../img/show.png)
