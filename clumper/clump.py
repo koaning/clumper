@@ -950,6 +950,28 @@ class Clumper:
         n = min(n, len(self))
         return self._create_new([self.blob[i] for i in range(n)])
 
+    def sample(self, n: int, replace: bool, weights, random_state: int):
+        """Samples n data from the collection
+
+        Arguments:
+            n (int): the number of items to sample
+            replace (bool): Have duplicate items or not
+            weights ([type]): [description]
+            random_state (int): The random seed
+        """
+        pass
+
+    def sample_frac(self, frac: float, replace: bool, weights, random_state: int):
+        """Samples fraction of items from the collection
+
+        Arguments:
+            frac (float): : The fraction of items to sample
+            replace (bool): Have duplicate items or not
+            weights ([type]): [description]
+            random_state (int): The random seed
+        """
+        pass
+
     def tail(self, n=5):
         """
         Selects the bottom `n` items from the collection.
