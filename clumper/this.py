@@ -4,7 +4,7 @@ you can wonder if you really should.
 But it can be a great idea,
 if code brings joy and the learning is good.
 
-Understanding all the rules
+Understanding all the rules,
 can quickly become a chore.
 But if you understand them well,
 you'll know which ones to ignore.
