@@ -2,9 +2,13 @@ import json
 import csv
 import pathlib
 import itertools as it
+import random
+from typing import List
 import urllib.request
 from functools import reduce
 from statistics import mean, variance, stdev, median
+from random import choices, sample
+from bisect import bisect
 
 
 from clumper.error import raise_yaml_dep_error
@@ -950,18 +954,54 @@ class Clumper:
         n = min(n, len(self))
         return self._create_new([self.blob[i] for i in range(n)])
 
-    def sample(self, n: int, replace: bool, weights, random_state: int):
+    def sample(
+        self,
+        n: int,
+        replace: bool,
+        weights: List[str] = None,
+        random_state: int = 42,
+    ):
         """Samples n data from the collection
 
-        Arguments:
-            n (int): the number of items to sample
-            replace (bool): Have duplicate items or not
-            weights ([type]): [description]
-            random_state (int): The random seed
-        """
-        pass
+        Args:
+            n (int): The number of items to sample
+            replace (bool): Have duplicate items or not. Defaults to False.
+            weights (List[str], optional): The key(s) used for calculate sample probability. Defaults to None which means equal probability
+            random_state (int, optional): Random seed for reproducible results. Defaults to 42.
 
-    def sample_frac(self, frac: float, replace: bool, weights, random_state: int):
+        Raises:
+            ValueError: Raises error when sampling more than size of collection
+
+        Returns:
+            Clumper: Sampled Clumper instance
+        """
+
+        # Sanity check:  n < len(clumper)
+        if n > len(self):
+            raise ValueError("n cannot be larger than the collection")
+
+        # Sample uniformly
+        cum_weights = list(it.accumulate([1] * len(self)))
+
+        # if weights:
+        #     sum_per_weight_key = [self.sum(column_name) for column_name in weights]
+
+        random.seed(random_state)
+
+        if replace:
+            random_blob = choices(
+                population=self.collect(), k=n, cum_weights=cum_weights
+            )
+        else:
+            # Inspired from https://stackoverflow.com/a/43649323/3804851
+            total = cum_weights.pop()
+            selections = sample(range(total), k=n)
+            indices = [bisect(cum_weights, s) for s in selections]
+            random_blob = [self.blob[i] for i in indices]
+
+        return self._create_new(random_blob)
+
+    def sample_frac(self, frac: float, replace: bool, weights, random_state: int = 42):
         """Samples fraction of items from the collection
 
         Arguments:
@@ -970,7 +1010,10 @@ class Clumper:
             weights ([type]): [description]
             random_state (int): The random seed
         """
-        pass
+        n = int(frac * len(self))
+        return self.sample(
+            n=n, replace=replace, weights=weights, random_state=random_state
+        )
 
     def tail(self, n=5):
         """
