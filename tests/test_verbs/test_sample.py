@@ -36,7 +36,7 @@ def test_sample_without_replacement(base_clumper, n, expected):
 @pytest.mark.parametrize("n,expected", [(10, 10), (15, 15), (26, 26)])
 def test_sample_with_replacement(base_clumper, n, expected):
     """
-    Check that there are no duplicate values
+    Check that there is at least one duplicate value
     """
     sampled_without_replacement = base_clumper.sample(n, replace=True)
     assert len(sampled_without_replacement) == expected

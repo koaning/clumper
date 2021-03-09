@@ -984,7 +984,9 @@ class Clumper:
         cum_weights = list(it.accumulate([1] * len(self)))
 
         # if weights:
-        #     sum_per_weight_key = [self.sum(column_name) for column_name in weights]
+        #     for column_name in weights:
+        #         total_per_key = self.sum(column_name)
+        #         # Normalize column per key
 
         random.seed(random_state)
 
@@ -1001,7 +1003,13 @@ class Clumper:
 
         return self._create_new(random_blob)
 
-    def sample_frac(self, frac: float, replace: bool, weights, random_state: int = 42):
+    def sample_frac(
+        self,
+        frac: float,
+        replace: bool,
+        weights: List[str] = None,
+        random_state: int = 42,
+    ):
         """Samples fraction of items from the collection
 
         Arguments:
