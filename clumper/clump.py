@@ -3,7 +3,7 @@ import csv
 import pathlib
 import itertools as it
 import random
-from typing import List
+from typing import Optional
 import urllib.request
 from functools import reduce
 from statistics import mean, variance, stdev, median
@@ -958,16 +958,16 @@ class Clumper:
         self,
         n: int,
         replace: bool,
-        random_state: int,
-        weights: List[str] = None,
+        random_state: Optional[int] = None,
+        weights: str = None,
     ):
         """Samples n data from the collection
 
         Args:
             n (int): The number of items to sample
             replace (bool): Have duplicate items or not. Defaults to False.
-            weights (List[str], optional): The key(s) used for calculate sample probability. Defaults to None which means equal probability
-            random_state (int, optional): Random seed for reproducible results. Defaults to 42.
+            weights (str, optional): The key(s) used for calculate sample probability. Defaults to None which means equal probability
+            random_state (int, optional): Random seed for reproducible results. Defaults to None.
 
         Raises:
             ValueError: Raises error when sampling more than size of collection
@@ -987,25 +987,23 @@ class Clumper:
         if weights:
             cum_weights = []
             for row in self.blob:
-                cumulative_row_weight = 0
-                for col_name in weights:
-                    row_weight = row[col_name]
-                    if row_weight < 0:
-                        raise ValueError(
-                            "When weights is assigned, each row must have positive weight"
-                        )
-                    # If no weight was found ?
-                    if row_weight is None:
-                        row_weight = 0
+                row_weight = row[weights]
+                if row_weight < 0:
+                    raise ValueError(
+                        "When weights is assigned, each row must have positive weight"
+                    )
+                # If no weight was found ?
+                if row_weight is None:
+                    row_weight = 0
 
-                    cumulative_row_weight += row_weight
-                cum_weights.append(cumulative_row_weight)
+                cum_weights.append(row_weight)
 
         assert len(cum_weights) == len(
             self
         ), "Mismatch between cumulative weights and collection size "
 
-        random.seed(random_state)
+        if random_state:
+            random.seed(random_state)
 
         if replace:
             random_blob = choices(
@@ -1024,16 +1022,16 @@ class Clumper:
         self,
         frac: float,
         replace: bool,
-        random_state: int,
-        weights: List[str] = None,
+        random_state: Optional[int] = None,
+        weights: str = None,
     ):
         """Samples fraction of items from the collection
 
         Arguments:
             frac (float): : The fraction of items to sample
-            replace (bool): Have duplicate items or not
-            weights ([type]): [description]
-            random_state (int): The random seed
+            replace (bool): Have duplicate items or not. Defaults to False.
+            weights (str, optional): The key(s) used for calculate sample probability. Defaults to None which means equal probability
+            random_state (int, optional): Random seed for reproducible results. Defaults to None.
         """
         n = int(frac * len(self))
         return self.sample(

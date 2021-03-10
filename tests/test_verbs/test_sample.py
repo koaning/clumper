@@ -56,7 +56,7 @@ def test_basic_sample_with_replacement(n):
     assert has_duplicate, "Didn't find any duplicates"
 
 
-@pytest.mark.parametrize("weights", [[], ["hp"]])
+@pytest.mark.parametrize("weights", ["hp"])
 def test_weighted_sampling(weights):
     clumper = Clumper.read_jsonl("https://calmcode.io/datasets/pokemon.jsonl")
     sampled = clumper.sample(n=10, replace=False, weights=weights, random_state=42)
