@@ -958,8 +958,8 @@ class Clumper:
         self,
         n: int,
         replace: bool,
+        random_state: int,
         weights: List[str] = None,
-        random_state: int = 42,
     ):
         """Samples n data from the collection
 
@@ -980,13 +980,30 @@ class Clumper:
         if n > len(self):
             raise ValueError("n cannot be larger than the collection")
 
-        # Sample uniformly
+        # Default: Sample uniformly
         cum_weights = list(it.accumulate([1] * len(self)))
 
-        # if weights:
-        #     for column_name in weights:
-        #         total_per_key = self.sum(column_name)
-        #         # Normalize column per key
+        # If weights key assigned, use it to for
+        if weights:
+            cum_weights = []
+            for row in self.blob:
+                cumulative_row_weight = 0
+                for col_name in weights:
+                    row_weight = row[col_name]
+                    if row_weight < 0:
+                        raise ValueError(
+                            "When weights is assigned, each row must have positive weight"
+                        )
+                    # If no weight was found ?
+                    if row_weight is None:
+                        row_weight = 0
+
+                    cumulative_row_weight += row_weight
+                cum_weights.append(cumulative_row_weight)
+
+        assert len(cum_weights) == len(
+            self
+        ), "Mismatch between cumulative weights and collection size "
 
         random.seed(random_state)
 
@@ -1007,8 +1024,8 @@ class Clumper:
         self,
         frac: float,
         replace: bool,
+        random_state: int,
         weights: List[str] = None,
-        random_state: int = 42,
     ):
         """Samples fraction of items from the collection
 
