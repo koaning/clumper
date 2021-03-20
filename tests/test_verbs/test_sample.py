@@ -1,18 +1,24 @@
 from clumper.clump import Clumper
 import pytest
+import itertools
 
 
 def test_oversampling(base_clumper):
     with pytest.raises(ValueError):
-        base_clumper.sample(n=len(base_clumper) + 1, replace=False, random_state=42)
+        base_clumper.sample(n=len(base_clumper) + 1, replace=False)
 
 
-@pytest.mark.parametrize("n,expected", [(0, 0), (5, 5), (10, 10), (26, 26)])
+def test_non_existent_weight(base_clumper):
+    with pytest.raises(ValueError):
+        base_clumper.sample(n=len(base_clumper) + 1, replace=False, weights="my-key")
+
+
+@pytest.mark.parametrize("n,expected", [(0, 0), (1, 1), (5, 5), (10, 10), (26, 26)])
 def test_sample_size(base_clumper, n, expected):
     """
     Check for sampling n items's size
     """
-    assert len(base_clumper.sample(n, replace=False, random_state=42)) == expected
+    assert len(base_clumper.sample(n, replace=False)) == expected
 
 
 def check_for_duplicates(sampled_clumper):
@@ -29,7 +35,7 @@ def test_basic_sample_without_replacement(n):
     Check that there are no duplicate values
     """
     clump = Clumper.read_json("http://calmcode.io/datasets/pokemon.json")
-    sampled_without_replacement = clump.sample(n, replace=False, random_state=42)
+    sampled_without_replacement = clump.sample(n, replace=False)
     assert len(sampled_without_replacement) == n
     check_for_duplicates(sampled_without_replacement.collect())
 
@@ -40,7 +46,7 @@ def test_basic_sample_with_replacement(n):
     Check that there is at least one duplicate value
     """
     clump = Clumper.read_json("http://calmcode.io/datasets/pokemon.json")
-    sampled_without_replacement = clump.sample(n, replace=True, random_state=42)
+    sampled_without_replacement = clump.sample(n, replace=True)
     assert len(sampled_without_replacement) == n
     sampled_without_replacement_blob = sampled_without_replacement.collect()
 
@@ -56,9 +62,11 @@ def test_basic_sample_with_replacement(n):
     assert has_duplicate, "Didn't find any duplicates"
 
 
-@pytest.mark.parametrize("weights", ["hp"])
-def test_weighted_sampling(weights):
+@pytest.mark.parametrize(
+    "replace, weights", itertools.product([True, False], ["hp", "attack"])
+)
+def test_weighted_sampling(replace, weights):
     clumper = Clumper.read_jsonl("https://calmcode.io/datasets/pokemon.jsonl")
-    sampled = clumper.sample(n=10, replace=False, weights=weights, random_state=42)
+    sampled = clumper.sample(n=10, replace=replace, weights=weights)
     assert len(sampled) == 10
     check_for_duplicates(sampled.collect())
