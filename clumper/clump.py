@@ -965,7 +965,7 @@ class Clumper:
         Args:
             n (int): The number of items to sample
             replace (bool): Have duplicate items or not. Defaults to False.
-            weights (str, optional): The key(s) used for calculate sample probability. Defaults to None which means equal probability
+            weights (str, optional): The key used for calculate sample probability. Defaults to None which means equal probability
             random_state (int, optional): Random seed for reproducible results. Defaults to None.
 
         Raises:
@@ -974,10 +974,6 @@ class Clumper:
         Returns:
             Clumper: Sampled Clumper instance
         """
-
-        # Sanity check:  n < len(clumper)
-        if n > len(self):
-            raise ValueError("n cannot be larger than the collection")
 
         if random_state:
             random.seed(random_state)
@@ -1009,14 +1005,13 @@ class Clumper:
 
                 prob_sample[i] = row_prob
 
-        if len(prob_sample) != len(self):
-            raise RuntimeError(
-                "Mismatch between cumulative weights and collection size"
-            )
-
         if replace:
             random_blob = choices(population=self.collect(), k=n, weights=prob_sample)
         else:
+
+            if n > len(self):
+                raise ValueError("n cannot be larger than the collection")
+
             index_list = list(range(len(self)))
             selected_indices = self._weighted_sample_without_replacement(
                 index_list=index_list, weights=prob_sample, k=n
