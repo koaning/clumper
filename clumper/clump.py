@@ -2,9 +2,12 @@ import json
 import csv
 import pathlib
 import itertools as it
+import random
+from typing import Optional
 import urllib.request
 from functools import reduce
 from statistics import mean, variance, stdev, median
+from random import choices
 
 
 from clumper.error import raise_yaml_dep_error
@@ -949,6 +952,109 @@ class Clumper:
             raise ValueError(f"`n` must be a positive integer, got {n}")
         n = min(n, len(self))
         return self._create_new([self.blob[i] for i in range(n)])
+
+    def sample(
+        self,
+        n: int,
+        replace: bool,
+        random_state: Optional[int] = None,
+        weights: str = None,
+    ):
+        """Samples n data from the collection
+
+        Args:
+            n (int): The number of items to sample
+            replace (bool): Have duplicate items or not. Defaults to False.
+            weights (str, optional): The key used for calculate sample probability. Defaults to None which means equal probability
+            random_state (int, optional): Random seed for reproducible results. Defaults to None.
+
+        Raises:
+            ValueError: Raises error when sampling more than size of collection
+
+        Returns:
+            Clumper: Sampled Clumper instance
+        """
+
+        if random_state:
+            random.seed(random_state)
+
+        # Default: Sample uniformly
+        prob_sample = list(it.accumulate([1] * len(self)))
+
+        # If weights key assigned, use it to for
+        if weights:
+            if not isinstance(weights, str):
+                raise TypeError("weights must be specified as string")
+
+            try:
+                self.select(weights)
+            except KeyError:
+                raise KeyError(
+                    f"The weight key {weights} couldn't be found in the collection"
+                )
+
+            for i, row in enumerate(self.blob):
+                row_prob = row[weights]
+                if row_prob < 0:
+                    raise ValueError(
+                        "When weights is assigned, each row must have positive weight"
+                    )
+
+                if row_prob is None:
+                    row_prob = 0
+
+                prob_sample[i] = row_prob
+
+        if replace:
+            random_blob = choices(population=self.collect(), k=n, weights=prob_sample)
+        else:
+
+            if n > len(self):
+                raise ValueError("n cannot be larger than the collection")
+
+            index_list = list(range(len(self)))
+            selected_indices = self._weighted_sample_without_replacement(
+                index_list=index_list, weights=prob_sample, k=n
+            )
+            random_blob = [self.blob[i] for i in selected_indices]
+
+        return self._create_new(random_blob)
+
+    def _weighted_sample_without_replacement(self, index_list, weights, k):
+        if k > len(index_list):
+            raise ValueError(f" {k}= is invalid for {len(index_list)}")
+        selected_indices = []
+
+        for _ in range(k):
+            # Critical that only 1 element is sampled
+            value = random.choices(index_list, weights, k=1)
+            # Take the first element as random.choices returns a list
+            value = value[0]
+            selected_indices.append(value)
+            removed_index = index_list.index(value)
+            index_list.pop(removed_index)
+            weights.pop(removed_index)
+        return selected_indices
+
+    def sample_frac(
+        self,
+        frac: float,
+        replace: bool,
+        random_state: Optional[int] = None,
+        weights: str = None,
+    ):
+        """Samples fraction of items from the collection
+
+        Arguments:
+            frac (float): : The fraction of items to sample
+            replace (bool): Have duplicate items or not. Defaults to False.
+            weights (str, optional): The key(s) used for calculate sample probability. Defaults to None which means equal probability
+            random_state (int, optional): Random seed for reproducible results. Defaults to None.
+        """
+        n = int(frac * len(self))
+        return self.sample(
+            n=n, replace=replace, weights=weights, random_state=random_state
+        )
 
     def tail(self, n=5):
         """
