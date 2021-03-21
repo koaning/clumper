@@ -11,6 +11,14 @@ def test_oversampling_no_replace(base_clumper):
         base_clumper.sample(n=len(base_clumper) + 1, replace=False)
 
 
+def test_oversampling_sample_frac_no_replace(base_clumper):
+    """
+    Make sure that over sampling is not allowed when sampling without replacement
+    """
+    with pytest.raises(ValueError):
+        base_clumper.sample_frac(frac=1.1, replace=False)
+
+
 def test_non_existent_weight(base_clumper):
     """
     Make sure that providing non existent weight key throws error
