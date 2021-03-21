@@ -42,7 +42,7 @@ def test_basic_sample_without_replacement(n):
     """
     Make sure that there are no duplicate values when sampling without replacement
     """
-    clump = Clumper.read_json("http://calmcode.io/datasets/pokemon.json")
+    clump = Clumper.read_json("tests/data/pokemon.json")
     sampled_without_replacement = clump.sample(n, replace=False)
     assert (
         has_duplicate(sampled_without_replacement.collect()) is False
@@ -54,7 +54,7 @@ def test_basic_sample_with_replacement(n):
     """
     Make sure that there are at least one duplicate values when sampling with replacement
     """
-    clump = Clumper.read_json("http://calmcode.io/datasets/pokemon.json")
+    clump = Clumper.read_json("tests/data/pokemon.json")
     sampled_with_replacement = clump.sample(n, replace=True)
 
     assert (
@@ -69,7 +69,7 @@ def test_weighted_sampling(replace, weights):
     """
     Make sure that weighted sampling has duplicates when sampling with replacement (and vice versa)
     """
-    clumper = Clumper.read_jsonl("https://calmcode.io/datasets/pokemon.jsonl")
+    clumper = Clumper.read_json("tests/data/pokemon.json")
     sampled = clumper.sample(n=200, replace=replace, weights=weights)
     if replace:
         assert (
