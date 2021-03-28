@@ -1,22 +1,22 @@
-import json
 import csv
-import pathlib
 import itertools as it
+import json
+import pathlib
 import random
-from typing import Optional
 import urllib.request
+from copy import deepcopy
 from functools import reduce
-from statistics import mean, variance, stdev, median
 from random import choices
+from statistics import mean, median, stdev, variance
+from typing import Optional
 
-
-from clumper.error import raise_yaml_dep_error
 from clumper.decorators import (
-    return_value_if_empty,
-    grouped,
     dict_collection_only,
+    grouped,
     multifile,
+    return_value_if_empty,
 )
+from clumper.error import raise_yaml_dep_error
 
 
 class Clumper:
@@ -507,7 +507,7 @@ class Clumper:
         ```
         """
         self.groups = cols
-        return self
+        return deepcopy(self)
 
     def ungroup(self):
         """
@@ -524,7 +524,7 @@ class Clumper:
         ```
         """
         self.groups = tuple()
-        return self
+        return deepcopy(self)
 
     @grouped
     @dict_collection_only
