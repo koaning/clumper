@@ -1,23 +1,6 @@
 from datetime import datetime, timedelta
 
-SUPPORTED_FREQUENCIES = ["seconds", "minutes", "hours", "days", "months"]
-
-
-def get_datetime_component(dt: datetime, component: str):
-    if component == "seconds":
-        return dt.second
-
-    if component == "minutes":
-        return dt.minute
-
-    if component == "hours":
-        return dt.hour
-
-    if component == "days":
-        return dt.day - 1
-
-    if component == "months":
-        return dt
+SUPPORTED_FREQUENCIES = ["second", "minute", "hour", "day", "month"]
 
 
 def round_dt_str(
@@ -49,7 +32,7 @@ def round_dt_str(
     dt = datetime.strptime(dt_str, dt_format)
 
     frequencies_to_update = {
-        SUPPORTED_FREQUENCIES[i]: get_datetime_component(dt, SUPPORTED_FREQUENCIES[i])
+        f"{SUPPORTED_FREQUENCIES[i]}s": dt.__getattribute__(SUPPORTED_FREQUENCIES[i])
         for i in range(SUPPORTED_FREQUENCIES.index(frequency))
     }
 
