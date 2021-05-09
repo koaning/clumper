@@ -129,7 +129,7 @@ class Clumper:
         # Quick conversion in case of Path object
         path = str(path)
         if path.startswith(("https:", "http:")):
-            with urllib.request.urlopen(path) as resp:
+            with urllib.request.urlopen(path) as resp:  # nosec
                 if fieldnames is None:
                     fieldnames = resp.readline().decode().strip().split(",")
                 # This section allows us to chunk the rows, if nrows is supplied.
@@ -232,7 +232,7 @@ class Clumper:
         path = str(path)
 
         if path.startswith("https:") or path.startswith("http:"):
-            with urllib.request.urlopen(path) as resp:
+            with urllib.request.urlopen(path) as resp:  # nosec
                 data = json.loads(resp.read())
         else:
             data = json.loads(pathlib.Path(path).read_text())
@@ -286,7 +286,7 @@ class Clumper:
 
         # Case 1 : Open cloud file in stream
         if path.startswith("https:") or path.startswith("http:"):
-            f = urllib.request.urlopen(path)
+            f = urllib.request.urlopen(path)  # nosec
         # Case 2 : Local file
         else:
             f = open(path)
@@ -351,7 +351,7 @@ class Clumper:
 
         # Case 1 : Open cloud file in stream
         if path.startswith(("https:", "http:")):
-            f = urllib.request.urlopen(path)
+            f = urllib.request.urlopen(path)  # nosec
         # Case 2 : Local file
         else:
             f = open(path)
@@ -360,7 +360,7 @@ class Clumper:
         try:
             import yaml
 
-            data = yaml.load(f.read(), Loader=yaml.FullLoader)
+            data = yaml.safe_load(f.read())
             if isinstance(data, dict):
                 if add_path:
                     data["read_path"] = path
