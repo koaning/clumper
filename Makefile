@@ -7,7 +7,11 @@ flake:
 test:
 	pytest
 
-check: black flake test
+interrogate:
+	interrogate -vv --ignore-semiprivate --ignore-private --ignore-magic --fail-under=80 clumper
+	interrogate -vv --ignore-semiprivate --ignore-private --ignore-magic --fail-under=80 tests
+
+check: black flake test interrogate
 
 install:
 	pip install rich

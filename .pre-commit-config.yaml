@@ -24,4 +24,9 @@ repos:
     rev: 1.4.0
     hooks:
       - id: interrogate
-        args: [--quiet, --fail-under=80]
+        args: [--quiet, --fail-under=50, clumper]
+-   repo: https://github.com/econchick/interrogate
+    rev: 1.4.0
+    hooks:
+      - id: interrogate
+        args: [--quiet, --fail-under=50, tests]
