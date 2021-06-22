@@ -21,7 +21,7 @@ def test_left_join_base_example():
 
 def test_left_join_suffix_missing_data():
     """
-    Make sure that the left/right suffix appears in the name of the new property 
+    Make sure that the left/right suffix appears in the name of the new property
     when there is data missing.
     """
     d1 = [{"a": 1, "b": 1, "d": 1}, {"a": 1, "b": 2, "d": 1}, {"a": 1, "b": 5, "d": 1}]
