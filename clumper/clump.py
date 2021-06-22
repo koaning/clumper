@@ -1387,7 +1387,7 @@ class Clumper:
         expected = [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
         assert clumper.equals(expected)
 
-        clumper_back = clumper.implode(item="items")
+        clumper_back = clumper.implode(items="item")
         expected = [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
         assert clumper_back.equals(data)
         ```
