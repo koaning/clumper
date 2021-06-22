@@ -756,7 +756,7 @@ class Clumper:
 
     @property
     def only_has_dictionaries(self):
-        """Boolean that confirms if each item in the clumper is a dictionary."""
+        """Boolean, confirms if each item in the clumper is a dictionary."""
         return all([isinstance(d, dict) for d in self])
 
     @dict_collection_only
