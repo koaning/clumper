@@ -756,6 +756,7 @@ class Clumper:
 
     @property
     def only_has_dictionaries(self):
+        """Boolean that confirms if each item in the clumper is a dictionary."""
         return all([isinstance(d, dict) for d in self])
 
     @dict_collection_only
@@ -1367,6 +1368,30 @@ class Clumper:
         return result
 
     def implode(self, **kwargs):
+        """
+        Nests a sequence of items. The opposite of `.explode()`.
+
+        ![](../img/implode.png)
+
+        Arguments:
+            kwargs: (new name, keys to implode)-pairs
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [{'a': 1, 'items': [1, 2]}]
+
+        clumper = Clumper(data).explode(item="items")
+        expected = [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
+        assert clumper.equals(expected)
+
+        clumper_back = clumper.implode(item="items")
+        expected = [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
+        assert clumper_back.equals(data)
+        ```
+        """
         if len(kwargs) == 0:
             raise ValueError("The `implode` method received no input.")
         return (
@@ -1377,6 +1402,7 @@ class Clumper:
 
     @property
     def shape(self):
+        """Returns the shape (items, n_keys) of the Clumper"""
         return len(self), len(self.keys())
 
     def reduce(self, **kwargs):
