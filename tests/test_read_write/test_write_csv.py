@@ -11,6 +11,7 @@ def temp_file(tmp_path):
 
 
 def test_write_csv(tmp_path):
+    """The file we write is the same as the one we read"""
     path = temp_file(tmp_path)
     Clumper.read_csv("tests/data/monopoly.csv").write_csv(path)
     reader = Clumper.read_csv(path)
@@ -29,6 +30,7 @@ def test_write_csv_append_mode(tmp_path):
 
 @pytest.fixture()
 def data():
+    """Dataset as a fixture"""
     return [
         {"One": "a", "Two": "1", "Three": "one"},
         {"One": "b", "Two": "2", "Three": "two"},

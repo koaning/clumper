@@ -41,5 +41,6 @@ def test_keep_does_not_mutate():
 
 
 def test_keep_multiple_queries(base_clumper):
+    """We allow for multiple predicates in a single keep statement"""
     c = base_clumper.keep(lambda d: d["i"] < 20, lambda d: d["i"] >= 10)
     assert len(c) == 10
