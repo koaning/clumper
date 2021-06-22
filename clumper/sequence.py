@@ -5,17 +5,6 @@ A collection of functions to be used in `mutate`/`map`-verbs.
 from typing import Callable
 
 
-def _old_row_number():
-    i = 0
-
-    def incr(_):
-        nonlocal i
-        i += 1
-        return i
-
-    return incr
-
-
 class row_number:
     """
     This stateful function can be used to calculate row numbers.
@@ -84,7 +73,7 @@ class rolling:
         self.window = window
         self.key = key
 
-    def apply_key(self, new):
+    def _apply_key(self, new):
         if isinstance(self.key, str):
             return new[self.key]
         if isinstance(self.key, Callable):
@@ -92,7 +81,7 @@ class rolling:
 
     def __call__(self, new):
         # we can't append because of mutable state
-        self.state = self.state + [self.apply_key(new)]
+        self.state = self.state + [self._apply_key(new)]
         if len(self.state) > self.window:
             self.state = self.state[1:]
         return self.state
@@ -130,14 +119,14 @@ class expanding:
         self.state = []
         self.key = key
 
-    def apply_key(self, new):
+    def _apply_key(self, new):
         if isinstance(self.key, str):
             return new[self.key]
         if isinstance(self.key, Callable):
             return self.key(new)
 
     def __call__(self, new):
-        self.state = self.state + [self.apply_key(new)]
+        self.state = self.state + [self._apply_key(new)]
         return self.state
 
 
@@ -180,14 +169,14 @@ class smoothing:
             )
         self.weight = weight
 
-    def apply_key(self, new):
+    def _apply_key(self, new):
         if isinstance(self.key, str):
             return new[self.key]
         if isinstance(self.key, Callable):
             return self.key(new)
 
     def __call__(self, new):
-        new = self.apply_key(new)
+        new = self._apply_key(new)
         if not self.state:
             self.state = new
         self.state = self.state * (1 - self.weight) + new * self.weight
@@ -239,7 +228,7 @@ class impute:
         self.fallback = fallback
         self.state = None
 
-    def grab_key(self, new):
+    def _grab_key(self, new):
         if isinstance(self.key, str):
             return new[self.key]
         if isinstance(self.key, Callable):
@@ -248,28 +237,28 @@ class impute:
             f"The `imputer` saw {new} and could not apply key: {self.key}."
         )
 
-    def is_missing(self, new):
+    def _is_missing(self, new):
         try:
-            _ = self.grab_key(new)
+            _ = self._grab_key(new)
             return False
         except KeyError:
             return True
 
-    def handle_missing(self):
+    def _handle_missing(self):
         if self.strategy == "prev":
             return self.fallback if not self.state else self.state
         if self.strategy == "value":
             return self.fallback
 
-    def update(self, new):
+    def _update(self, new):
         if self.strategy == "prev":
-            self.state = self.grab_key(new)
+            self.state = self._grab_key(new)
 
     def __call__(self, new):
-        if self.is_missing(new):
-            return self.handle_missing()
-        self.update(new)
-        return self.grab_key(new)
+        if self._is_missing(new):
+            return self._handle_missing()
+        self._update(new)
+        return self._grab_key(new)
 
 
 __all__ = ("row_number", "rolling", "expanding", "impute")

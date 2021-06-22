@@ -54,5 +54,6 @@ def test_correct_keys_kept():
 
 
 def test_big_file_explodes_properly():
+    """Check the size of a known exploded file"""
     c = Clumper.read_yaml("tests/data/test-case-big.yaml").explode("videos")
     assert len(c) == 8

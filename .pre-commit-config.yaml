@@ -20,3 +20,13 @@ repos:
     hooks:
     -   id: python-bandit-vulnerability-check
         args: [--skip, "B101", --recursive, clumper]
+-   repo: https://github.com/econchick/interrogate
+    rev: 1.4.0
+    hooks:
+      - id: interrogate
+        args: [--quiet, --ignore-nested-functions, --ignore-nested-classes, --ignore-semiprivate, --ignore-private, --ignore-magic, --ignore-module, --ignore-init-method, --fail-under=100, clumper]
+-   repo: https://github.com/econchick/interrogate
+    rev: 1.4.0
+    hooks:
+      - id: interrogate
+        args: [--quiet, --ignore-nested-functions, --ignore-nested-classes, --ignore-semiprivate, --ignore-private, --ignore-magic, --ignore-module, --ignore-init-method, --fail-under=100, tests]

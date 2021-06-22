@@ -6,6 +6,7 @@ test_packages = [
     "black>=19.10b0",
     "flake8>=3.8.3",
     "mktestdocs>=0.1.0",
+    "interrogate>=1.2.0",
 ]
 
 yaml_packages = ["PyYAML>=5.3.1"]
