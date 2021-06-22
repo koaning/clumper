@@ -5,17 +5,6 @@ A collection of functions to be used in `mutate`/`map`-verbs.
 from typing import Callable
 
 
-def _old_row_number():
-    i = 0
-
-    def incr(_):
-        nonlocal i
-        i += 1
-        return i
-
-    return incr
-
-
 class row_number:
     """
     This stateful function can be used to calculate row numbers.

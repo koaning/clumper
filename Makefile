@@ -8,8 +8,8 @@ test:
 	pytest
 
 interrogate:
-	interrogate -vv --ignore-semiprivate --ignore-private --ignore-magic --ignore-module --ignore-init-method --fail-under 70 clumper 
 	interrogate -vv --ignore-semiprivate --ignore-private --ignore-magic --ignore-module --ignore-init-method --fail-under 70 tests 
+	interrogate -vv --ignore-semiprivate --ignore-private --ignore-magic --ignore-module --ignore-init-method --fail-under 70 clumper 
 
 check: black flake test interrogate
 

@@ -19,5 +19,6 @@ def test_read_filepath():
 
 
 def test_raise_error_n_zero():
+    """Raise appropriate error."""
     with pytest.raises(ValueError):
         Clumper.read_json("tests/data/pokemon.json", n=0)
