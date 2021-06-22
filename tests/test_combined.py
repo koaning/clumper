@@ -8,6 +8,7 @@ from clumper import Clumper
 
 @pytest.fixture()
 def pokemon():
+    """Pokemon data as a fixture"""
     return json.loads(pathlib.Path("tests/data/pokemon.json").read_text())
 
 
