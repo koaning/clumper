@@ -13,10 +13,12 @@ def test_local_read_json_expected(lines, expected):
 
 
 def test_read_filepath():
+    """Confirm that strings can be used too"""
     data = Clumper.read_json("tests/data/pokemon.json", add_path=True).collect()
     assert all([d["read_path"] == "tests/data/pokemon.json" for d in data])
 
 
 def test_raise_error_n_zero():
+    """Raise appropriate error."""
     with pytest.raises(ValueError):
         Clumper.read_json("tests/data/pokemon.json", n=0)

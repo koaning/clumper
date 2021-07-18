@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 def test_non_existent_pattern(tmp_path):
+    """When there's no paths that exist, throw an error"""
     with pytest.raises(ValueError):
         Clumper.read_json(str(tmp_path / "*.json"))
         Clumper.read_json(list(Path(tmp_path).glob("*.json")))

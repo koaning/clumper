@@ -2,6 +2,10 @@
 
 This page lists the releases as well as the features that were added.
 
+## Version 0.2.13
+
+Fixed docstrings all over the package.
+
 ## Version 0.2.11
 
 Improved the docs. Added a new example.

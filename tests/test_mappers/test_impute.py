@@ -3,6 +3,7 @@ from clumper.sequence import impute
 
 
 def test_correct_values_prev():
+    """Check that we can impute by taking the previous value."""
     list_dicts = [
         {"a": 1, "b": 2},
         {"a": 2, "b": 3},
@@ -17,6 +18,7 @@ def test_correct_values_prev():
 
 
 def test_correct_values_value():
+    """Check that we can impute by filling in a base value."""
     list_dicts = [
         {"a": 1, "b": 2},
         {"a": 2, "b": 3},

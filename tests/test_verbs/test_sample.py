@@ -36,6 +36,7 @@ def test_sample_size(base_clumper, n):
 
 
 def has_duplicate(sampled_clumper):
+    """Checks for a duplicate"""
     for i in range(len(sampled_clumper)):
         source_clump = sampled_clumper[i]
         for j in range(len(sampled_clumper)):

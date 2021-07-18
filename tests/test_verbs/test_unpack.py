@@ -25,4 +25,5 @@ d = [
 
 
 def test_unpack_dict():
+    """Make sure that we can properly unnest the data property"""
     assert len(Clumper(d).unpack("data")) == 10
