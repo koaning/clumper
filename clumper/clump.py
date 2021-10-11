@@ -78,6 +78,7 @@ class Clumper:
         fieldnames=None,
         n=None,
         add_path=False,
+        encoding="utf-8",
     ):
         """
         Reads in a csv file. Can also read files from url.
@@ -107,6 +108,7 @@ class Clumper:
                    converted to the data type and raise an error, if not applicable. For different data types for different
                    key, value pairs, a dictionary of {key: data_type} passed to dtype argument will change the value for
                    every key with the data type, and raise an error if not applicable.
+            encoding:  Encoding to use for UTF when reading/writing.
 
         Usage:
 
@@ -148,7 +150,7 @@ class Clumper:
                 body = it.product([fieldnames], body)
                 result = [dict(zip(key, values)) for key, values in body]
         else:
-            with open(path, newline="") as csvfile:
+            with open(path, newline="", encoding=encoding) as csvfile:
                 reader = csv.DictReader(
                     csvfile, delimiter=delimiter, fieldnames=fieldnames
                 )
@@ -318,7 +320,7 @@ class Clumper:
 
     @classmethod
     @multifile()
-    def read_yaml(cls, path, n=None, listify=True, add_path=False):
+    def read_yaml(cls, path, n=None, listify=True, add_path=False, encoding="utf-8"):
         """
         Reads in a yaml file.
 
@@ -331,6 +333,7 @@ class Clumper:
                      before passing it along to the Clumper.
             add_path: Adds the name of the filepath to each item in the Clumper. Is useful when using wildcards to
                       read in multiple files at once.
+            encoding: Encoding to use for UTF when reading/writing.
 
         Important:
             This method requires the `PyYAML` dependency which is not installed automatically.
@@ -364,7 +367,7 @@ class Clumper:
             f = urllib.request.urlopen(path)  # nosec
         # Case 2 : Local file
         else:
-            f = open(path)
+            f = open(path, encoding=encoding)
 
         # Try to load it but tell the user to install if not there.
         try:
