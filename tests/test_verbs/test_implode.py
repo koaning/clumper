@@ -1,7 +1,10 @@
 from clumper import Clumper
 
 
-def test_not_keep_correct_keys():
+def test_correct_keys():
+    """
+    Ensure that the original key of the dictionary is replaced with the new one.
+    """
     data = [
         {"a": 1, "b": 1, "item": 1},
         {"a": 1, "b": 1, "item": 2},

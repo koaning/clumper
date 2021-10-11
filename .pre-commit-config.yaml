@@ -24,9 +24,9 @@ repos:
     rev: 1.4.0
     hooks:
       - id: interrogate
-        args: [--quiet, --fail-under=50, clumper]
+        args: [--quiet, --ignore-nested-functions, --ignore-nested-classes, --ignore-semiprivate, --ignore-private, --ignore-magic, --ignore-module, --ignore-init-method, --fail-under=100, clumper]
 -   repo: https://github.com/econchick/interrogate
     rev: 1.4.0
     hooks:
       - id: interrogate
-        args: [--quiet, --fail-under=50, tests]
+        args: [--quiet, --ignore-nested-functions, --ignore-nested-classes, --ignore-semiprivate, --ignore-private, --ignore-magic, --ignore-module, --ignore-init-method, --fail-under=100, tests]

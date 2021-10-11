@@ -8,7 +8,7 @@ from copy import deepcopy
 from functools import reduce
 from random import choices
 from statistics import mean, median, stdev, variance
-from typing import Optional
+from typing import Optional, Tuple, List
 
 from clumper.decorators import (
     dict_collection_only,
@@ -17,6 +17,16 @@ from clumper.decorators import (
     return_value_if_empty,
 )
 from clumper.error import raise_yaml_dep_error
+
+
+def _flatten(items):
+    """Yield items from any nested lists/tuples."""
+    for x in items:
+        if isinstance(x, (List, Tuple)):
+            for sub_x in _flatten(x):
+                yield sub_x
+        else:
+            yield x
 
 
 class Clumper:
@@ -756,6 +766,7 @@ class Clumper:
 
     @property
     def only_has_dictionaries(self):
+        """Boolean, confirms if each item in the clumper is a dictionary."""
         return all([isinstance(d, dict) for d in self])
 
     @dict_collection_only
@@ -1278,6 +1289,41 @@ class Clumper:
         """
         return self._create_new([func(d) for d in self.blob])
 
+    def flatmap(self, func):
+        """
+        Applies a map function, but only after unnesting all the
+        data in the clumper.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [1, [2, 3], [4]]
+        expected = [2, 4, 6, 8]
+        returned = Clumper(data).flatmap(lambda d: d * 2).collect()
+        assert expected == returned
+        ```
+        """
+        return self._create_new([func(item) for item in _flatten(self.blob)])
+
+    def flatten(self):
+        """
+        Flattens the clumper.
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [1, [2, 3], [4]]
+        expected = [1, 2, 3, 4]
+        returned = Clumper(data).flatten().collect()
+        assert expected == returned
+        ```
+        """
+        return self._create_new([item for item in _flatten(self.blob)])
+
     @dict_collection_only
     def keys(self, overlap=False):
         """
@@ -1367,6 +1413,30 @@ class Clumper:
         return result
 
     def implode(self, **kwargs):
+        """
+        Nests a sequence of items. The opposite of `.explode()`.
+
+        ![](../img/implode.png)
+
+        Arguments:
+            kwargs: (new name, keys to implode)-pairs
+
+        Usage:
+
+        ```python
+        from clumper import Clumper
+
+        data = [{'a': 1, 'items': [1, 2]}]
+
+        clumper = Clumper(data).explode(item="items")
+        expected = [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
+        assert clumper.equals(expected)
+
+        clumper_back = clumper.implode(items="item")
+        expected = [{'a': 1, 'item': 1}, {'a': 1, 'item': 2}]
+        assert clumper_back.equals(data)
+        ```
+        """
         if len(kwargs) == 0:
             raise ValueError("The `implode` method received no input.")
         return (
@@ -1377,6 +1447,7 @@ class Clumper:
 
     @property
     def shape(self):
+        """Returns the shape (items, n_keys) of the Clumper"""
         return len(self), len(self.keys())
 
     def reduce(self, **kwargs):
