@@ -320,7 +320,7 @@ class Clumper:
 
     @classmethod
     @multifile()
-    def read_yaml(cls, path, n=None, listify=True, add_path=False):
+    def read_yaml(cls, path, n=None, listify=True, add_path=False, encoding="utf-8"):
         """
         Reads in a yaml file.
 
@@ -333,6 +333,7 @@ class Clumper:
                      before passing it along to the Clumper.
             add_path: Adds the name of the filepath to each item in the Clumper. Is useful when using wildcards to
                       read in multiple files at once.
+            encoding: Encoding to use for UTF when reading/writing.
 
         Important:
             This method requires the `PyYAML` dependency which is not installed automatically.
@@ -366,7 +367,7 @@ class Clumper:
             f = urllib.request.urlopen(path)  # nosec
         # Case 2 : Local file
         else:
-            f = open(path)
+            f = open(path, encoding=encoding)
 
         # Try to load it but tell the user to install if not there.
         try:
