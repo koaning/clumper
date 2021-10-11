@@ -78,6 +78,7 @@ class Clumper:
         fieldnames=None,
         n=None,
         add_path=False,
+        encoding="utf-8",
     ):
         """
         Reads in a csv file. Can also read files from url.
@@ -107,6 +108,7 @@ class Clumper:
                    converted to the data type and raise an error, if not applicable. For different data types for different
                    key, value pairs, a dictionary of {key: data_type} passed to dtype argument will change the value for
                    every key with the data type, and raise an error if not applicable.
+            encoding:  Encoding to use for UTF when reading/writing.
 
         Usage:
 
@@ -148,7 +150,7 @@ class Clumper:
                 body = it.product([fieldnames], body)
                 result = [dict(zip(key, values)) for key, values in body]
         else:
-            with open(path, newline="") as csvfile:
+            with open(path, newline="", encoding=encoding) as csvfile:
                 reader = csv.DictReader(
                     csvfile, delimiter=delimiter, fieldnames=fieldnames
                 )
