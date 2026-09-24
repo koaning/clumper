@@ -28,8 +28,8 @@ def test_subsets_sizes(keys, size):
     """Check that group_by gives back sizes that are appropriate"""
     prod = it.product([1, 2], [1, 2], [True, False], ["a", "b"])
     clump = Clumper([{"r": 1, "i": i, "j": j, "a": a, "b": b} for i, j, a, b in prod])
-    for c in clump.group_by(*keys)._subsets():
-        assert len(c) == size
+    for combo, subset in clump.group_by(*keys)._subsets():
+        assert len(subset) == size
 
 
 def test_mutate_group_aware():
