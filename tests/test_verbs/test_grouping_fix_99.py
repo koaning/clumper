@@ -218,4 +218,129 @@ def test_group_by_two_columns_with_multiple_aggregations():
     assert results[("a", "a")] == (30, 2)
     assert results[("a", "b")] == (30, 1)
     assert results[("b", "a")] == (40, 1)
+
+def test_group_by_two_columns_transform_multiple_missing_combinations():
+    data = [
+        {"grp_1": "a", "grp_2": "a", "value": 10},
+        {"grp_1": "a", "grp_2": "c", "value": 20},
+        {"grp_1": "b", "grp_2": "b", "value": 30},
+        {"grp_1": "c", "grp_2": "a", "value": 40},
+    ]
+
+    result = (
+        Clumper(data)
+        .group_by("grp_1", "grp_2")
+        .transform(total=("value", "sum"))
+        .collect()
+    )
+
+    assert len(result) == len(data)
+    for row in result:
+        assert row["total"] == row["value"]
+
+
+def test_group_by_three_columns_transform_with_missing_combination():
+    data = [
+        {"a": "x", "b": "p", "c": "1", "value": 10},
+        {"a": "x", "b": "p", "c": "2", "value": 20},
+        {"a": "x", "b": "q", "c": "1", "value": 30},
+        {"a": "y", "b": "p", "c": "1", "value": 40},
+    ]
+
+    result = (
+        Clumper(data)
+        .group_by("a", "b", "c")
+        .transform(total=("value", "sum"))
+        .collect()
+    )
+
+    assert len(result) == len(data)
+    for row in result:
+        assert row["total"] == row["value"]
+
+
+def test_group_by_two_columns_mutate_multiple_missing_combinations():
+    data = [
+        {"grp_1": "a", "grp_2": "a", "value": 10},
+        {"grp_1": "a", "grp_2": "c", "value": 20},
+        {"grp_1": "b", "grp_2": "b", "value": 30},
+        {"grp_1": "c", "grp_2": "a", "value": 40},
+    ]
+
+    result = (
+        Clumper(data)
+        .group_by("grp_1", "grp_2")
+        .mutate(doubled=lambda d: d["value"] * 2)
+        .collect()
+    )
+
+    assert len(result) == len(data)
+    by_key = {(d["grp_1"], d["grp_2"]): d for d in data}
+    for row in result:
+        original = by_key[(row["grp_1"], row["grp_2"])]
+        assert row["doubled"] == original["value"] * 2
+
+
+def test_group_by_three_columns_mutate_with_missing_combination():
+    data = [
+        {"a": "x", "b": "p", "c": "1", "value": 10},
+        {"a": "x", "b": "p", "c": "2", "value": 20},
+        {"a": "x", "b": "q", "c": "1", "value": 30},
+        {"a": "y", "b": "p", "c": "1", "value": 40},
+    ]
+
+    result = (
+        Clumper(data)
+        .group_by("a", "b", "c")
+        .mutate(doubled=lambda d: d["value"] * 2)
+        .collect()
+    )
+
+    assert len(result) == len(data)
+    by_key = {(d["a"], d["b"], d["c"]): d for d in data}
+    for row in result:
+        original = by_key[(row["a"], row["b"], row["c"])]
+        assert row["doubled"] == original["value"] * 2
+
+
+def test_group_by_two_columns_sort_multiple_missing_combinations():
+    data = [
+        {"grp_1": "a", "grp_2": "a", "value": 30},
+        {"grp_1": "a", "grp_2": "c", "value": 10},
+        {"grp_1": "b", "grp_2": "b", "value": 20},
+        {"grp_1": "c", "grp_2": "a", "value": 40},
+    ]
+
+    result = (
+        Clumper(data)
+        .group_by("grp_1", "grp_2")
+        .sort(key=lambda d: d["value"])
+        .collect()
+    )
+
+    assert len(result) == len(data)
+    assert {(d["grp_1"], d["grp_2"], d["value"]) for d in result} == {
+        (d["grp_1"], d["grp_2"], d["value"]) for d in data
+    }
+
+
+def test_group_by_three_columns_sort_with_missing_combination():
+    data = [
+        {"a": "x", "b": "p", "c": "1", "value": 30},
+        {"a": "x", "b": "p", "c": "2", "value": 10},
+        {"a": "x", "b": "q", "c": "1", "value": 20},
+        {"a": "y", "b": "p", "c": "1", "value": 40},
+    ]
+
+    result = (
+        Clumper(data)
+        .group_by("a", "b", "c")
+        .sort(key=lambda d: d["value"])
+        .collect()
+    )
+
+    assert len(result) == len(data)
+    assert {(d["a"], d["b"], d["c"], d["value"]) for d in result} == {
+        (d["a"], d["b"], d["c"], d["value"]) for d in data
+    }
  
