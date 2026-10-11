@@ -36,14 +36,14 @@ def grouped(method):
         # You may note the deepcopy() here in the keyword arguments. This is done
         # such that state-ful functions (like `row_number`) automatically reset.
         pairs = [
-              (combo, method(subset, *args, **deepcopy(kwargs)))
-              for combo, subset in clumper._subsets()
+            (combo, method(subset, *args, **deepcopy(kwargs)))
+            for combo, subset in clumper._subsets()
         ]
         blob = reduce(lambda a, b: a + b, [c.collect() for _, c in pairs])
 
         # We need to make sure the grouping keys are still available when we do "agg".
         if method.__name__ == "agg":
-           blob = [{**combo, **b} for (combo, _), b in zip(pairs, blob)]
+            blob = [{**combo, **b} for (combo, _), b in zip(pairs, blob)]
         return clumper._create_new(blob)
 
     return wrapped

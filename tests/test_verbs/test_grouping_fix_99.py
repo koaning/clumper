@@ -2,6 +2,7 @@ from clumper import Clumper
 
 
 def test_group_by_two_columns_with_missing_combination():
+    """agg() over two columns must not mix up group keys when one combination is missing (issue #99)."""
     data = [
         {"grp_1": "a", "grp_2": "a", "value": 10},
         {"grp_1": "a", "grp_2": "b", "value": 20},
@@ -11,10 +12,7 @@ def test_group_by_two_columns_with_missing_combination():
     ]
 
     result = (
-        Clumper(data)
-        .group_by("grp_1", "grp_2")
-        .agg(total=("value", "sum"))
-        .collect()
+        Clumper(data).group_by("grp_1", "grp_2").agg(total=("value", "sum")).collect()
     )
 
     expected = [
@@ -31,6 +29,7 @@ def test_group_by_two_columns_with_missing_combination():
 
 
 def test_group_by_two_columns_with_multiple_missing_combinations():
+    """agg() over two columns keeps group keys correct when several combinations are missing."""
     data = [
         {"grp_1": "a", "grp_2": "a", "value": 10},
         {"grp_1": "a", "grp_2": "c", "value": 20},
@@ -39,10 +38,7 @@ def test_group_by_two_columns_with_multiple_missing_combinations():
     ]
 
     result = (
-        Clumper(data)
-        .group_by("grp_1", "grp_2")
-        .agg(total=("value", "sum"))
-        .collect()
+        Clumper(data).group_by("grp_1", "grp_2").agg(total=("value", "sum")).collect()
     )
 
     expected = [
@@ -58,6 +54,7 @@ def test_group_by_two_columns_with_multiple_missing_combinations():
 
 
 def test_group_by_three_columns_with_missing_combination():
+    """agg() over three columns keeps group keys correct when a combination is missing."""
     data = [
         {"a": "x", "b": "p", "c": "1", "value": 10},
         {"a": "x", "b": "p", "c": "2", "value": 20},
@@ -65,12 +62,7 @@ def test_group_by_three_columns_with_missing_combination():
         {"a": "y", "b": "p", "c": "1", "value": 40},
     ]
 
-    result = (
-        Clumper(data)
-        .group_by("a", "b", "c")
-        .agg(total=("value", "sum"))
-        .collect()
-    )
+    result = Clumper(data).group_by("a", "b", "c").agg(total=("value", "sum")).collect()
 
     expected = [
         {"a": "x", "b": "p", "c": "1", "total": 10},
@@ -85,6 +77,7 @@ def test_group_by_three_columns_with_missing_combination():
 
 
 def test_group_by_two_columns_with_all_combinations_present():
+    """agg() over two columns still works when every combination is present."""
     data = [
         {"grp_1": "a", "grp_2": "a", "value": 10},
         {"grp_1": "a", "grp_2": "b", "value": 20},
@@ -93,10 +86,7 @@ def test_group_by_two_columns_with_all_combinations_present():
     ]
 
     result = (
-        Clumper(data)
-        .group_by("grp_1", "grp_2")
-        .agg(total=("value", "sum"))
-        .collect()
+        Clumper(data).group_by("grp_1", "grp_2").agg(total=("value", "sum")).collect()
     )
 
     expected = [
@@ -110,7 +100,9 @@ def test_group_by_two_columns_with_all_combinations_present():
         expected, key=lambda x: (x["grp_1"], x["grp_2"])
     )
 
+
 def test_group_by_two_columns_transform():
+    """transform() over two grouping columns returns the right value on every row."""
     data = [
         {"grp_1": "a", "grp_2": "a", "value": 10},
         {"grp_1": "a", "grp_2": "b", "value": 20},
@@ -121,9 +113,7 @@ def test_group_by_two_columns_transform():
     result = (
         Clumper(data)
         .group_by("grp_1", "grp_2")
-        .transform(
-             double=("value", lambda x:[v * 2 for v in x])
-        )
+        .transform(double=("value", lambda x: [v * 2 for v in x]))
         .collect()
     )
 
@@ -131,6 +121,7 @@ def test_group_by_two_columns_transform():
 
 
 def test_group_by_two_columns_mutate():
+    """mutate() over two grouping columns computes the right value on every row."""
     data = [
         {"grp_1": "a", "grp_2": "a", "value": 10},
         {"grp_1": "a", "grp_2": "b", "value": 20},
@@ -149,6 +140,7 @@ def test_group_by_two_columns_mutate():
 
 
 def test_group_by_two_columns_sort():
+    """sort() over two grouping columns keeps every row."""
     data = [
         {"grp_1": "a", "grp_2": "a", "value": 30},
         {"grp_1": "a", "grp_2": "b", "value": 10},
@@ -157,16 +149,14 @@ def test_group_by_two_columns_sort():
     ]
 
     result = (
-        Clumper(data)
-        .group_by("grp_1", "grp_2")
-        .sort(lambda d: d["value"])
-        .collect()
+        Clumper(data).group_by("grp_1", "grp_2").sort(lambda d: d["value"]).collect()
     )
 
     assert len(result) == len(data)
 
 
 def test_group_by_four_columns_with_missing_combination():
+    """agg() over four columns keeps group keys correct when combinations are missing."""
     data = [
         {"a": 1, "b": 1, "c": 1, "d": 1, "value": 10},
         {"a": 1, "b": 1, "c": 1, "d": 2, "value": 20},
@@ -175,16 +165,10 @@ def test_group_by_four_columns_with_missing_combination():
     ]
 
     result = (
-        Clumper(data)
-        .group_by("a", "b", "c", "d")
-        .agg(total=("value", sum))
-        .collect()
+        Clumper(data).group_by("a", "b", "c", "d").agg(total=("value", sum)).collect()
     )
 
-    totals = {
-        (row["a"], row["b"], row["c"], row["d"]): row["total"]
-        for row in result
-    }
+    totals = {(row["a"], row["b"], row["c"], row["d"]): row["total"] for row in result}
 
     assert totals[(1, 1, 1, 1)] == 10
     assert totals[(1, 1, 1, 2)] == 20
@@ -193,6 +177,7 @@ def test_group_by_four_columns_with_missing_combination():
 
 
 def test_group_by_two_columns_with_multiple_aggregations():
+    """agg() with several aggregations at once pairs every result with the right group."""
     data = [
         {"grp_1": "a", "grp_2": "a", "value": 10},
         {"grp_1": "a", "grp_2": "a", "value": 20},
@@ -211,15 +196,16 @@ def test_group_by_two_columns_with_multiple_aggregations():
     )
 
     results = {
-        (row["grp_1"], row["grp_2"]): (row["total"], row["count"])
-        for row in result
+        (row["grp_1"], row["grp_2"]): (row["total"], row["count"]) for row in result
     }
 
     assert results[("a", "a")] == (30, 2)
     assert results[("a", "b")] == (30, 1)
     assert results[("b", "a")] == (40, 1)
 
+
 def test_group_by_two_columns_transform_multiple_missing_combinations():
+    """transform() still works when several two-column combinations are missing."""
     data = [
         {"grp_1": "a", "grp_2": "a", "value": 10},
         {"grp_1": "a", "grp_2": "c", "value": 20},
@@ -240,6 +226,7 @@ def test_group_by_two_columns_transform_multiple_missing_combinations():
 
 
 def test_group_by_three_columns_transform_with_missing_combination():
+    """transform() still works over three columns when a combination is missing."""
     data = [
         {"a": "x", "b": "p", "c": "1", "value": 10},
         {"a": "x", "b": "p", "c": "2", "value": 20},
@@ -260,6 +247,7 @@ def test_group_by_three_columns_transform_with_missing_combination():
 
 
 def test_group_by_two_columns_mutate_multiple_missing_combinations():
+    """mutate() still works when several two-column combinations are missing."""
     data = [
         {"grp_1": "a", "grp_2": "a", "value": 10},
         {"grp_1": "a", "grp_2": "c", "value": 20},
@@ -282,6 +270,7 @@ def test_group_by_two_columns_mutate_multiple_missing_combinations():
 
 
 def test_group_by_three_columns_mutate_with_missing_combination():
+    """mutate() still works over three columns when a combination is missing."""
     data = [
         {"a": "x", "b": "p", "c": "1", "value": 10},
         {"a": "x", "b": "p", "c": "2", "value": 20},
@@ -304,6 +293,7 @@ def test_group_by_three_columns_mutate_with_missing_combination():
 
 
 def test_group_by_two_columns_sort_multiple_missing_combinations():
+    """sort() still keeps every row when several two-column combinations are missing."""
     data = [
         {"grp_1": "a", "grp_2": "a", "value": 30},
         {"grp_1": "a", "grp_2": "c", "value": 10},
@@ -325,6 +315,7 @@ def test_group_by_two_columns_sort_multiple_missing_combinations():
 
 
 def test_group_by_three_columns_sort_with_missing_combination():
+    """sort() still keeps every row over three columns when a combination is missing."""
     data = [
         {"a": "x", "b": "p", "c": "1", "value": 30},
         {"a": "x", "b": "p", "c": "2", "value": 10},
@@ -333,14 +324,10 @@ def test_group_by_three_columns_sort_with_missing_combination():
     ]
 
     result = (
-        Clumper(data)
-        .group_by("a", "b", "c")
-        .sort(key=lambda d: d["value"])
-        .collect()
+        Clumper(data).group_by("a", "b", "c").sort(key=lambda d: d["value"]).collect()
     )
 
     assert len(result) == len(data)
     assert {(d["a"], d["b"], d["c"], d["value"]) for d in result} == {
         (d["a"], d["b"], d["c"], d["value"]) for d in data
     }
- 
