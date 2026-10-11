@@ -878,7 +878,7 @@ class Clumper:
             for key, value in gc.items():
                 subset = subset.keep(lambda d: d[key] == value)
             if len(subset) > 0:
-                result.append(subset)
+                result.append((gc, subset))
         return result
 
     def concat(self, *other):
